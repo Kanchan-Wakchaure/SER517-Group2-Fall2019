@@ -1,6 +1,8 @@
 
 Download and install Python. Install django.
 
+Create a txt file and give its name secretkey.txt. I will send the file seperately. It contains the secretkey.
+
 Goto the directory which has manage.py in cmd.
 
 Run-> python manage.py runserver
