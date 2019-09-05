@@ -17,6 +17,6 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('hello-world/', views.HelloWorld.as_view(), name='hello-world'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('', views.index, name='index'),
+    path('hello-world/', views.helloworld, name='helloworld')
 ]

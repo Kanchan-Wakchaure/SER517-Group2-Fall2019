@@ -1,10 +1,8 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.shortcuts import render
+from django.http import HttpResponse
 
-class HelloWorld(APIView):
+def helloworld(request):
+    return HttpResponse("Hello World!")
 
-    def get(self, request, format=None):
-        """
-        Return hello world.
-        """
-        return Response("Hello World!")
+def index(request):
+    return render(request, "index.html")

@@ -56,7 +56,7 @@ ROOT_URLCONF = 'Travlendar.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['Travlendar/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
