@@ -1,0 +1,10 @@
+
+Download and install Python. Install django.
+
+Goto the directory which has manage.py in cmd.
+
+Run-> python manage.py runserver
+
+Goto http://127.0.0.1:8000/  to check if server running.
+
+I commented out database part in travelander/settings.py. Add mongodb there.
