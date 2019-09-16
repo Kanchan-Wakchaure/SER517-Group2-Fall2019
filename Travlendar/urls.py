@@ -1,5 +1,4 @@
 """Travlendar URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
 Examples:
@@ -14,7 +13,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from Travlendar.travlendar_app import views
+from Travlendar.app import views
 
 urlpatterns = [
     path('travlendar/', views.index, name='index'),
