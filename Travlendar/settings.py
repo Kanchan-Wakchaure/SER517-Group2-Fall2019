@@ -20,7 +20,7 @@ print("PATH:",BASE_DIR)
 
 #SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = os.environ['SECRET_KEY']
-with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
+with open(os.path.join(BASE_DIR, "Travlendar/secretkey.txt")) as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'travlendar_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['travlendar_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
