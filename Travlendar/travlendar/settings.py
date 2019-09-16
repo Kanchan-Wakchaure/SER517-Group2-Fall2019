@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)+"Travlendar\\"))
-print("PATH:",BASE_DIR+"Travlendar\\")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("PATH:",BASE_DIR)
 
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app'
 ]
 
 MIDDLEWARE = [
@@ -47,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Travlendar.urls'
+ROOT_URLCONF = 'travlendar.urls'
 
 TEMPLATES = [
     {
@@ -65,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Travlendar.wsgi.application'
+WSGI_APPLICATION = 'travlendar.wsgi.application'
 
 
 # Database
