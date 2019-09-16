@@ -13,10 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import include, path
-from . import views
+from django.urls import path, include
+from Travlendar.travlendar_app import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('hello-world/', views.helloworld, name='helloworld')
+    path('travlendar/', views.index, name='index'),
+    path('travlendar/authentication/', views.authentication, name='travlendar/authentication')
 ]
