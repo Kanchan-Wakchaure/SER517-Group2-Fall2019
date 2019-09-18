@@ -1,0 +1,15 @@
+
+Download and install Python. Install django.
+
+Create a txt file and give its name secretkey.txt. I will send the file seperately. It contains the secretkey.
+
+Goto the directory which has manage.py in cmd.
+
+Run-> python manage.py runserver
+
+Goto http://127.0.0.1:8000/  to check if server running.
+
+Connect with db:
+----------------
+Install djongo.
+->pip install djongo
