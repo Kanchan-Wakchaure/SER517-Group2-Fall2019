@@ -5,10 +5,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import "bootstrap/dist/css/bootstrap.css";
-
-import Homepage from './components/homepage';
-import login from './components/login'
+import Login from './components/Login'
 
 ReactDOM.render(<Homepage />, document.getElementById('root'));
-ReactDOM.render(<login />, document.getElementById('root'));
+ReactDOM.render(<Login />, document.getElementById('root'));
 serviceWorker.unregister();
