@@ -7,12 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import "bootstrap/dist/css/bootstrap.css";
 
 import Homepage from './components/homepage';
-import Signup from './components/signup';
 
 
-//ReactDOM.render(<Homepage />, document.getElementById('root'));
-ReactDOM.render(<Signup />, document.getElementById('root'));
-
+ReactDOM.render(<Homepage />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
