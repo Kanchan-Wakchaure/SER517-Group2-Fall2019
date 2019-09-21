@@ -1,13 +1,21 @@
 from django.http import HttpResponse
-from travlendar_app.models import Event
-from travlendar_app.serializers import EventSerializer
-from rest_framework import generics
+from .models import Event
+from .serializers import EventSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+#from rest_framework import generics
 # Create your views here.
 '''
 def index(request):
     return HttpResponse("Hello, world. You're at the travlander index.")
 '''
-
-class EventListCreate(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
+@api_view(['GET', 'POST'])
+def EventList(request):
+    if request.method == 'POST':
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
