@@ -5,3 +5,4 @@ class Event(models.Model):
     location = models.CharField(max_length=300)
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
+
