@@ -1,19 +1,23 @@
+//@author Raisa 9-21-19
 import React , {Component} from 'react';
-import EventService from '../EventsService';
+import EventsService from '../EventsService';
 
-const eventService=new EventService();
+const eventService=new EventsService();
 
 class CreateEvent extends Component {
 	constructor(props) {
         super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
+	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django
 	handleCreate(){
+	//Sending dummy data to server
         eventService.createEvent(
           {
+
             "name": "XYZ",
             "location": "Tempe,AZ",
-            "date": "09-21-2019",
+            "date": "2019-09-2019",
         }          
         ).then((result)=>{
           alert("Event created!");
@@ -29,7 +33,7 @@ class CreateEvent extends Component {
 		return(
 			
 			<div>
-				<h1>Create Event page</h1>
+				<p>Create a form here for creating Event</p>
 				<button onClick={this.handleSubmit}> Send </button>
 			</div>
 			

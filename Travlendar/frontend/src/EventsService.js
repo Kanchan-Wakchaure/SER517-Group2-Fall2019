@@ -8,4 +8,8 @@ export default class EventsService{
         return axios.post(url,event);
     }
 
+    showHomepage(){
+        const url = API_URL;
+        return axios.get(url);
+    }
 }

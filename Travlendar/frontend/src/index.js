@@ -6,7 +6,7 @@ import './index.css';
 
 import "bootstrap/dist/css/bootstrap.css";
 
-//import Homepage from './components/homepage';
+import Homepage from './components/homepage';
 import CreateEvent from './components/CreateEvent';
 
 

@@ -11,12 +11,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def index(request):
     return HttpResponse("Hello, world. You're at the travlander index.")
 '''
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def EventList(request):
     serializer = EventSerializer(data=request.data)
-   # if request.method == 'POST':
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'POST':
+        if serializer.is_valid():
+            serializer.save()
+            print("Event created")
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print("++++++++BAD REQUEST++++++++")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

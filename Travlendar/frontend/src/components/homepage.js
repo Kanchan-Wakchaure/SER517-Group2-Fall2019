@@ -1,21 +1,29 @@
 import React , {Component} from 'react';
 //import CreateEvent from './CreateEvent';
+import EventsService from '../EventsService';
+
+const eventService=new EventsService();
 class Homepage extends Component {
 
+
+    constructor(props) {
+        super(props);
+
+	}
 	
-		render() {
-			return(
+    render() {
+        return(
 
-				<div>
+            <div>
 
-				<h1>Welcome to Travelander</h1>
-				
-				<button> Send </button>
+            <h1>Welcome to Travelander</h1>
 
-				</div>
+            <button> Send </button>
 
-				);
-		}
+            </div>
+
+            );
+    }
 	
 }
 export default Homepage;
