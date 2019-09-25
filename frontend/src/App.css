@@ -1,0 +1,19 @@
+
+.app{
+
+  display: flex;
+  align-items: center;
+}
+
+.homepage{
+
+  align-items: center;
+  margin-left: 400px;
+  margin-top: 100px;
+  height: 500px;
+  width: 500px;
+
+ display: flex;
+ flex-direction: column;
+
+}
