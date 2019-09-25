@@ -1,6 +1,8 @@
 * Pre-requisites:
-
-I assume you have latest python, pip and node installed.
+-------------------
+python
+pip
+node.js
 
 * To run the server:
 ---------------------------
@@ -50,11 +52,6 @@ npm start
 This will start react on localhost:3000
 
 
-* P.S.
-Install any other dependencies if server says so.
+* P.S. => Install any other dependencies if server says so.
+          Activate and Start django server if you are using virtual enviornment for django framework
 
-Activate and Start django server using following commands if you are using virtual enviornment for django framework:
-
-activate <virtual env name>
-
-python manage.py runserver
