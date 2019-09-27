@@ -24,14 +24,22 @@ Goto the directory which has manage.py in cmd.
 ```python3 manage.py runserver```
 
 
-Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to view Django Server in the browser.
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to start Django Server.
 
 
 ## Starting the React Server:
 ---------------------------------
+Go to the directory Travlendar/frontend:
 
 ```npm install```
 
 ```npm start```
 
 Open [http://localhost:3000](http://localhost:3000) to view React Server in the browser.
+
+## Deliverable for Sprint-1 features added:
+------------------------------------------------
+1. Homepage
+2. Login page
+3. Signup page
+4. Create event - Submit simple form data to see event creation.
