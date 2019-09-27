@@ -1,5 +1,10 @@
-I assume you have latest python, pip and node installed.
-To run the server:
+* Pre-requisites:
+-------------------
+python
+pip
+node.js
+
+* To run the server:
 ---------------------------
 
 Go to command prompt and run the following command.
@@ -20,17 +25,17 @@ pip install django-cors-headers
 
 pip install restframework
 
-
-Create a txt file and give its name secretkey.txt. I will send the file seperately. It contains the secretkey.Keep that where manage.py resides.
+Copy the file 'secretkey.txt' shared on google drive and paste it to the folder where manage.py resides
+(In our project, it is inside ''/SER517-Group2-Fall2019/Travlendar/').
 
 Goto the directory which has manage.py in cmd.
 
 Run-> python manage.py runserver
 
-Goto http://127.0.0.1:8000/  to check if server running.
+Goto http://127.0.0.1:8000/ to check if server running.
 
 
-To run frontend:
+* To run frontend:
 ---------------------------------
 Disable virtualenv if was enabled before.(command ->deactivate)
 
@@ -47,4 +52,6 @@ npm start
 This will start react on localhost:3000
 
 
-P.s-> Install any other dependencies if server says so.
+* P.S. => Install any other dependencies if server says so.
+          Activate and Start django server if you are using virtual enviornment for django framework
+
