@@ -8,26 +8,18 @@ node.js
 
 On command prompt  run the following commands.
 
-pip3 install django
-
-pip3 install djongo
-
-pip3 install dnspython
+pip3 install django djongo dnspython django-cors-headers restframework
 
 python3 manage.py makemigrations travlendar_app
 
 python3 manage.py migrate
-
-pip3 install django-cors-headers
-
-pip3 install restframework
 
 Copy the file 'secretkey.txt' shared on google drive and paste it to the folder where manage.py resides
 (In our project, it is inside ''/SER517-Group2-Fall2019/Travlendar/').
 
 Goto the directory which has manage.py in cmd.
 
-Run-> python manage.py runserver
+Run-> python3 manage.py runserver
 
 
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to view Django Server in the browser.
