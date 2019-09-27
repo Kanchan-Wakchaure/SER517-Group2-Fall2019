@@ -12,9 +12,9 @@ import Login from './components/login';
 import CreateEvent from './components/CreateEvent';
 
 
-ReactDOM.render(<Signup />, document.getElementById('root'));
-ReactDOM.render(<Login />, document.getElementById('root'));
-ReactDOM.render(<CreateEvent />, document.getElementById('root'));
+//ReactDOM.render(<Signup />, document.getElementById('root'));
+//ReactDOM.render(<Login />, document.getElementById('root'));
+//ReactDOM.render(<CreateEvent />, document.getElementById('root'));
 ReactDOM.render(<App />, document.getElementById('root'));
 
 serviceWorker.unregister();
