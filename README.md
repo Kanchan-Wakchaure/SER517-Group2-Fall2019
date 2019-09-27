@@ -29,7 +29,8 @@ Goto the directory which has manage.py in cmd.
 
 Run-> python manage.py runserver
 
-The Django server runs on  http://127.0.0.1:8000/ 
+
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to view Django Server in the browser.
 
 
 ## Starting the React Server:
