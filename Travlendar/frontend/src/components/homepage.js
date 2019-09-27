@@ -1,29 +1,31 @@
 import React , {Component} from 'react';
-//import CreateEvent from './CreateEvent';
-import EventsService from '../EventsService';
+import logo from '../log.svg';
+import '../App.css'
 
-const eventService=new EventsService();
 class Homepage extends Component {
 
 
-    constructor(props) {
-        super(props);
+		render() {
+			return(
 
-	}
-	
-    render() {
-        return(
+				<div className="homepage">
 
-            <div>
+				<img src={logo} width="115" height="115" />
+				<br/>
+				<h3  style = {{fontFamily : 'PT Serif'}} > TRAVLENDAR </h3>
+				<br/>
+				<br />
+				<button   style={{color: 'white', backgroundColor: '#C53E3E', width : '160px', fontFamily: 'PT Serif'}} > Login </button>
+				<br/>
+				<button style={{color: 'white', backgroundColor: '#C53E3E', width : '160px',  fontFamily: 'PT Serif'}} > Sign Up </button>
+				<br/>
+				<button style={{color: 'white', backgroundColor: '#C53E3E', width : '160px',  fontFamily: 'PT Serif'}} > Social Login </button>
 
-            <h1>Welcome to Travelander</h1>
 
-            <button> Send </button>
+				</div>
 
-            </div>
-
-            );
-    }
+				);
+		}
 	
 }
 export default Homepage;
