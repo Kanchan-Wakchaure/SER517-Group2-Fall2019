@@ -3,7 +3,7 @@ import React , {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {AppBar, TextField}  from 'material-ui';
 import EventsService from '../EventsService';
-import {FormLabel, Input, Button}  from '@material-ui/core';
+import {FormGroup, FormLabel, Input, Button}  from '@material-ui/core';
 
 const eventService=new EventsService();
 
@@ -52,21 +52,24 @@ class CreateEvent extends React.Component {
 		return(
 			<div>
                 <MuiThemeProvider>
+                    <FormGroup>
                     <FormLabel htmlFor="name">Event Title</FormLabel> &nbsp;&nbsp;
                     <Input type="text" name="name" id="name" required
                         value={this.state.eventDetails.name}
                         onChange={event => this.handleInputChange(event, 'name')}/>
-                   <br/>
-                   <FormLabel htmlFor="location"> Location </FormLabel> &nbsp;&nbsp;
+                   </FormGroup><br/>
+                   <FormGroup>
+                   <FormLabel htmlFor="location">Location</FormLabel> &nbsp;&nbsp;
                    <Input type="text" name="location" id="location" required
                         value={this.state.eventDetails.location}
                         onChange = {event => this.handleInputChange(event, 'location')} />
-                   <br/>
-                   <FormLabel> Date </FormLabel>&nbsp;&nbsp;
+                   </FormGroup><br/>
+                   <FormGroup>
+                   <FormLabel>Event Date</FormLabel>&nbsp;&nbsp;
                    <Input type="date" name="date" id="date" required
                         value={this.state.eventDetails.date}
                         onChange = {event => this.handleInputChange(event, 'date')}/>
-                   <br/>
+                   </FormGroup><br/>
                    <Button onClick={this.handleSubmit} style={style}> Send </Button>
                 </MuiThemeProvider>
             </div>
