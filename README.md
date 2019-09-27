@@ -1,29 +1,26 @@
-* Pre-requisites:
--------------------
-python
-pip
+## Pre-requisites:
+
+python3
+pip3
 node.js
 
-* To run the server:
----------------------------
+## Starting the Django Server:
 
-Go to command prompt and run the following command.
+On command prompt  run the following commands.
 
-pip install django
+pip3 install django
 
-pip install djongo
+pip3 install djongo
 
-pip install dnspython
+pip3 install dnspython
 
-python manage.py makemigrations travlendar_app
+python3 manage.py makemigrations travlendar_app
 
-python manage.py migrate
+python3 manage.py migrate
 
-[p.s dont commit local migrations file to git.]
+pip3 install django-cors-headers
 
-pip install django-cors-headers
-
-pip install restframework
+pip3 install restframework
 
 Copy the file 'secretkey.txt' shared on google drive and paste it to the folder where manage.py resides
 (In our project, it is inside ''/SER517-Group2-Fall2019/Travlendar/').
@@ -32,14 +29,12 @@ Goto the directory which has manage.py in cmd.
 
 Run-> python manage.py runserver
 
-Goto http://127.0.0.1:8000/ to check if server running.
+The Django server runs on  http://127.0.0.1:8000/ 
 
 
-* To run frontend:
+## Starting the React Server:
 ---------------------------------
-Disable virtualenv if was enabled before.(command ->deactivate)
 
-go to frontend folder.
 
 npm install react-scripts
 
@@ -49,9 +44,4 @@ npm install --save react-router-dom
 
 npm start
 
-This will start react on localhost:3000
-
-
-* P.S. => Install any other dependencies if server says so.
-          Activate and Start django server if you are using virtual enviornment for django framework
-
+Open [http://localhost:3000](http://localhost:3000) to view React Server in the browser.
