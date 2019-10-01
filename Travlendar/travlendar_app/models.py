@@ -7,8 +7,4 @@ class Event(models.Model):
     date = models.CharField(max_length=300)
     #created_at = models.DateTimeField(auto_now_add=True)
 
-#Concept of using custom model is taken from https://wsvincent.com
 
-class CustomUser(AbstractUser):
-    pass
-    created_at = models.DateTimeField(auto_now_add=True)

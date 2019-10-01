@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'travlendar_app.apps.TravlendarAppConfig',
+    'users',
 ]
 
-AUTH_USER_MODEL = 'travlendar_app.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
