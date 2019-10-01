@@ -7,12 +7,7 @@ import Signup from './signup';
 import CreateEvent from './CreateEvent';
 
 
-
-
-
 class Homepage extends Component {
-
-
 
 			login = () => {
 			      this.props.history.push('/login');
@@ -23,7 +18,6 @@ class Homepage extends Component {
 			   CreateEvent = () => {
 			      this.props.history.push('/CreateEvent');
 			  }
-
 		render() {
 
 
@@ -33,7 +27,7 @@ class Homepage extends Component {
 
 			return(
 
-				<div className="homepage"  >
+				<div className="homepage">
 
 				<img src={logo} width="115" height="115" />
 				<br/>
