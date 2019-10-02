@@ -1,14 +1,20 @@
 #@author raisa 10-1-19
-#code taken from https://wsvincent.com
-from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .forms import CustomUserCreationForm
 
-# Create your views here.
 
-from rest_framework import generics
+@api_view(['GET','POST'])
+def signUp(request):
+    if request.method == 'POST':
+        form=CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(form.errors,status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-from . import models
-from . import serializers
 
-class UserListView(generics.ListAPIView):
-    queryset = models.CustomUser.objects.all()
-    serializer_class = serializers.UserSerializer
+

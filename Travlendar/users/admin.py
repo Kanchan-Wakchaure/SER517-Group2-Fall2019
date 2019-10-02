@@ -1,5 +1,5 @@
 #@author raisa, 9-30-19
-# Code is taken from https://wsvincent.com
+# concept taken from https://wsvincent.com
 
 
 from django.contrib import admin
@@ -16,7 +16,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ['email', 'username','created_at']
+    list_display = ['email','username']
 
 admin.site.register(CustomUser, CustomUserAdmin)
 

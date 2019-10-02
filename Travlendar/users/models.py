@@ -1,12 +1,8 @@
-from django.db import models
+#@author raisa 10-1-19
 from django.contrib.auth.models import AbstractUser
-# Create your models here.
-
-#custom model concept is taken from https://wsvincent.com
+#custom model taken from https://wsvincent.com
 
 class CustomUser(AbstractUser):
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
+    pass
     def __str__(self):
         return self.email

@@ -1,14 +1,14 @@
 #@author raisa, 9-30-19
-# Code is taken from https://wsvincent.com
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
-
+# Concept taken from https://wsvincent.com
 class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username','email','first_name','last_name')
 
 class CustomUserChangeForm(UserChangeForm):
 
