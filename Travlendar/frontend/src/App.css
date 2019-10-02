@@ -17,3 +17,6 @@
  flex-direction: column;
 
 }
+.createEvent {
+    width: 450px;
+}
