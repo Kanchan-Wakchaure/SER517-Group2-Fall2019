@@ -26,6 +26,7 @@ Goto the directory which has manage.py in cmd.
 
 For testing run the below: 
 coverage run manage.py test users -v 2
+
 coverage html
 
 
