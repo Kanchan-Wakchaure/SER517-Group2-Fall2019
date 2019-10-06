@@ -1,0 +1,36 @@
+ .container
+ {
+    align: center;
+    background: white;
+ }
+
+ .paper
+ {
+    margin: 50;
+    align: center;
+    display: flex;
+    flexDirection: column;
+    alignItems: center;
+    background: theme.palette.common.white;
+ }
+
+ .avatar
+  {
+    margin: theme.spacing(2);
+    align: center;
+    backgroundColor: theme.palette.secondary.main;
+    padding: 3;
+  }
+
+ .form
+ {
+    width: '90%';
+    margin: theme.spacing(2,2,2,2);
+    align: center;
+ }
+
+.submit
+{
+    margin: theme.spacing(3, 0, 2);
+    backgroundColor: "#C53E3E";
+}
