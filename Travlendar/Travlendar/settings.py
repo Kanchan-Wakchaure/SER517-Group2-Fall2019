@@ -73,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Travlendar.wsgi.application'
-
+APPEND_SLASH=False
 
 # Database
 DATABASES = {
