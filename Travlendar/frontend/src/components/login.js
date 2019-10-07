@@ -43,7 +43,7 @@ class Login extends React.Component{
         ).then((result)=>{
           alert("You have logged in successfully!");
         }).catch(()=>{
-          alert('There was an error! Please re-check your Details.');
+          alert('Couldnot sign in, please try again.');
         });
 
     }
