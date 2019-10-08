@@ -17,3 +17,12 @@
  flex-direction: column;
 
 }
+.createEvent {
+    font-size: 24px;
+    width: 100px;
+}
+.createEventField1 {
+  height: 50px;
+  width: 350px;
+  padding-right: 15px;
+}
