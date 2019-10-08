@@ -6,7 +6,7 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import * as parkData from "../data/skateboard-parks.json";
+import * as parkData from "../data/tempe-schedule.json";
 import mapStyles from "../mapStyles/retromapStyles";
 
 
@@ -73,7 +73,9 @@ export default function MAP() {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <MapWrapped
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBUopytfPOU40AvS9RkEk0SSg1awyNxNqA`}
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+          process.env.REACT_APP_GOOGLE_KEY
+        }`}
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
