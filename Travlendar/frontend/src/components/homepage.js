@@ -5,6 +5,7 @@ import '../App.css'
 import Login from './login';
 import Signup from './signup';
 import CreateEvent from './CreateEvent';
+import ListEvent from './listevent';
 
 
 
@@ -22,6 +23,9 @@ class Homepage extends Component {
 			  }
 			   CreateEvent = () => {
 			      this.props.history.push('/CreateEvent');
+			  }
+			  listevent = () => {
+			      this.props.history.push('/listevent');
 			  }
 
 		render() {
@@ -43,6 +47,7 @@ class Homepage extends Component {
 				<Route path="/login" component={Login}/>
 				<Route path="/signup" component={Signup}/>
 				<Route path="/CreateEvent" component={CreateEvent}/>
+				<Route path="/listevent" component={ListEvent}/>
 
 				<br/>
 				<br/>
@@ -56,6 +61,8 @@ class Homepage extends Component {
 				<button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px' , fontFamily: 'PT Serif', borderRadius:'24px'}}  onClick={this.signup} > Sign Up </button>
 				<br/>
 				<button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px', fontFamily: 'PT Serif', borderRadius:'20px'}} onClick={this.CreateEvent}> Create Event </button>
+				<br/>
+                <button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px', fontFamily: 'PT Serif', borderRadius:'20px'}} onClick={this.listevent}> List Event </button>
 
 
             

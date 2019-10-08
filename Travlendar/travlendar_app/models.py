@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class Event(models.Model):
     title = models.CharField(max_length=300)
     date = models.DateField(null=False, blank=False)
-    time = models.TimeField(null=False, blank=False, default="14:30:59")
+    time = models.TimeField(null=False, blank=False)
     source = models.CharField(max_length=300)
     destination = models.CharField(max_length=300)
     duration= models.DurationField(default=timedelta())
