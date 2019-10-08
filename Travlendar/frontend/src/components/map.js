@@ -43,6 +43,8 @@ function Map() {
           onClick={() => {
             setSelectedPark(park);
           }}
+
+          
          
         />
       ))}
@@ -59,7 +61,9 @@ function Map() {
         >
           <div>
             <h2>{selectedPark.properties.NAME}</h2>
-            <p>{selectedPark.properties.DESCRIPTIO}</p>
+            <p>{selectedPark.properties.ADDRESS}</p>
+            <p>{selectedPark.properties.DESCRIPTION}</p>
+            <p>{selectedPark.properties.TIME}</p>
           </div>
         </InfoWindow>
       )}
@@ -71,7 +75,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export default function MAP() {
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "50vw", height: "100vh" }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY
