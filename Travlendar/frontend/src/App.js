@@ -1,29 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import "bootstrap/dist/css/bootstrap.css";
-
-import Homepage from './components/homepage';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import Header from './components/header/Header';
+import Homepage from './components/home/Homepage';
+import Footer from './components/footer/Footer';
+import Signup from './components/register/Signup';
+import Login from './components/login';
 import CreateEvent from './components/CreateEvent';
-import SignUp from './components/signup';
 
-import background from './background_image.jpg'
-
-
-const style_background = {
-
-width:'100%',
-height:'100%',
-position: 'fixed',
-backgroundImage: `url(${background})`,
-backgroundSize: 'cover'  
-};
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT } from './Routes.js';
 
 function App() {
   return (
-    <div  style={style_background} >
-
-    <Homepage />
+    <div className="App" >
+        <Header />
+        <BrowserRouter>
+            <div>
+                <Switch>
+                    <Route exact path={HOMEPAGE} component={Homepage} />
+                    <Route path={SIGNUP} component={Signup} />
+                    <Route path={LOGIN} component={Login} />
+                    <Route path={CREATE_EVENT} component={CreateEvent} />
+                </Switch>
+            </div>
+        </BrowserRouter>
+        <Footer/>
     </div>
   );
 }

@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import './signup.css';
-import SignupService from '../Services/SignupService';
+import './Signup.css';
+import SignupService from '../../Services/SignupService';
 
 /*
     Author: Kanchan Wakchaure
@@ -77,7 +77,10 @@ class Signup extends React.Component{
                 <CssBaseline />
                 <div className="paper">
                     <form className="form" noValidate>
-                        <Grid container spacing={2} style={{backgroundColor: 'white', margin:'-60px'}} >
+                        <Grid container spacing={2}
+                              alignItems="center"
+                              justify="center"
+                              style={{backgroundColor: 'white', marginTop: '75px' }} >
                             <Grid item xs={12} align="center">
                                 <Avatar className="avatar">
                                     <LockOutlinedIcon />
