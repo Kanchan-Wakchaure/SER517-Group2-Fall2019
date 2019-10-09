@@ -17,6 +17,7 @@ class ListEvent extends Component{
         //this.handleDelete  =  this.handleDelete.bind(this);
     }
     componentDidMount() {
+    //
         var  self  =  this;
         eventService.getEvents().then(function (result) {
             console.log(result);
@@ -29,7 +30,10 @@ class ListEvent extends Component{
             <div className="event_list">
             <ul>
                 {this.state.events.map(e=>
-                    <li>{e.title}</li>
+
+                        <li><div>{e.title}</div><div className="event_list_date">{e.date}</div> {e.time}, {e.destination}</li>
+
+
                 )}
              </ul>
             </div>

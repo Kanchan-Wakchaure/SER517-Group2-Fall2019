@@ -1,3 +1,13 @@
 .event_list li{
     list-style: none;
+    background: #333;
+    margin: 5px 0;
+    padding: 10px 15px;
+    color: #fff;
+    min-width: 500px;
+    border-radius: 10px;
+}
+
+.event_list div{
+width: 200px;
 }
