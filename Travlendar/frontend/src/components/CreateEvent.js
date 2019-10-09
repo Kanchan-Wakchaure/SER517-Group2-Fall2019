@@ -1,7 +1,6 @@
 //@author Raisa 9-21-19
-import React , {Component} from 'react';
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {AppBar, TextField}  from 'material-ui';
 import EventsService from '../EventsService';
 import {FormGroup, FormLabel, Input, Button}  from '@material-ui/core';
 
