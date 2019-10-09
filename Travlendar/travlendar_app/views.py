@@ -14,6 +14,7 @@ def index(request):
 @api_view(['GET','POST'])
 def EventList(request):
     serializer = EventSerializer(data=request.data)
+    print("serializer value",serializer)
     if request.method == 'POST':
         if serializer.is_valid():
             serializer.save()
@@ -28,6 +29,7 @@ def EventList(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
+        #return Response(event_list, status=status.HTTP_200_OK)
         return Response({'data': serializer.data},status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
