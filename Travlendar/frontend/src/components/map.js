@@ -30,15 +30,15 @@ function Map() {
   return (
     <GoogleMap
       defaultZoom={10}
-      defaultCenter={{ lat: 45.4211, lng: -75.6903 }}
+      defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
       defaultOptions={{ styles: mapStyles }}
     >
       {parkData.features.map(park => (
         <Marker
           key={park.properties.PARK_ID}
           position={{
-            lat: park.geometry.coordinates[1],
-            lng: park.geometry.coordinates[0]
+            lat: park.geometry.coordinates[0],
+            lng: park.geometry.coordinates[1]
           }}
           onClick={() => {
             setSelectedPark(park);
@@ -55,8 +55,8 @@ function Map() {
             setSelectedPark(null);
           }}
           position={{
-            lat: selectedPark.geometry.coordinates[1],
-            lng: selectedPark.geometry.coordinates[0]
+            lat: selectedPark.geometry.coordinates[0],
+            lng: selectedPark.geometry.coordinates[1]
           }}
         >
           <div>
@@ -75,7 +75,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export default function MAP() {
   return (
-    <div style={{ width: "50vw", height: "100vh" }}>
+    <div style={{ width: "100vw", height: "100vh" }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY
