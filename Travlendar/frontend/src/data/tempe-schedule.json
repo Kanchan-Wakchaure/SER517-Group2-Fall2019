@@ -1,0 +1,79 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+       "PARK_ID": 960,       
+        "NAME": "Home 1255",
+        "ADDRESS": "1255 E University Dr",
+        "DESCRIPTION": "I live here , It is my home, my car is parked here",
+        "TIME": "9:00 AM"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [33.421720, -111.920760]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "PARK_ID": 961,
+        "NAME": "Four Peaks Brewery",
+        "ADDRESS": "1340 E 8th St",
+        "DESCRIPTION": "I have to catch up with homies in the best brewery in Arizona",
+         "TIME": "1:00 PM"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates":  [33.419899, -111.915077]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "PARK_ID": 962,
+        "NAME": "Sun Devil Fitness Complex",
+        "ADDRESS": "400 E Apache Blvd,",
+        "DESCRIPTION": "Today is the chest and cardio day in the gym",
+        "TIME": "4:00 PM"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates":[33.415070, -111.932100]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+         "PARK_ID": 963,
+        "NAME": "Old Town Scottsdale",
+        "ADDRESS": " 7333 E Indian Plaza",
+       "DESCRIPTION": "I have to meet up with my coworkers for a night of clubbing",
+         "TIME": "11:00 PM"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [33.501419, -111.922173]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "PARK_ID": 964,
+        "NAME": "ASU Poly",
+        "ADDRESS": "7001 E Williams Field Rd",
+       "DESCRIPTION": "I have to submit Sprint 2 report to Dr Findler at the Polycampus",
+         "TIME": "8:00 PM"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [33.307290, -111.688490]
+      }
+    } 
+  ]
+}
