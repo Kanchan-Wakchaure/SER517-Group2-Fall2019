@@ -32,9 +32,10 @@ def EventList(request):
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
-            min_diff = 1000000.00
+            min_diff = 1000000000000.00
             #Finding the previous event
             for item in Event.objects.all():
+                prev_event=item
                 prev_time = item.time
                 curr_time = serializer.validated_data.get("time")
                 prev_duration = item.duration
@@ -43,7 +44,7 @@ def EventList(request):
                 total_prev = prev_time_delta+prev_duration
                 total_prev_delta=float(total_prev.total_seconds())
                 diff_delta=abs(curr_time_delta) - abs(float(prev_time_delta.total_seconds()))
-                if diff_delta>=0:
+                if diff_delta>0:
                     if diff_delta< min_diff:
                         min_diff=diff_delta
                         prev_event = item
