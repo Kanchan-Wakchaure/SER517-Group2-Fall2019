@@ -32,11 +32,6 @@ def EventList(request):
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
-           # serializer.save()
-            #print("Event created")
-            #return Response(serializer.data, status=status.HTTP_201_CREATED)
-            #Code for adding constraint when creating event
-
             min_diff = 1000000.00
             #Finding the previous event
             for item in Event.objects.all():
@@ -52,8 +47,6 @@ def EventList(request):
                     if diff_delta< min_diff:
                         min_diff=diff_delta
                         prev_event = item
-
-                #converted_diff=float(total_diff.total_seconds()
 
             #Checking if there is any conflict to create new event with previous event
             print("+++++++++++++++++++Prev event+++++++++++++++++++++++++++",prev_event.time)
