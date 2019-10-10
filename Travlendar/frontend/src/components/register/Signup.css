@@ -1,0 +1,44 @@
+ /*
+    Author: Kanchan Wakchaure
+    Date: 10-04-2019
+    Description: Styling for sign up form
+    References: https://material-ui.com
+*/
+
+ .container
+ {
+    align: center;
+
+ }
+
+ .paper
+ {
+    margin: 50;
+    align: center;
+    display: flex;
+    flexDirection: column;
+    alignItems: center;
+    background: theme.palette.common.white;
+ }
+
+ .avatar
+  {
+    margin: theme.spacing(2);
+    align: center;
+    backgroundColor: theme.palette.secondary.main;
+    padding: 3;
+  }
+
+ .form
+ {  height: '60%';
+    marginTop:'100px';
+    width: '90%';
+    marginTop: 50%;
+    align: center;
+ }
+
+.submit
+{
+    margin: theme.spacing(3, 0, 2);
+    backgroundColor: "#C53E3E";
+}
