@@ -1,5 +1,5 @@
 #@author raisa 10-1-19
-
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,8 +21,9 @@ def signUp(request):
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        input = (json.loads(request.body))
+        username = input['username']
+        password = input['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             return Response(status=status.HTTP_200_OK)

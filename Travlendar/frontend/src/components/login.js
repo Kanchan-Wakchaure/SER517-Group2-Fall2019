@@ -34,16 +34,16 @@ class Login extends React.Component{
 	}
 
     handleRegister(){
-        console.log(this.state.userDetails);
         loginService.login(
             {
-                "email": this.state.userDetails.email,
-                "password": this.state.userDetails.password
+                'username': this.state.userDetails.email,
+                'password': this.state.userDetails.password
             }
         ).then((result)=>{
-          alert("You have logged in successfully!");
+            //TODO: Navigate to landing page
+            alert('You are signed in!');
         }).catch(()=>{
-          alert('Couldnot sign in, please try again.');
+          alert('Could not sign in, please try again.');
         });
 
     }
