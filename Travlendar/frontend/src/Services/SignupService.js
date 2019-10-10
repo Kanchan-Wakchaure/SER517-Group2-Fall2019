@@ -12,7 +12,7 @@ const API_URL = 'http://localhost:8000';
 export default class SignupService{
 
     signup(user){
-        const url = API_URL+'/api/signup/';
+        const url = API_URL+'/api/users/signup/';
         return axios.post(url,user);
     }
 

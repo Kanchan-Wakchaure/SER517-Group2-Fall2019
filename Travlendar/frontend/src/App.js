@@ -8,7 +8,16 @@ import Signup from './components/register/Signup';
 import Login from './components/login';
 import CreateEvent from './components/CreateEvent';
 
+
+import MAP from './components/map';
+
+
+import background from './background_image.jpg'
+
+
+
 import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT } from './Routes.js';
+
 
 function App() {
   return (
