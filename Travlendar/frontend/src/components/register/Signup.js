@@ -30,9 +30,7 @@ class Signup extends React.Component{
                 last_name: '',
                 phone_number: '',
                 email: '',
-                password1: '',
-                password2:'',
-                username:' '
+                password: ''
             }
         };
 
@@ -48,9 +46,9 @@ class Signup extends React.Component{
                 "last_name": this.state.userDetails.last_name,
                 "phone_number": this.state.userDetails.phone_number,
                 "email": this.state.userDetails.email,
-                "password1": this.state.userDetails.password1,
-                "password2": this.state.userDetails.password2,
-                "username": this.state.userDetails.username,
+                "password1": this.state.userDetails.password,
+                "password2": this.state.userDetails.password,
+                "username": this.state.userDetails.email,
             }
         ).then((result)=>{
           alert("You are registered successfully!");
@@ -66,7 +64,6 @@ class Signup extends React.Component{
     }
 
 
-
     handlechange(event, inputPropName)
     {
         const newState = Object.assign({}, this.state);
@@ -77,7 +74,7 @@ class Signup extends React.Component{
     render(){
 
         return(
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" className="test">
                 <CssBaseline />
                 <div className="paper">
                     <form className="form" noValidate>
@@ -109,14 +106,15 @@ class Signup extends React.Component{
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField autoComplete="lname"
+                                           name="last_name"
+                                           variant="outlined"
                                            required
                                            fullWidth
                                            id="lastname"
                                            label="Last Name"
-                                           name="last_Name"
+                                           autoFocus
                                            value={this.state.userDetails.last_name}
-                                           onChange = { user => this.handlechange(user, 'last_name') }/>
-
+                                           onChange = { event => this.handlechange(event, 'last_name') }/>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField variant="outlined"
@@ -140,40 +138,17 @@ class Signup extends React.Component{
                                            value={this.state.userDetails.email}
                                            onChange = { user => this.handlechange(user, 'email') }/>
                             </Grid>
-                             <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           id="email"
-                                           label="User Name"
-                                           name="username"
-                                           autoComplete="username"
-                                           value={this.state.userDetails.username}
-                                           onChange = { user => this.handlechange(user, 'username') }/>
-                            </Grid>
                             <Grid item xs={12}>
                                 <TextField variant="outlined"
                                            required
                                            fullWidth
-                                           name="password1"
+                                           name="password"
                                            label="Password"
                                            type="password"
                                            id="password"
                                            autoComplete="current-password"
                                            value={this.state.userDetails.password1}
-                                           onChange = { user => this.handlechange(user, 'password1') }/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           name="password2"
-                                           label="Confirm Password"
-                                           type="password"
-                                           id="password"
-                                           autoComplete="current-password"
-                                           value={this.state.userDetails.password2}
-                                           onChange = { user => this.handlechange(user, 'password2') }/>
+                                           onChange = { user => this.handlechange(user, 'password') }/>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit"
