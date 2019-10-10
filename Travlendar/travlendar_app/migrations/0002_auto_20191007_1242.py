@@ -61,6 +61,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='time',
-            field=models.TimeField(default='14:30:59'),
+            field=models.TimeField(),
         )
     ]
