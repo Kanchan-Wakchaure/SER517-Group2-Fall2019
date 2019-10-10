@@ -4,9 +4,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from .forms import CustomUserCreationForm
 
+def check_authentication(request):
+    if request.user.is_authenticated:
+        pass
+        print("+++++++++++++++++++++User authenticated++++++++++++++++++++++++++++")
+        return True
+    else:
+        print("+++++++++++++++++++++User NOT authenticated++++++++++++++++++++++++++++")
+        return False
+
 
 @api_view(['GET','POST'])
 def signUp(request):
+    if not check_authentication(request):
+        return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():

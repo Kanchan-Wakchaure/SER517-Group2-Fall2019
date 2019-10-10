@@ -22,6 +22,8 @@ class ListEvent extends Component{
         eventService.getEvents().then(function (result) {
             console.log(result);
             self.setState({ events:  result.data})
+        }).catch(()=>{
+          alert('User is not logged in');
         });
     }
 
