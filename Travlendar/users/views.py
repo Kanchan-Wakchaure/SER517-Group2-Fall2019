@@ -4,24 +4,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from .forms import CustomUserCreationForm
-
-
-def check_authentication(request):
-    if request.user.is_authenticated:
-        pass
-        print("+++++++++++++++++++++User authenticated++++++++++++++++++++++++++++")
-        return True
-    else:
-        print("+++++++++++++++++++++User NOT authenticated++++++++++++++++++++++++++++")
-        return False
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import authentication_classes
 
 
 @api_view(['GET','POST'])
 def signUp(request):
-    if not check_authentication(request):
-        return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -38,7 +30,9 @@ def login(request):
         username = input['username']
         password = input['password']
         user = authenticate(username=username, password=password)
+        print("++++++++++++user+++++++++++++",user)
         if user is not None:
+            auth_login(request, user)
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

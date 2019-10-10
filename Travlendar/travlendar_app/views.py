@@ -3,9 +3,14 @@ from .models import Event
 from .serializers import EventSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.decorators import authentication_classes
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime, date, time
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
 #from rest_framework import generics
 # Create your views here.
 '''
@@ -13,20 +18,17 @@ def index(request):
     return HttpResponse("Hello, world. You're at the travlander index.")
 
 '''
-def check_authentication(request):
-    if request.user.is_authenticated:
-        pass
-        print("+++++++++++++++++++++User authenticated++++++++++++++++++++++++++++")
-        return True
-    else:
-        print("+++++++++++++++++++++User NOT authenticated++++++++++++++++++++++++++++")
-        return False
 
-
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    if not check_authentication(request):
-        return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
+    #if not check_authentication(request):
+    #   return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
+    #if request.session["username"] is None:
+    #    return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
+    #print("user", request.session["username"])
+    print("session age",request.session.get_expiry_age())
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
