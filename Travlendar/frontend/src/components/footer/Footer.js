@@ -29,7 +29,7 @@ class Footer extends React.Component{
         return(
             <footer className="footer" style={{backgroundColor: '#3F51B5'}}>
                 <Container maxWidth="lg">
-                    <Typography variant="h6" align="center" gutterBottom>
+                    <Typography variant="h6" align="center" style={{color: '#fafafa'}} gutterBottom>
                         <b>Travlendar</b>
                     </Typography>
                     <Copyright />

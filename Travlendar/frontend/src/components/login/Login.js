@@ -108,7 +108,7 @@ class Login extends React.Component{
                                         color="primary"
                                         className="submit"
                                         onClick={this.handleSubmit}>
-                                    Sign Up
+                                    Login
                                 </Button>
                             </Grid>
 

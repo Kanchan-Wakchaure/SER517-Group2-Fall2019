@@ -11,7 +11,6 @@ from .forms import CustomUserCreationForm
 def signUp(request):
     if request.method == 'POST':
         form=CustomUserCreationForm(request.data)
-        print("form data",request.data)
         if form.is_valid():
             form.save()
             return Response(status=status.HTTP_201_CREATED)
