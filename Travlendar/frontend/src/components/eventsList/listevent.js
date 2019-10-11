@@ -1,7 +1,7 @@
 //@author raisa 10-08-19
 import  React, { Component } from  'react';
-import EventsService from '../EventsService';
-import '../listevent.css';
+import EventsService from '../../Services/EventsService';
+import './listevent.css';
 
 const eventService=new EventsService();
 

@@ -32,8 +32,8 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
-        <Toolbar>
+      <AppBar position="fixed" style = {{height: '50px'}}>
+        <Toolbar style={{height: '20px'}}>
           <Typography variant="h6" className={classes.title}>
             Travlendar
           </Typography>
@@ -41,6 +41,7 @@ export default function Header() {
             <HomeIcon/>
           </IconButton>
           <Button color="inherit"  href="/CreateEvent">Create Event</Button>
+          <Button color="inherit"  href="/CreateEvent">View Events</Button>
           <Button color="inherit" href="/login">Login</Button>
           <Button color="inherit" href="/Signup">Sign Up</Button>
         </Toolbar>

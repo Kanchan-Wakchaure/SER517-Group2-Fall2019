@@ -162,8 +162,8 @@ class Signup extends React.Component{
                             </Grid>
 
                             <Grid item align="center">
-                                <Link href="/login" variant="body2">
-                                    Already have an account? Sign in
+                                <Link href="/Login" variant="body2">
+                                    Already have an account? Login
                                 </Link>
                             </Grid>
                         </Grid>

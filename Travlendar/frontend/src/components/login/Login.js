@@ -3,17 +3,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import './login.css';
-import LoginService from '../Services/LoginService';
+import './Login.css';
+import LoginService from '../../Services/LoginService';
 
 
 const loginService = new LoginService();
@@ -40,7 +36,6 @@ class Login extends React.Component{
                 'password': this.state.userDetails.password
             }
         ).then((result)=>{
-            //TODO: Navigate to landing page
             alert('You are signed in!');
         }).catch(()=>{
           alert('Could not sign in, please try again.');
@@ -65,11 +60,14 @@ class Login extends React.Component{
     render(){
 
         return(
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" className="test">
                 <CssBaseline />
                 <div className="paper">
                     <form className="form" noValidate>
-                        <Grid container spacing={2} style={{backgroundColor: 'white', margin:'-60px'}} >
+                        <Grid container spacing={2}
+                              alignItems="center"
+                              justify="center"
+                              style={{backgroundColor: 'white', marginTop: '75px' }} >
                             <Grid item xs={12} align="center">
                                 <Avatar className="avatar">
                                     <LockOutlinedIcon />
@@ -100,7 +98,7 @@ class Login extends React.Component{
                                            type="password"
                                            id="password"
                                            autoComplete="current-password"
-                                           value={this.state.userDetails.password}
+                                           value={this.state.userDetails.password1}
                                            onChange = { user => this.handlechange(user, 'password') }/>
                             </Grid>
                             <Grid item xs={12}>
@@ -110,7 +108,7 @@ class Login extends React.Component{
                                         color="primary"
                                         className="submit"
                                         onClick={this.handleSubmit}>
-                                    Login
+                                    Sign Up
                                 </Button>
                             </Grid>
 

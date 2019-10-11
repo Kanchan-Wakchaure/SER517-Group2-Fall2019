@@ -5,24 +5,16 @@ import Header from './components/header/Header';
 import Homepage from './components/home/Homepage';
 import Footer from './components/footer/Footer';
 import Signup from './components/register/Signup';
-import Login from './components/login';
-import CreateEvent from './components/CreateEvent';
-
-
-import MAP from './components/map';
-
-
-import background from './background_image.jpg'
-
-
-
-import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT } from './Routes.js';
-
+import Login from './components/login/Login';
+import CreateEvent from './components/createEvent/CreateEvent';
+import ListEvent from './components/eventsList/listevent';
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST } from './Routes.js';
 
 function App() {
   return (
-    <div className="App" >
-        <Header />
+  <div>
+    <Header />
+    <div className="cover" >
         <BrowserRouter>
             <div>
                 <Switch>
@@ -30,10 +22,12 @@ function App() {
                     <Route path={SIGNUP} component={Signup} />
                     <Route path={LOGIN} component={Login} />
                     <Route path={CREATE_EVENT} component={CreateEvent} />
+                    <Route path={EVENTS_LIST} component={ListEvent}/>
                 </Switch>
             </div>
         </BrowserRouter>
-        <Footer/>
+    </div>
+    <Footer />
     </div>
   );
 }

@@ -5,10 +5,10 @@
 */
 
   footer{
-    position: relative;
+    position: absolute;
     background-color: '#3F51B5' !important;
     width: 100%;
     font-color: white !important;
-    padding-top: 5px;
+
   }
 

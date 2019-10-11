@@ -32,9 +32,6 @@ class Footer extends React.Component{
                     <Typography variant="h6" align="center" gutterBottom>
                         <b>Travlendar</b>
                     </Typography>
-                    <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                        Plan your day better!
-                    </Typography>
                     <Copyright />
                 </Container>
             </footer>

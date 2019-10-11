@@ -3,17 +3,10 @@ import { BrowserRouter as Router, Route,Switch, Redirect} from 'react-router-dom
 import '../App.css'
 import Login from './login';
 import Signup from './signup';
-import CreateEvent from './CreateEvent';
+import CreateEvent from './createEvent';
 import ListEvent from './listevent';
 
-
-
-
-
 class Homepage extends Component {
-
-
-
 			login = () => {
 			      this.props.history.push('/login');
 			  }
@@ -28,17 +21,8 @@ class Homepage extends Component {
 			  }
 
 		render() {
-
-
-
-
-			
-
 			return(
-
 				<div className="homepage" >
-
-				
 				<br/>
 				<h1  style = {{fontFamily : 'ProximaNova', top: 5, right: 25, position: 'absolute' , color : 'white'}} > TRAVLENDAR </h1>
 				<br/>
@@ -47,29 +31,19 @@ class Homepage extends Component {
 				<Route path="/signup" component={Signup}/>
 				<Route path="/CreateEvent" component={CreateEvent}/>
 				<Route path="/listevent" component={ListEvent}/>
-
 				<br/>
 				<br/>
 				<br/>
 				<br/>
 				<br/>
-
 				<button   style={{color: 'white', backgroundColor: '#C53E3E', width : '230px', height: '50px', fontFamily: 'PT Serif', borderRadius:'24px'}}  onClick={this.login} > Login </button>
 				<br/>
-
 				<button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px' , fontFamily: 'PT Serif', borderRadius:'24px'}}  onClick={this.signup} > Sign Up </button>
 				<br/>
 				<button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px', fontFamily: 'PT Serif', borderRadius:'20px'}} onClick={this.CreateEvent}> Create Event </button>
 				<br/>
                 <button style={{color: 'white', backgroundColor: '#C53E3E',  width : '230px', height: '50px', fontFamily: 'PT Serif', borderRadius:'20px'}} onClick={this.listevent}> List Event </button>
-
-
-            
-
-
-
 				</div>
-
 				);
 		}
 	

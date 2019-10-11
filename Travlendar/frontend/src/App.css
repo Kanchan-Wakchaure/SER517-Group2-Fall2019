@@ -1,9 +1,16 @@
-.app{
-
-  display: flex;
-  align-items: center;
-
+body, html {
+  height: 100%;
 }
+
+.cover{
+    height: 600px;
+    background: url("background.jpg") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 .createEvent {
     font-size: 24px;
     width: 100px;
