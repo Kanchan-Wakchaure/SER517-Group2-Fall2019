@@ -2,13 +2,14 @@
 // References: 	//https://www.digitalocean.com
 
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {FormGroup, InputLabel, Button, FilledInput, InputAdornment } from '@material-ui/core';
+import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
 import EventsService from '../../Services/EventsService';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import './CreateEvent.css';
 import Map from './../map.js';
@@ -45,7 +46,7 @@ class CreateEvent extends React.Component {
             "destination": this.state.eventDetails.destination
         }          
         ).then((result)=>{
-          alert("Event created!");
+          alert("See View events tab.");
         }).catch(()=>{
           alert('There was an error! Please re-check your form.');
         });
@@ -64,76 +65,125 @@ class CreateEvent extends React.Component {
 
 	render() {
 		return(
-			<div>
-                <MuiThemeProvider>
-                    <h4 style={{"textAlign": 'center'}}> Create Event </h4>
+			<Container>
+                <CssBaseline />
+                <br/><br/><br/>
                     <div className="row">
                     <div className="column">
                     <Map/>
                     </div>
                     <div className="column">
-                    <FormGroup row = "true">
-                    <InputLabel className="createEvent">Description</InputLabel>
-                   <FilledInput  type="text" name="title" id="title" required
-                        value={this.state.eventDetails.name}
-                        onChange={event => this.handleInputChange(event, 'title')}
-                        className ="createEventField1"
-                   />
-                   <InputAdornment style={{height: '50px'}}>
-                        <DescriptionIcon />
-                   </InputAdornment>
+                    <form style={{backgroundColor: 'white'}}>
+                    <FormGroup>
+                    <h2 style={{"paddingLeft": '40%'}}> Create Event </h2><br/>
+                    </FormGroup>
+                    <FormGroup>
+                    <TextField variant="outlined"
+                               required
+                               id="title"
+                               fullWidth
+                               label="Event description"
+                               name="title"
+                               value={this.state.eventDetails.title}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'title') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <DescriptionIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup>
                    <br/>
-                   <FormGroup row = "true">
-                   <InputLabel className="createEvent">Date</InputLabel>
-                   <FilledInput className ="createEventField1" type="date" name="date" id="date"
-                        required value={this.state.eventDetails.date}
-                        onChange = {event => this.handleInputChange(event, 'date')}/>
-                   <InputAdornment style={{height: '50px'}}>
-                        <EventIcon />
-                   </InputAdornment>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               required
+                               type="date"
+                               id="date"
+                               fullWidth
+                               label="Date"
+                               name="date"
+                               value={this.state.eventDetails.date}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'date') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <EventIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup><br/>
-                   <FormGroup row = "true">
-                   <InputLabel className="createEvent">Start Time</InputLabel>
-                   <FilledInput className ="createEventField1" type="time" name="time" id="time"
-                        required value={this.state.eventDetails.time}
-                        onChange = {event => this.handleInputChange(event, 'time')}/>
-                   <InputAdornment style={{height: '50px'}}>
-                        <ScheduleIcon />
-                   </InputAdornment>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               required
+                               type="time"
+                               id="time"
+                               fullWidth
+                               label="Time"
+                               name="time"
+                               value={this.state.eventDetails.time}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'time') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <ScheduleIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup><br/>
-                   <FormGroup row = "true">
-                   <InputLabel className="createEvent">Duration (minutes)</InputLabel>
-                   <FilledInput className ="createEventField1"  type="number" name="duration" id="duration" required
-                        value={this.state.eventDetails.duration}
-                        onChange = {event => this.handleInputChange(event, 'duration')}/>
-                   <InputAdornment style={{height: '50px'}}>
-                        <ScheduleIcon />
-                   </InputAdornment>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               type="number"
+                               required
+                               id="duration"
+                               fullWidth
+                               label="Duration (minutes)"
+                               name="duration"
+                               value={this.state.eventDetails.duration}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'duration') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <ScheduleIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup><br/>
-                   <FormGroup row = "true">
-                   <InputLabel className="createEvent">Source</InputLabel>
-                   <FilledInput className ="createEventField1"  type="text" name="source" id="source" required
-                        value={this.state.eventDetails.source}
-                        onChange = {event => this.handleInputChange(event, 'source')} />
-                   <InputAdornment style={{height: '50px'}}>
-                        <RoomIcon />
-                   </InputAdornment>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               required
+                               id="source"
+                               fullWidth
+                               label="Start At"
+                               name="source"
+                               value={this.state.eventDetails.source}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'source') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <RoomIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup><br/>
-                   <FormGroup row = "true">
-                   <InputLabel className="createEvent">Destination</InputLabel>
-                   <FilledInput className ="createEventField1"  type="text" name="destination" id="destination" required
-                        value={this.state.eventDetails.destination}
-                        onChange = {event => this.handleInputChange(event, 'destination')} />
-                    <InputAdornment style={{height: '50px'}}>
-                        <RoomIcon />
-                   </InputAdornment>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               required
+                               id="destination"
+                               fullWidth
+                               label="Go to"
+                               name="destination"
+                               value={this.state.eventDetails.destination}
+                               style={{paddingLeft: '5px',paddingRight:'15px'}}
+                               onChange = { event => this.handleInputChange(event, 'destination') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <RoomIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
                    </FormGroup><br/>
-                   <Button onClick={this.handleSubmit} style={{alignItems: 'center', justifyContent: 'center'}}> Create Event </Button>
+                   <Button fullWidth style={{backgroundColor: "#3f51b5", paddingLeft: '5px',
+                           paddingRight:'15px', fontColor: "white"}} onClick={this.handleSubmit} > Create Event </Button>
+                   <br/><br/>
+                   </form>
                 </div>
                 </div>
-                </MuiThemeProvider>
-            </div>
+            </Container>
 			);
 	}
 }
