@@ -12,7 +12,8 @@ On command prompt  run the following commands.
 
 Copy the file 'secretkey.txt' shared on google drive (https://drive.google.com/open?id=1RG2Dp6hjG7hmSEQNCeJuuRp6v9-0DKX2)
 and paste it to the folder where manage.py resides (/SER517-Group2-Fall2019/Travlendar/).
-
+Copy the file '.env.local' shared on google drive (https://drive.google.com/open?id=1RG2Dp6hjG7hmSEQNCeJuuRp6v9-0DKX2)
+and paste it to the folder Travlendar/frontend/.
 
 Goto the directory which has manage.py in cmd.
 
