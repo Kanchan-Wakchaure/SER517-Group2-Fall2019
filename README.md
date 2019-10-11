@@ -27,7 +27,11 @@ coverage html
 
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to start Django Server.
 
-
+To test the feature:
+Sign up : Password neeeds to be at least 8 character long and should contain a number. Email should have @ field. No duplicate username allowed.
+Login: Log in with the above username password.
+Create Event: First create any random event. It does not lets to create event(it asks to recheck form) which has same time/ falls within the duration of previous event.
+View event: shows all events.
 ## Starting the React Server:
 ---------------------------------
 Go to the directory Travlendar/frontend:
