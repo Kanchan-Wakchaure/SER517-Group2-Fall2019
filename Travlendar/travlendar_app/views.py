@@ -12,22 +12,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
 #from rest_framework import generics
-# Create your views here.
-'''
-def index(request):
-    return HttpResponse("Hello, world. You're at the travlander index.")
 
-'''
-
+#api for create event and get all eventss
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    #if not check_authentication(request):
-    #   return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
-    #if request.session["username"] is None:
-    #    return Response("Unauthorized access", status=status.HTTP_403_FORBIDDEN)
-    #print("user", request.session["username"])
     print("session age",request.session.get_expiry_age())
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
@@ -49,7 +39,7 @@ def EventList(request):
                         min_diff=diff_delta
                         prev_event = item
 
-            #Checking if there is any conflict to create new event with previous event
+            #Checking if there is any conflict while creating new event with previous event
             print("+++++++++++++++++++Prev event+++++++++++++++++++++++++++",prev_event.time)
             prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
             if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
@@ -69,7 +59,6 @@ def EventList(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
-        #return Response(event_list, status=status.HTTP_200_OK)
         return Response({'data': serializer.data},status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

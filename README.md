@@ -18,15 +18,12 @@ Goto the directory which has manage.py in cmd.
 
 ```cd Travlendar```
 
-```python3 manage.py migrate```
-
 ```python3 manage.py runserver```
 
 For testing run the below: 
 coverage run manage.py test users -v 2
-
-coverage html (This command will create a folder which conatins the report)
-
+Then run below command(This command will create a folder which conatins the report):
+coverage html
 
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to start Django Server.
 
