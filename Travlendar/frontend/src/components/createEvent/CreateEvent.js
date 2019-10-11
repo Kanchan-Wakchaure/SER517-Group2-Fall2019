@@ -10,6 +10,9 @@ import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
 
+import './CreateEvent.css';
+import Map from './../map.js';
+
 const eventService=new EventsService();
 
 class CreateEvent extends React.Component {
@@ -64,6 +67,11 @@ class CreateEvent extends React.Component {
 			<div>
                 <MuiThemeProvider>
                     <h4 style={{"textAlign": 'center'}}> Create Event </h4>
+                    <div className="row">
+                    <div className="column">
+                    <Map/>
+                    </div>
+                    <div className="column">
                     <FormGroup row = "true">
                     <InputLabel className="createEvent">Description</InputLabel>
                    <FilledInput  type="text" name="title" id="title" required
@@ -122,6 +130,8 @@ class CreateEvent extends React.Component {
                    </InputAdornment>
                    </FormGroup><br/>
                    <Button onClick={this.handleSubmit} style={{alignItems: 'center', justifyContent: 'center'}}> Create Event </Button>
+                </div>
+                </div>
                 </MuiThemeProvider>
             </div>
 			);
