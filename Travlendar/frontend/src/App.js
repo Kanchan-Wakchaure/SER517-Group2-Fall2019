@@ -1,31 +1,33 @@
 import React from 'react';
 import './App.css';
-import "bootstrap/dist/css/bootstrap.css";
-
-import Homepage from './components/homepage';
-import CreateEvent from './components/CreateEvent';
-import SignUp from './components/signup';
-import MAP from './components/map';
-
-
-import background from './background_image.jpg'
-
-
-const style_background = {
-
-width:'100%',
-height:'100%',
-position: 'fixed',
-backgroundImage: `url(${background})`,
-backgroundSize: 'cover'  
-};
-
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import Header from './components/header/Header';
+import Homepage from './components/home/Homepage';
+import Footer from './components/footer/Footer';
+import Signup from './components/register/Signup';
+import Login from './components/login/Login';
+import CreateEvent from './components/createEvent/CreateEvent';
+import ListEvent from './components/eventsList/listevent';
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST } from './Routes.js';
 
 function App() {
   return (
-    <div  style={style_background} >
-
-    <Homepage />
+  <div>
+    <Header />
+    <div className="cover" >
+        <BrowserRouter>
+            <div>
+                <Switch>
+                    <Route exact path={HOMEPAGE} component={Homepage} />
+                    <Route path={SIGNUP} component={Signup} />
+                    <Route path={LOGIN} component={Login} />
+                    <Route path={CREATE_EVENT} component={CreateEvent} />
+                    <Route path={EVENTS_LIST} component={ListEvent}/>
+                </Switch>
+            </div>
+        </BrowserRouter>
+    </div>
+    <Footer />
     </div>
   );
 }

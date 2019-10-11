@@ -1,14 +1,14 @@
 //@author Raisa 9-21-19
-import React , {Component} from 'react';
+// References: 	//https://www.digitalocean.com
+
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {AppBar}  from 'material-ui';
-import {Grid, FormGroup, FormLabel, InputLabel, Input, Button, TextField, FilledInput, InputAdornment }  from '@material-ui/core';
-import EventsService from '../EventsService';
+import {FormGroup, InputLabel, Button, FilledInput, InputAdornment } from '@material-ui/core';
+import EventsService from '../../Services/EventsService';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
-
 
 const eventService=new EventsService();
 
@@ -47,7 +47,7 @@ class CreateEvent extends React.Component {
           alert('There was an error! Please re-check your form.');
         });
       }
-	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django-and-react-on-ubuntu-18-04  
+
 	handleSubmit(event) {
 	    event.preventDefault();
         this.handleCreate();

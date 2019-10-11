@@ -11,13 +11,7 @@ body, html {
     background-size: cover;
 }
 
-.createEvent {
-    font-size: 24px;
-    width: 100px;
+.calendar{
+    position: relative;
+    background-color: red;
 }
-.createEventField1 {
-  height: 50px;
-  width: 350px;
-  padding-right: 15px;
-}
-
