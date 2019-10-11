@@ -1,7 +1,7 @@
 //@author raisa 10-08-19
 import  React, { Component } from  'react';
 import EventsService from '../../Services/EventsService';
-import './listevent.css';
+import './ListEvent.css';
 
 const eventService=new EventsService();
 
@@ -22,6 +22,8 @@ class ListEvent extends Component{
         eventService.getEvents().then(function (result) {
             console.log(result);
             self.setState({ events:  result.data})
+        }).catch(()=>{
+          alert('User is not logged in');
         });
     }
 
@@ -30,10 +32,12 @@ class ListEvent extends Component{
             <div className="event_list">
             <ul>
                 {this.state.events.map(e=>
-
-                        <li><div>{e.title}</div><div className="event_list_date">{e.date}</div> {e.time}, {e.destination}</li>
-
-
+                    <li>
+                        <div>{e.title}</div>
+                        <div className="event_list_date">{e.time}</div>
+                        <div>{e.source}</div>
+                        <div>{e.destination}</div>
+                    </li>
                 )}
              </ul>
             </div>

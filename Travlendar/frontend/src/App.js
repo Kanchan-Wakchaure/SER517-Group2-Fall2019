@@ -7,7 +7,7 @@ import Footer from './components/footer/Footer';
 import Signup from './components/register/Signup';
 import Login from './components/login/Login';
 import CreateEvent from './components/createEvent/CreateEvent';
-import ListEvent from './components/eventsList/listevent';
+import ListEvent from './components/eventsList/ListEvent';
 import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST } from './Routes.js';
 
 function App() {

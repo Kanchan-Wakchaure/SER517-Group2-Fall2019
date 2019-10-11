@@ -5,7 +5,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
+
+from django.contrib.auth import login as auth_login
+
 from .forms import CustomUserCreationForm
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import authentication_classes
+
 
 @api_view(['GET','POST'])
 def signUp(request):
@@ -27,6 +35,7 @@ def login(request):
         password = input['password']
         user = authenticate(username=username, password=password)
         if user is not None:
+            auth_login(request, user)
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
