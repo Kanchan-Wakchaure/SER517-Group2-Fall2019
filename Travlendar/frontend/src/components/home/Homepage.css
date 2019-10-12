@@ -9,6 +9,9 @@ body, html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    overflow-y: auto;
 }
 
+.calendar{
+    position: relative;
+    background-color: red;
+}

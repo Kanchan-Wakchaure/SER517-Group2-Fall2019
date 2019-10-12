@@ -1,0 +1,21 @@
+.cover {padding-top: 100px;}
+
+.event_list ul { padding: 0 120px;}
+
+.event_list li{
+    list-style: none;
+    background: #333;
+    margin: 10px 0;
+    padding: 20px 15px;
+    color: #fff;
+    min-width: 500px;
+    border-radius: 10px;
+    font-size: 20px;
+    min-height: 25px;
+}
+.event_list ul li div {
+    float: left;
+}
+.event_list div{
+width: 24%;
+}

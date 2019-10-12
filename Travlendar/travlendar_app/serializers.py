@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from travlendar_app.models import Event
+from .models import Event
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'location', 'date')
+        fields = ('id', 'title','date','time','source','destination','duration','creator','created_at')
+
+

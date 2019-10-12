@@ -1,0 +1,14 @@
+/*
+    Author: Kanchan Wakchaure
+    Date: 10-04-2019
+    Description: Styling for footer component
+*/
+
+  footer{
+    position: absolute;
+    background-color: '#3F51B5' !important;
+    width: 100%;
+    font-color: white !important;
+
+  }
+
