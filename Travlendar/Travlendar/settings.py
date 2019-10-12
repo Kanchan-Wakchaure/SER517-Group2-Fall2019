@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'test',
-        'HOST': 'mongodb+srv://raisa:<Idontknow>@cluster0-trkix.mongodb.net/test?retryWrites=true&w=majority',
+        'HOST': 'mongodb+srv://raisa:<Idontknow>@cluster0-trkix.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_req=CERT_NONE',
         'USER': 'raisa',
         'PASSWORD': 'Idontknow',
     }
