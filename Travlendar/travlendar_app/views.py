@@ -10,6 +10,8 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+import requests
+import os
 
 #from rest_framework import generics
 
@@ -43,7 +45,28 @@ def EventList(request):
             print("+++++++++++++++++++Prev event+++++++++++++++++++++++++++",prev_event.time)
             prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
             if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                serializer.save()
+                # putting long lat for the current event
+                event_location=serializer.validated_data.get("destination")
+                # reading map key from text file
+                BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+                with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
+                    line = f.readline()
+                    REACT_APP_GOOGLE_KEY = f.readline().strip()
+                api_key = REACT_APP_GOOGLE_KEY
+                api_response = requests.get(
+                    'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
+                api_response_dict = api_response.json()
+
+                if api_response_dict['status'] == 'OK':
+                    serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
+                    serializer.validated_data["long"]= api_response_dict['results'][0]['geometry']['location']['lng']
+                try:
+                    serializer.save()
+                except Exception:
+                    print("Exception occurred:",Exception)
+                    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
@@ -59,6 +82,6 @@ def EventList(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
-        return Response({'data': serializer.data},status=status.HTTP_200_OK)
+        return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

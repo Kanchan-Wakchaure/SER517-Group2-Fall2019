@@ -62,5 +62,6 @@ class Migration(migrations.Migration):
             model_name='event',
             name='time',
             field=models.TimeField(),
-        )
+        ),
+
     ]
