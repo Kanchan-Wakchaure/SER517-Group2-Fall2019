@@ -57,7 +57,7 @@ def EventList(request):
                 api_response = requests.get(
                     'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
                 api_response_dict = api_response.json()
-
+                # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
                 if api_response_dict['status'] == 'OK':
                     serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
                     serializer.validated_data["long"]= api_response_dict['results'][0]['geometry']['location']['lng']
