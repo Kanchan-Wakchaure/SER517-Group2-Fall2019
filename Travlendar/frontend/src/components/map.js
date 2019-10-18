@@ -8,7 +8,6 @@ import {
 } from "react-google-maps";
 import * as parkData from "../data/tempe-schedule.json";
 import mapStyles from "../mapStyles/retromapStyles";
-import MarkerCustom from "./maps/marker";
 
 function Map() {
   const [selectedPark, setSelectedPark] = useState(null);
@@ -37,10 +36,10 @@ function Map() {
           key={24}
           name="My Marker"
           color="blue"
-          //onDragEnd={ this.onMarkerDragEnd }
-            // position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
+          position={{ lat: 33.6255, lng: -111.9409 }}
+          draggable={true}
           onClick={() => {
-            alert("pos"+lat);
+            alert("Prev position "+lat+ lng);
           }}
         />
       {parkData.features.map(park => (
