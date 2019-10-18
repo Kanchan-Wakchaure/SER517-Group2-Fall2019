@@ -35,8 +35,7 @@ class ListEvent extends Component{
                     <li>
                         <div>{e.title}</div>
                         <div className="event_list_date">{e.time}</div>
-                        <div>{e.source}</div>
-                        <div>{e.destination}</div>
+                        <div>{e.location}</div>
                     </li>
                 )}
              </ul>
