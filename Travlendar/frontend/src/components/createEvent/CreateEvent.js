@@ -26,8 +26,12 @@ class CreateEvent extends React.Component {
                 time:'',
                 duration: '',
                 location: ''
+            },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
             }
-        };
+         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -41,7 +45,7 @@ class CreateEvent extends React.Component {
             "date": this.state.eventDetails.date,
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
-            "location": this.state.eventDetails.location
+            "destination": this.state.eventDetails.location
         }          
         ).then((result)=>{
           alert("See View events tab.");
