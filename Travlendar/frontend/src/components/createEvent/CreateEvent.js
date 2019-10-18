@@ -2,7 +2,7 @@
 // References: 	//https://www.digitalocean.com
 
 import React from 'react';
-import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
+import {FormGroup, Button, TextField, InputAdornment, Input } from '@material-ui/core';
 import EventsService from '../../Services/EventsService';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
@@ -27,7 +27,8 @@ class CreateEvent extends React.Component {
                 duration: '',
                 source: '',
                 destination: ''
-            }
+            },
+            inputs: ['input-0']
         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -63,6 +64,10 @@ class CreateEvent extends React.Component {
         this.setState(newState);
      }
 
+    appendInput() {
+        var newInput = `input-${this.state.inputs.length}`;
+        this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+    }
 	render() {
 		return(
 			<Container>
@@ -177,6 +182,23 @@ class CreateEvent extends React.Component {
                                                     </InputAdornment>
                                                   ) }}/>
                    </FormGroup><br/>
+                   <FormGroup>
+                       <div id="dynamicInput">
+                           {this.state.inputs.map(input =>
+                           <FormGroup>
+                                <TextField key={input}
+                                    variant="outlined"
+                                    label="User email ID" />
+                                <TextField key={input}
+                                    variant="outlined"
+                                    label="User phone number"/>
+                           </FormGroup>
+                           )}
+                       </div>
+                        <button onClick={ () => this.appendInput() }>
+                        CLICK ME TO ADD AN INPUT
+                        </button>
+                    </FormGroup>
                    <Button fullWidth style={{backgroundColor: "#3f51b5", paddingLeft: '5px',
                            paddingRight:'15px', fontColor: "white"}} onClick={this.handleSubmit} > Create Event </Button>
                    <br/><br/>
@@ -187,4 +209,5 @@ class CreateEvent extends React.Component {
 			);
 	}
 }
+
 export default CreateEvent;
