@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import './CreateEvent.css';
-import Map from './../map.js';
+import Map from '../map/Map.js';
 
 const eventService=new EventsService();
 

@@ -6,13 +6,33 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import * as parkData from "../data/tempe-schedule.json";
-import mapStyles from "../mapStyles/retromapStyles";
+import * as parkData from "./data/tempe-schedule.json";
+import mapStyles from "./mapStyles/retromapStyles";
 
 
 
 function Map() {
   const [selectedPark, setSelectedPark] = useState(null);
+   /*
+  constructor(props){
+    super(props);
+    this.state={
+        events:[]
+    };
+
+  }
+
+  componentDidMount() {
+        var  self  =  this;
+        eventService.getEvents().then(function (result) {
+            console.log(result);
+            self.setState({ events:  result.data})
+        }).catch(()=>{
+          alert('User is not logged in');
+        });
+    }
+
+    */
 
   useEffect(() => {
     const listener = e => {
