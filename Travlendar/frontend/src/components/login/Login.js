@@ -10,13 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import './Login.css';
 import LoginService from '../../Services/LoginService';
+import * as actions from '../../store/actions/auth';
+import { connect } from 'react-redux';
 
 
 const loginService = new LoginService();
 
 class Login extends React.Component{
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             userDetails: {
@@ -36,7 +38,7 @@ class Login extends React.Component{
                 'password': this.state.userDetails.password
             }
         ).then((result)=>{
-            alert('You are signed in!');
+            alert('You are logged in successfully');
         }).catch(()=>{
           alert('Could not sign in, please try again.');
         });
@@ -45,9 +47,9 @@ class Login extends React.Component{
 
     handleSubmit(user){
         user.preventDefault();
-        this.handleRegister();
+        this.props.onAuth(this.state.userDetails.email, this.state.userDetails.password);
+        this.props.history.push('/');
     }
-
 
 
     handlechange(user, inputPropName)
@@ -58,9 +60,15 @@ class Login extends React.Component{
     }
 
     render(){
-
+        let errorMessage = null;
+        if (this.props.error) {
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            );
+        }
         return(
-            <Container component="main" maxWidth="xs" className="test">
+                <div>{errorMessage}
+                <Container component="main" maxWidth="xs" className="test">
                 <CssBaseline />
                 <div className="paper">
                     <form className="form" noValidate>
@@ -120,9 +128,22 @@ class Login extends React.Component{
                         </Grid>
                     </form>
                 </div>
-            </Container>
+            </Container></div>
         );
     }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        error: state.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (username, password) => dispatch(actions.authLogin(username, password)) 
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

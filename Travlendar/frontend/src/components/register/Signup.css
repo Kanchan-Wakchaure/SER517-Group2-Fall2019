@@ -9,11 +9,12 @@
  {
     align: center;
 
+    min-height: 100vh;
  }
 
  .paper
  {
-    margin: 50;
+    margin: '50px';
     align: center;
     display: flex;
     flexDirection: column;
@@ -31,7 +32,7 @@
 
  .form
  {  height: '60%';
-    marginTop:'100px';
+    marginTop:'10px';
     width: '90%';
     marginTop: 50%;
     align: center;
