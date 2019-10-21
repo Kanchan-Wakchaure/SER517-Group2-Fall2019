@@ -23,7 +23,9 @@ function App() {
                     <Route path={SIGNUP} component={Signup} />
                     <Route path={LOGIN} component={Login} />
                     <Route path={CREATE_EVENT} component={CreateEvent} />
-                    <Route path={EVENTS_LIST} component={Map}/>
+                    <Route path={EVENTS_LIST} component={ListEvent}/>
+                    <Route path={EVENTS_MAP} component={Map}/>
+
                 </Switch>
             </div>
         </BrowserRouter>

@@ -6,9 +6,9 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import * as parkData from "./data/tempe-schedule.json";
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
+import './Map.css';
 
 
 
@@ -16,26 +16,6 @@ function Map() {
 
   const [selectedPark, setSelectedPark] = useState(null);
   const [events, setEvents]=useState([]);
-   /*
-  constructor(props){
-    super(props);
-    this.state={
-        events:[]
-    };
-
-  }
-
-  componentDidMount() {
-        var  self  =  this;
-        eventService.getEvents().then(function (result) {
-            console.log(result);
-            self.setState({ events:  result.data})
-        }).catch(()=>{
-          alert('User is not logged in');
-        });
-    }
-
-    */
 
   useEffect(() => {
     const eventService=new EventsService();
@@ -43,7 +23,7 @@ function Map() {
         setEvents(result.data);
         console.log(result);
         }).catch(()=>{
-          alert('User is not logged in');
+          alert('Some error occurred');
         });
     const listener = e => {
       if (e.key === "Escape") {
@@ -104,7 +84,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export default function MAP() {
   return (
-    <div style={{ width: "45vw", height: "90vh" }}>
+    <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY

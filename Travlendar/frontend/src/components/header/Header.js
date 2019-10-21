@@ -41,7 +41,8 @@ export default function Header() {
             <HomeIcon/>
           </IconButton>
           <Button color="inherit"  href="/CreateEvent">Create Event</Button>
-          <Button color="inherit"  href="/listevent">View Events</Button>
+          <Button color="inherit"  href="/listevent">View List</Button>
+          <Button color="inherit"  href="/map">View Map</Button>
           <Button color="inherit" href="/login">Login</Button>
           <Button color="inherit" href="/Signup">Sign Up</Button>
         </Toolbar>
