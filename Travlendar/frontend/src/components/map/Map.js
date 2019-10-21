@@ -8,11 +8,14 @@ import {
 } from "react-google-maps";
 import * as parkData from "./data/tempe-schedule.json";
 import mapStyles from "./mapStyles/retromapStyles";
+import EventsService from '../../Services/EventsService';
 
 
 
 function Map() {
+
   const [selectedPark, setSelectedPark] = useState(null);
+  const [events, setEvents]=useState([]);
    /*
   constructor(props){
     super(props);
@@ -35,13 +38,19 @@ function Map() {
     */
 
   useEffect(() => {
+    const eventService=new EventsService();
+    eventService.getEvents().then(function (result) {
+        setEvents(result.data);
+        console.log(result);
+        }).catch(()=>{
+          alert('User is not logged in');
+        });
     const listener = e => {
       if (e.key === "Escape") {
         setSelectedPark(null);
       }
     };
     window.addEventListener("keydown", listener);
-
     return () => {
       window.removeEventListener("keydown", listener);
     };
@@ -53,37 +62,37 @@ function Map() {
       defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
       defaultOptions={{ styles: mapStyles }}
     >
-      {parkData.features.map(park => (
+      {events.map(park => (
         <Marker
-          key={park.properties.PARK_ID}
+          key={park.id}
           position={{
-            lat: park.geometry.coordinates[0],
-            lng: park.geometry.coordinates[1]
+            lat: parseFloat(park.lat),
+            lng: parseFloat(park.long)
           }}
           onClick={() => {
             setSelectedPark(park);
           }}
 
-          
-         
         />
       ))}
+
 
       {selectedPark && (
         <InfoWindow
           onCloseClick={() => {
             setSelectedPark(null);
           }}
+
           position={{
-            lat: selectedPark.geometry.coordinates[0],
-            lng: selectedPark.geometry.coordinates[1]
+            lat: parseFloat(selectedPark.lat),
+            lng: parseFloat(selectedPark.long)
           }}
         >
           <div>
-            <h2>{selectedPark.properties.NAME}</h2>
-            <p>{selectedPark.properties.ADDRESS}</p>
-            <p>{selectedPark.properties.DESCRIPTION}</p>
-            <p>{selectedPark.properties.TIME}</p>
+            <h2>{selectedPark.title}</h2>
+            <p>{selectedPark.destination}</p>
+            <p>{selectedPark.title}</p>
+            <p>{selectedPark.time}</p>
           </div>
         </InfoWindow>
       )}

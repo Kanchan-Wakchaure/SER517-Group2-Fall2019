@@ -78,10 +78,10 @@ def EventList(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         event_list = Event.objects.all()
-        paginator = Paginator(event_list, 25)
-        page = request.GET.get('page')
-        events = paginator.get_page(page)
-        serializer = EventSerializer(events, context={'request': request}, many=True)
+        #paginator = Paginator(event_list, 25)
+        #page = request.GET.get('page')
+        #events = paginator.get_page(page)
+        serializer = EventSerializer(event_list, context={'request': request}, many=True)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
