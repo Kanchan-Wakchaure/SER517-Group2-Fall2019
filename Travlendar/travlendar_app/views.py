@@ -60,5 +60,41 @@ def EventList(request):
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
         return Response({'data': serializer.data},status=status.HTTP_200_OK)
+
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Email(request):
+   
+    
+    if request.method == 'GET':
+        print("EMAIL")
+        #event_list = Event.objects.all()
+        #paginator = Paginator(event_list, 25)
+        #page = request.GET.get('page')
+        #events = paginator.get_page(page)
+        #serializer = EventSerializer(events, context={'request': request}, many=True)
+
+        #return Response({'data': serializer.data},status=status.HTTP_200_OK)
+
+        return HttpResponse("Got Email Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Text(request):
+
+    if request.method == 'GET':
+        print("TEXT")
+        #event_list = Event.objects.all()
+        #paginator = Paginator(event_list, 25)
+        #page = request.GET.get('page')
+        #events = paginator.get_page(page)
+        #serializer = EventSerializer(events, context={'request': request}, many=True)
+        #return Response({'data': serializer.data},status=status.HTTP_200_OK)
+        return HttpResponse("Got Text Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
