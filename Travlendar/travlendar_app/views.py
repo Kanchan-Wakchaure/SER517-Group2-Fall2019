@@ -10,7 +10,7 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-
+import datetime
 #from rest_framework import generics
 
 #api for create event and get all eventss
@@ -77,7 +77,20 @@ def Email(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
-        print(serializer.data)
+
+
+        #d = str(datetime.datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            
+            if i['date'] == d:
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+            
+
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
 
         return HttpResponse("Got Email Alert Activation")
@@ -95,6 +108,18 @@ def Text(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
-        print(serializer.data)
+        #d = str(datetime.datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            
+            if i['date'] == d:
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+
+
+                
         return HttpResponse("Got Text Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
