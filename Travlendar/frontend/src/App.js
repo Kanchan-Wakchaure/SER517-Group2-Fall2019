@@ -8,7 +8,7 @@ import Signup from './components/register/Signup';
 import Login from './components/login/Login';
 import CreateEvent from './components/createEvent/CreateEvent';
 import ListEvent from './components/eventsList/ListEvent';
-import Map from './components/map/Map';
+import Map from './components/map/MapView';
 import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP } from './Routes.js';
 
 function App() {

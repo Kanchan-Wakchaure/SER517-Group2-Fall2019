@@ -8,7 +8,7 @@ import {
 } from "react-google-maps";
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
-
+import './MapView.css';
 
 
 
@@ -84,7 +84,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export default function MAP() {
   return (
-    <div  style={{width: "45vw", height: "90vh" }}>
+    <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY
