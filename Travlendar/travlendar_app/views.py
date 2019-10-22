@@ -72,12 +72,12 @@ def Email(request):
     
     if request.method == 'GET':
         print("EMAIL")
-        #event_list = Event.objects.all()
-        #paginator = Paginator(event_list, 25)
-        #page = request.GET.get('page')
-        #events = paginator.get_page(page)
-        #serializer = EventSerializer(events, context={'request': request}, many=True)
-
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+        print(serializer.data)
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
 
         return HttpResponse("Got Email Alert Activation")
@@ -90,11 +90,11 @@ def Text(request):
 
     if request.method == 'GET':
         print("TEXT")
-        #event_list = Event.objects.all()
-        #paginator = Paginator(event_list, 25)
-        #page = request.GET.get('page')
-        #events = paginator.get_page(page)
-        #serializer = EventSerializer(events, context={'request': request}, many=True)
-        #return Response({'data': serializer.data},status=status.HTTP_200_OK)
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+        print(serializer.data)
         return HttpResponse("Got Text Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
