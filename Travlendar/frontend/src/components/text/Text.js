@@ -29,13 +29,9 @@ class Text extends Component{
     render(){
         return(
             <div className="alertStatus">
-            <ul>
-                {this.state.events.map(e=>
-                    <li>
-                        <div>e</div>
-                    </li>
-                )}
-             </ul>
+                
+             "Text Alert Activated"
+             
             </div>
         )
     }

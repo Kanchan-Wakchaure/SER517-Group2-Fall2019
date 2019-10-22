@@ -29,13 +29,9 @@ class Email extends Component{
     render(){
         return(
             <div className="alertStatus">
-            <ul>
-                {this.state.events.map(e=>
-                    <li>
-                        <div>e</div>
-                    </li>
-                )}
-             </ul>
+
+                "Email Alert Activated"
+                
             </div>
         )
     }
