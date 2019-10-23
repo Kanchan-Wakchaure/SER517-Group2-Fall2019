@@ -91,7 +91,11 @@ def Email(request):
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
-            
+                
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+                print(content)
+                send_email('kaustuv95@gmail.com', subject, content )
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
 
@@ -121,10 +125,7 @@ def Text(request):
                 print(i['time'])
                 print(i['destination'])
 
-                subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
 
-                send_email('kaustuv95@gmail.com', subject, content )
 
 
                 
