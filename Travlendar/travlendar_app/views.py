@@ -11,6 +11,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 import datetime
+from .alerts import send_email
+
 #from rest_framework import generics
 
 #api for create event and get all eventss
@@ -118,6 +120,11 @@ def Text(request):
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
+
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
 
 
                 
