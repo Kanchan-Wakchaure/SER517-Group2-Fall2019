@@ -8,11 +8,23 @@ import {
 } from "react-google-maps";
 import * as parkData from "../data/tempe-schedule.json";
 import mapStyles from "../mapStyles/retromapStyles";
-
+import Geocode from "react-geocode";
 function Map() {
   const [selectedPark, setSelectedPark] = useState(null);
-  const lat = 33.4255;
-  const lng= -111.9490;
+  this.state = {
+      address: '',
+      city: '',
+      area: '',
+      state: '',
+      mapPosition: {
+          lat: this.props.center.lat,
+          lng: this.props.center.lng
+      },
+      markerPosition: {
+          lat: this.props.center.lat,
+          lng: this.props.center.lng
+      }
+  }
   useEffect(() => {
     const listener = e => {
       if (e.key === "Escape") {
@@ -25,7 +37,66 @@ function Map() {
       window.removeEventListener("keydown", listener);
     };
   }, []);
+  componentDidMount() {
+  Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
+   response => {
+    const address = response.results[0].formatted_address,
+     addressArray =  response.results[0].address_components,
+     city = this.getCity( addressArray ),
+     area = this.getArea( addressArray ),
+     state = this.getState( addressArray );
 
+    console.log( 'city', city, area, state );
+
+    this.setState( {
+     address: ( address ) ? address : '',
+     area: ( area ) ? area : '',
+     city: ( city ) ? city : '',
+     state: ( state ) ? state : '',
+    } )
+   },
+   error => {
+    console.error(error);
+   }
+  );
+ };
+  shouldComponentUpdate( nextProps, nextState ){
+  if (
+   this.state.markerPosition.lat !== this.props.center.lat ||
+   this.state.address !== nextState.address ||
+   this.state.city !== nextState.city ||
+   this.state.area !== nextState.area ||
+   this.state.state !== nextState.state
+  ) {
+   return true
+  } else if ( this.props.center.lat === nextProps.center.lat ){
+   return false
+  }
+ }
+ onMarkerDragEnd = ( event ) => {
+  console.log( 'event', event );
+  let newLat = event.latLng.lat(),
+   newLng = event.latLng.lng(),
+   addressArray = [];
+    Geocode.fromLatLng( newLat , newLng ).then(
+    response => {
+    const address = response.results[0].formatted_address,
+        addressArray =  response.results[0].address_components,
+        city = this.getCity( addressArray ),
+        area = this.getArea( addressArray ),
+        state = this.getState( addressArray );
+    this.setState( {
+        address: ( address ) ? address : '',
+        area: ( area ) ? area : '',
+        city: ( city ) ? city : '',
+        state: ( state ) ? state : ''
+    } )
+   },
+   error => {
+    console.error(error);
+   }
+  );
+ };
   return (
     <GoogleMap
       defaultZoom={10}
