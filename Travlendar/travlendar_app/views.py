@@ -43,7 +43,6 @@ def EventList(request):
                         prev_event = item
 
             #Checking if there is any conflict while creating new event with previous event
-            #print("+++++++++++++++++++Prev event+++++++++++++++++++++++++++",prev_event.time)
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
                 if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
