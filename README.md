@@ -21,12 +21,18 @@ Goto the directory which has manage.py in cmd.
 
 ```python3 manage.py runserver```
 
-For testing run the below: 
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to see Django Server running .
+
+For testing run below commands from the same path:
+
 coverage run manage.py test users -v 2
-Then run below command(This command will create a folder which conatins the report):
+
+coverage run manage.py test travlendar_app -v 2
+
+Then run below command(This command will create a folder which contains the report):
+
 coverage html
 
-Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to start Django Server.
 
 To test the feature:
 Sign up : Password neeeds to be at least 8 character long and should contain a number. Email should have @ field. No duplicate username allowed.
