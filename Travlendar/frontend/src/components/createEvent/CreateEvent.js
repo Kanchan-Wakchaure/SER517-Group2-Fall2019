@@ -10,6 +10,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
 
 import './CreateEvent.css';
 import Map from './../map.js';
@@ -28,7 +29,7 @@ class CreateEvent extends React.Component {
                 source: '',
                 destination: ''
             },
-            inputs: ['input-0']
+            inputs: [{'email':'','phone':''}]
         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -36,6 +37,12 @@ class CreateEvent extends React.Component {
 
 	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django
 	handleCreate(){
+
+    var items = this.state.inputs;
+    for(var i =0; i < items.length; i++) {
+        console.log(items[i].email);
+        console.log(items[i].phone);
+    }
 
 	eventService.createEvent(
           {
@@ -55,7 +62,7 @@ class CreateEvent extends React.Component {
 
 	handleSubmit(event) {
 	    event.preventDefault();
-        this.handleCreate();
+       this.handleCreate();
     }
 
     handleInputChange(event, inputPropName) {
@@ -184,20 +191,29 @@ class CreateEvent extends React.Component {
                    </FormGroup><br/>
                    <FormGroup>
                        <div id="dynamicInput">
-                           {this.state.inputs.map(input =>
-                           <FormGroup>
-                                <TextField key={input}
+                           {this.state.inputs.map((input) =>
+                           <div>
+                                <TextField key={input.email}
+                                    state = {input.email}
                                     variant="outlined"
+                                    style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'50%'}}
                                     label="User email ID" />
-                                <TextField key={input}
+                                <TextField key={input.phone}
+                                state = {input.phone}
                                     variant="outlined"
+                                    style={{paddingRight:'15px', paddingBottom:'5px', width:'50%'}}
                                     label="User phone number"/>
-                           </FormGroup>
+                           </div>
                            )}
                        </div>
-                        <button onClick={ () => this.appendInput() }>
-                        CLICK ME TO ADD AN INPUT
-                        </button>
+                       <div onClick={ () => this.appendInput() }>
+                       <InputAdornment
+                            position="end"
+                            style={{height: '50px', paddingLeft: '75%'}}>
+                            <AddCircleOutlineTwoToneIcon />
+                            <label>Notify user</label>
+                       </InputAdornment>
+                       </div>
                     </FormGroup>
                    <Button fullWidth style={{backgroundColor: "#3f51b5", paddingLeft: '5px',
                            paddingRight:'15px', fontColor: "white"}} onClick={this.handleSubmit} > Create Event </Button>
