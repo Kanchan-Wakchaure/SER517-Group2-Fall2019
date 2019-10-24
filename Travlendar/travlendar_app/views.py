@@ -25,6 +25,7 @@ def EventList(request):
     if request.method == 'POST':
         if serializer.is_valid():
             min_diff = 1000000000000.00
+            prev_event=[]
             #Finding the previous event
             for item in Event.objects.all():
                 prev_event=item
@@ -42,40 +43,26 @@ def EventList(request):
                         prev_event = item
 
             #Checking if there is any conflict while creating new event with previous event
-            print("+++++++++++++++++++Prev event+++++++++++++++++++++++++++",prev_event.time)
-            prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
-            if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                # putting long lat for the current event
-                event_location=serializer.validated_data.get("destination")
-                # reading map key from text file
-                BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-                with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
-                    line = f.readline()
-                    REACT_APP_GOOGLE_KEY = f.readline().strip()
-                api_key = REACT_APP_GOOGLE_KEY
-                api_response = requests.get(
-                    'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
-                api_response_dict = api_response.json()
-                # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
-                if api_response_dict['status'] == 'OK':
-                    serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
-                    serializer.validated_data["long"]= api_response_dict['results'][0]['geometry']['location']['lng']
-                try:
+            try:
+                prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
+                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+                    findLongLat(serializer)
                     serializer.save()
-                except Exception:
-                    print("Exception occurred:",Exception)
-                    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+                    print("Event created")
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                   return Response(status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                findLongLat(serializer)
+                serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-               return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
         else:
             print("++++++++BAD REQUEST++++++++")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    """ getting all event data from db"""
     if request.method == 'GET':
         event_list = Event.objects.all()
         #paginator = Paginator(event_list, 25)
@@ -85,3 +72,20 @@ def EventList(request):
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+def findLongLat(serializer):
+    # putting long lat for the current event
+    event_location = serializer.validated_data.get("destination")
+    # reading map key from text file
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
+        line = f.readline()
+        REACT_APP_GOOGLE_KEY = f.readline().strip()
+    api_key = REACT_APP_GOOGLE_KEY
+    api_response = requests.get(
+        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
+    api_response_dict = api_response.json()
+    # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
+    if api_response_dict['status'] == 'OK':
+        serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
+        serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
