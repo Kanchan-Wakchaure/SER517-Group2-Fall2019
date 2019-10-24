@@ -13,126 +13,134 @@ import './MapView.css';
 
 
 
+
 function Map() {
+    const [events, setEvents]=useState([]);
+    const [directions, setDirections] = useState(null);
+    const [selectedPark, setSelectedPark] = useState(null);
+    const [error, setError] = useState(null);
+    const google=window.google;
 
-  const google=window.google;
-  const [selectedPark, setSelectedPark] = useState(null);
-  const [events, setEvents]=useState([]);
-  const [directions, setDirections] = useState(null);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
+    useEffect(() => {
     const eventService=new EventsService();
     eventService.getEvents().then(function (result) {
-        setEvents(result.data);
-        console.log(result);
-        }).catch(()=>{
-          alert('Some error occurred');
-        });
-
+    setEvents(result.data);
+    console.log(result);
+    //events=result.data;
+    }).catch(error=>{
+    console.log(error)
+    alert('Some error occurred');
+    });
 
     const listener = e => {
-      if (e.key === "Escape") {
-        setSelectedPark(null);
-      }
+    if (e.key === "Escape") {
+    setSelectedPark(null);
+    }
     };
     window.addEventListener("keydown", listener);
     return () => {
-      window.removeEventListener("keydown", listener);
+    window.removeEventListener("keydown", listener);
     };
 
 
-  }, []);
+    }, []);
 
-  useEffect(()=>{
-    if(events){
-      const waypoints = events.map(p => ({
-      location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-      stopover: true
-      }));
-      const origin ={ lat:33.424966, lng:-111.880139} //waypoints.shift().location;
-      const destination = { lat:33.327726, lng:-111.823020}//waypoints.pop().location;
+    useEffect(()=>{
 
-      const directionsService = new google.maps.DirectionsService();
+        const waypoints = events.map(p => ({
+        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+        stopover: true
+        }));
+        console.log("Events",events);
 
-      directionsService.route(
-          {
+        const origin = { lat:33.424966, lng:-111.880139}//waypoints.shift().location;
+        const destination = { lat:33.327726, lng:-111.823020} //waypoints.pop().location;//
+
+        const directionsService = new google.maps.DirectionsService();
+
+        directionsService.route(
+        {
             origin: origin,
             destination: destination,
             travelMode: google.maps.TravelMode.DRIVING,
-            waypoints: waypoints
-          },
-          (result, status) => {
+            waypoints: waypoints,
+
+        },
+        (result, status) => {
             //console.log("RESULT:"+result)
             if (status === google.maps.DirectionsStatus.OK) {
-              setDirections(result);
+                setDirections(result);
             } else {
-              setError(result);
+            setError(result);
             }
-          }
-      );
+        });
+
+    },[events])
+
+
+    /*
+    if (error) {
+    return <h1>{error}</h1>;
+    } */
+    return (
+    <GoogleMap
+    defaultZoom={10}
+    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+    defaultOptions={{ styles: mapStyles }}
+    >
+
+    {
+    directions && (
+    <DirectionsRenderer
+     directions={directions} />
+    )
 
     }
 
-  });
-   /*
-  if (error) {
-    return <h1>{error}</h1>;
-  } */
-  return (
-    <GoogleMap
-      defaultZoom={10}
-      defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-      defaultOptions={{ styles: mapStyles }}
+    {events.map(park => (
+    <div
+        key={park.id}
+        position={{
+        lat: parseFloat(park.lat),
+        lng: parseFloat(park.long)
+        }}
+        onClick={() => {
+        setSelectedPark(park);
+        }}
+
+    />
+    ))}
+
+
+
+
+    {selectedPark && (
+    <InfoWindow
+    onCloseClick={() => {
+    setSelectedPark(null);
+    }}
+
+    position={{
+    lat: parseFloat(selectedPark.lat),
+    lng: parseFloat(selectedPark.long)
+    }}
     >
-      {
-        directions && (
-        <DirectionsRenderer directions={directions} />
-        )
-
-      }
-
-      {events.map(park => (
-        <Marker
-          key={park.id}
-          position={{
-            lat: parseFloat(park.lat),
-            lng: parseFloat(park.long)
-          }}
-          onClick={() => {
-            setSelectedPark(park);
-          }}
-
-        />
-      ))}
-
-
-
-
-      {selectedPark && (
-        <InfoWindow
-          onCloseClick={() => {
-            setSelectedPark(null);
-          }}
-
-          position={{
-            lat: parseFloat(selectedPark.lat),
-            lng: parseFloat(selectedPark.long)
-          }}
-        >
-          <div>
-            <h2>{selectedPark.title}</h2>
-            <p>{selectedPark.destination}</p>
-            <p>{selectedPark.title}</p>
-            <p>{selectedPark.time}</p>
-          </div>
-        </InfoWindow>
-      )}
+    <div>
+    <h2>{selectedPark.title}</h2>
+    <p>{selectedPark.destination}</p>
+    <p>{selectedPark.title}</p>
+    <p>{selectedPark.time}</p>
+    </div>
+    </InfoWindow>
+    )}
     </GoogleMap>
-  );
+    );
 }
 
 const MapWrapped = withScriptjs(withGoogleMap(Map));
+
+
 
 export default function MAP() {
   return (

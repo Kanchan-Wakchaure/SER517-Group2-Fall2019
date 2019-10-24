@@ -82,6 +82,7 @@ def findLongLat(serializer):
         line = f.readline()
         REACT_APP_GOOGLE_KEY = f.readline().strip()
     api_key = REACT_APP_GOOGLE_KEY
+    print("api key",api_key)
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
     api_response_dict = api_response.json()
