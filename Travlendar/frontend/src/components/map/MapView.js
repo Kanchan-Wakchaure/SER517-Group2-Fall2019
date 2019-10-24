@@ -4,7 +4,8 @@ import {
   withScriptjs,
   GoogleMap,
   Marker,
-  InfoWindow
+  InfoWindow,
+  DirectionsRenderer,
 } from "react-google-maps";
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
@@ -14,8 +15,11 @@ import './MapView.css';
 
 function Map() {
 
+  const google=window.google;
   const [selectedPark, setSelectedPark] = useState(null);
   const [events, setEvents]=useState([]);
+  const [directions, setDirections] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const eventService=new EventsService();
@@ -25,6 +29,8 @@ function Map() {
         }).catch(()=>{
           alert('Some error occurred');
         });
+
+
     const listener = e => {
       if (e.key === "Escape") {
         setSelectedPark(null);
@@ -34,14 +40,58 @@ function Map() {
     return () => {
       window.removeEventListener("keydown", listener);
     };
+
+
   }, []);
 
+  useEffect(()=>{
+    if(events){
+      const waypoints = events.map(p => ({
+      location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+      stopover: true
+      }));
+      const origin ={ lat:33.424966, lng:-111.880139} //waypoints.shift().location;
+      const destination = { lat:33.327726, lng:-111.823020}//waypoints.pop().location;
+
+      const directionsService = new google.maps.DirectionsService();
+
+      directionsService.route(
+          {
+            origin: origin,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING,
+            waypoints: waypoints
+          },
+          (result, status) => {
+            //console.log("RESULT:"+result)
+            if (status === google.maps.DirectionsStatus.OK) {
+              setDirections(result);
+            } else {
+              setError(result);
+            }
+          }
+      );
+
+    }
+
+  });
+   /*
+  if (error) {
+    return <h1>{error}</h1>;
+  } */
   return (
     <GoogleMap
       defaultZoom={10}
       defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
       defaultOptions={{ styles: mapStyles }}
     >
+      {
+        directions && (
+        <DirectionsRenderer directions={directions} />
+        )
+
+      }
+
       {events.map(park => (
         <Marker
           key={park.id}
@@ -55,6 +105,8 @@ function Map() {
 
         />
       ))}
+
+
 
 
       {selectedPark && (
@@ -96,3 +148,5 @@ export default function MAP() {
     </div>
   );
 }
+
+//directionsService taken from https://github.com/tomchentw/react-google-maps/blob/master/src/components/DirectionsRenderer.md
