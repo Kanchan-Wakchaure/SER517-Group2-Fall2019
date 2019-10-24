@@ -11,6 +11,7 @@ import RoomIcon from '@material-ui/icons/Room';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import './CreateEvent.css';
 import Map from './../map.js';
@@ -29,7 +30,9 @@ class CreateEvent extends React.Component {
                 source: '',
                 destination: ''
             },
-            inputs: [{'email':'','phone':''}]
+            notifyUsers: [],
+            email: '',
+            phone: ''
         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -37,12 +40,6 @@ class CreateEvent extends React.Component {
 
 	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django
 	handleCreate(){
-
-    var items = this.state.inputs;
-    for(var i =0; i < items.length; i++) {
-        console.log(items[i].email);
-        console.log(items[i].phone);
-    }
 
 	eventService.createEvent(
           {
@@ -61,7 +58,9 @@ class CreateEvent extends React.Component {
       }
 
 	handleSubmit(event) {
-	    event.preventDefault();
+	    const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
+          console.log(notifyUser);
+        });
        this.handleCreate();
     }
 
@@ -71,10 +70,36 @@ class CreateEvent extends React.Component {
         this.setState(newState);
      }
 
-    appendInput() {
-        var newInput = `input-${this.state.inputs.length}`;
-        this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
-    }
+    handleEmailChange = idx => evt => {
+        const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
+          if (idx !== sidx) return notifyUser;
+          return { ...notifyUser, email: evt.target.value };
+        });
+
+        this.setState({ notifyUsers: newNotifyUsers });
+    };
+
+    handlePhoneChange = idx => evt => {
+        const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
+          if (idx !== sidx) return notifyUser;
+          return { ...notifyUser, phone: evt.target.value };
+        });
+
+        this.setState({ notifyUsers: newNotifyUsers });
+    };
+
+  handleInputs = () => {
+    this.setState({
+      notifyUsers: this.state.notifyUsers.concat([{ email: "",phone:"" }])
+    });
+  };
+
+handleRemoveInput = idx => () => {
+    this.setState({
+      notifyUsers: this.state.notifyUsers.filter((s, sidx) => idx !== sidx)
+    });
+  };
+
 	render() {
 		return(
 			<Container>
@@ -190,23 +215,29 @@ class CreateEvent extends React.Component {
                                                   ) }}/>
                    </FormGroup><br/>
                    <FormGroup>
-                       <div id="dynamicInput">
-                           {this.state.inputs.map((input) =>
+                       <div>
+                           {this.state.notifyUsers.map((notifyUser, idx) => (
                            <div>
-                                <TextField key={input.email}
-                                    state = {input.email}
+                                <TextField
+                                    value={notifyUser.email}
                                     variant="outlined"
-                                    style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'50%'}}
-                                    label="User email ID" />
-                                <TextField key={input.phone}
-                                state = {input.phone}
+                                    style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'45%'}}
+                                    label="User email ID"
+                                    onChange={this.handleEmailChange(idx)}/>
+                                     <TextField
+                                    value={notifyUser.phone}
                                     variant="outlined"
-                                    style={{paddingRight:'15px', paddingBottom:'5px', width:'50%'}}
-                                    label="User phone number"/>
+                                    style={{paddingRight:'15px', paddingBottom:'5px', width:'45%'}}
+                                    label="User phone number"
+                                    onChange={this.handlePhoneChange(idx)}/>
+                                    <HighlightOffIcon
+                                      type="button"
+                                      onClick={this.handleRemoveInput(idx)}
+                                    />
                            </div>
-                           )}
+                           ))}
                        </div>
-                       <div onClick={ () => this.appendInput() }>
+                       <div onClick={this.handleInputs}>
                        <InputAdornment
                             position="end"
                             style={{height: '50px', paddingLeft: '75%'}}>
