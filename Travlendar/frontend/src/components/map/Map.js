@@ -45,7 +45,7 @@ function Map() {
       defaultOptions={{ styles: mapStyles }}
     >
 
-      
+
     <Marker
           key={24}
           name="My Marker"
