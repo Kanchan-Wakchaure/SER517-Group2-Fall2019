@@ -39,14 +39,15 @@ class Header extends React.Component{
               <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
                 <HomeIcon/>
               </IconButton>
+              
                 {
                     this.props.isAuthenticated ?
                     (<span>
-                      <Button color="inherit" href="/CreateEvent">Create Event</Button>
-                      <Button color="inherit" href="/listevent">View Events</Button>   
-                      <Button color="inherit"  href="/map">View Map</Button>
-                      <Button color="inherit" href="/textalert">TextAlert</Button>
-                      <Button color="inherit" href="/emailalert">EmailAlert</Button>                
+                      <Button color="inherit" href="/CreateEvent">Add Event</Button>
+                      <Button color="inherit" href="/listevent">Agenda</Button>   
+                      <Button color="inherit"  href="/map">View Events</Button>
+                      <Button color="inherit" href="/textalert">Send Text Alert</Button>
+                      <Button color="inherit" href="/emailalert">Send Email Alert</Button>                
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
                     </span>)
                     :
