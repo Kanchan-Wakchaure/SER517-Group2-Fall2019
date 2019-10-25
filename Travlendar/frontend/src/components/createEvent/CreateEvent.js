@@ -59,9 +59,7 @@ class CreateEvent extends React.Component {
       }
 
 	handleSubmit(event) {
-	    const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
-          console.log(notifyUser);
-        });
+	   event.preventDefault();
        this.handleCreate();
     }
 

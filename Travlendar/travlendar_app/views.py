@@ -18,7 +18,6 @@ from rest_framework.decorators import permission_classes
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    print(request.data);
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
@@ -52,7 +51,6 @@ def EventList(request):
 
         else:
             print("++++++++BAD REQUEST++++++++")
-            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         event_list = Event.objects.all()

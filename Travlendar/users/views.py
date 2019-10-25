@@ -35,7 +35,6 @@ def login(request):
         password = input['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            print(user)
             auth_login(request, user)
             return Response(status=status.HTTP_200_OK)
         else:
