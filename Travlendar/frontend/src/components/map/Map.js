@@ -10,8 +10,7 @@ import Geocode from "react-geocode";
 import Autocomplete from 'react-google-autocomplete';
 Geocode.setApiKey("AIzaSyAJ35XQSCGqEHRB4AdmMZnQ8i8FAoAembQ");
 Geocode.enableDebug();
-
-class Map extends React.Component{
+class Maps extends React.Component{
 constructor( props ){
   super( props );
   this.state = {
@@ -26,8 +25,12 @@ constructor( props ){
    markerPosition: {
     lat: this.props.center.lat,
     lng: this.props.center.lng
-}
-  }
+    },
+    selectedPark:0,
+    setSelectedPark:0,
+    events:'',
+    setEvents:''
+ }
  }
  componentDidMount() {
   Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
@@ -101,56 +104,8 @@ constructor( props ){
  onChange = ( event ) => {
   this.setState({ [event.target.name]: event.target.value });
  };
-
  onInfoWindowClose = ( event ) => {
 };
- onPlaceSelected = ( place ) => {
-const address = place.formatted_address,
-   addressArray =  place.address_components,
-   city = this.getCity( addressArray ),
-   area = this.getArea( addressArray ),
-   state = this.getState( addressArray ),
-   latValue = place.geometry.location.lat(),
-   lngValue = place.geometry.location.lng();
-  this.setState({
-   address: ( address ) ? address : '',
-   area: ( area ) ? area : '',
-   city: ( city ) ? city : '',
-   state: ( state ) ? state : '',
-   markerPosition: {
-    lat: latValue,
-    lng: lngValue
-   },
-   mapPosition: {
-    lat: latValue,
-    lng: lngValue
-   },
-  })
- };
- onMarkerDragEnd = ( event ) => {
-  console.log( 'event', event );
-  let newLat = event.latLng.lat(),
-   newLng = event.latLng.lng(),
-   addressArray = [];
-Geocode.fromLatLng( newLat , newLng ).then(
-   response => {
-    const address = response.results[0].formatted_address,
-     addressArray =  response.results[0].address_components,
-     city = this.getCity( addressArray ),
-     area = this.getArea( addressArray ),
-     state = this.getState( addressArray );
-this.setState( {
-     address: ( address ) ? address : '',
-     area: ( area ) ? area : '',
-     city: ( city ) ? city : '',
-     state: ( state ) ? state : ''
-    } )
-   },
-   error => {
-    console.error(error);
-   }
-  );
- };
 render(){
 const AsyncMap = withScriptjs(
    withGoogleMap(
@@ -159,35 +114,6 @@ const AsyncMap = withScriptjs(
       defaultZoom={this.props.zoom}
       defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
      >
-      {/* For Auto complete Search Box */}
-      <Autocomplete
-       style={{
-        width: '100%',
-        height: '40px',
-        paddingLeft: '16px',
-        marginTop: '2px',
-        marginBottom: '100px'
-       }}
-       onPlaceSelected={ this.onPlaceSelected }
-       types={['(regions)']}
-      />
-{/*Marker*/}
-      <Marker google={this.props.google}
-       name={'Dolores park'}
-          draggable={true}
-          onDragEnd={ this.onMarkerDragEnd }
-             position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
-      />
-      <Marker />
-{/* InfoWindow on top of marker */}
-      <InfoWindow
-       onClose={this.onInfoWindowClose}
-       position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
-      >
-       <div>
-        <span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
-       </div>
-      </InfoWindow>
 </GoogleMap>
 )
    )
@@ -232,16 +158,4 @@ let map;
   return( map )
  }
 }
-export default Map
-class NewCompo extends Component {
-  render() {
-    return(
-        <Map
-     google={this.props.google}
-     center={{lat: 18.5204, lng: 73.8567}}
-     height='300px'
-     zoom={15}
-    />
-      )
-  }
-}
+export default Maps;
