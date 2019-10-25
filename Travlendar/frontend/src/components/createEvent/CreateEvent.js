@@ -206,13 +206,13 @@ handleRemoveInput = idx => () => {
                                     value={notifyUser.email}
                                     variant="outlined"
                                     style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'45%'}}
-                                    label="User email ID"
+                                    label="Email ID"
                                     onChange={this.handleEmailChange(idx)}/>
                                      <TextField
                                     value={notifyUser.phone}
                                     variant="outlined"
                                     style={{paddingRight:'15px', paddingBottom:'5px', width:'45%'}}
-                                    label="User phone number"
+                                    label="Phone number"
                                     onChange={this.handlePhoneChange(idx)}/>
                                     <HighlightOffIcon
                                       type="button"
