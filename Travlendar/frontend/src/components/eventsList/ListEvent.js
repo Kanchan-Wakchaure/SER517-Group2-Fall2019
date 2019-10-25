@@ -22,7 +22,8 @@ class ListEvent extends Component{
         eventService.getEvents().then(function (result) {
             console.log(result);
             self.setState({ events:  result.data})
-        }).catch(()=>{
+        }).catch((e)=>{
+        console.log(e);
           alert('Some error occurred');
         });
 

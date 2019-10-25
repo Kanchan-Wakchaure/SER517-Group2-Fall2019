@@ -71,7 +71,7 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
+        event_list = Event.objects.filter(creator_id=1)
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)

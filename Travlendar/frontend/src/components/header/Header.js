@@ -54,7 +54,6 @@ export default function Header() {
       </AppBar>
     </div>
   );
-}
 
 }
 
@@ -70,5 +69,3 @@ const mapDispatchToProps = dispatch => {
         logout: () => dispatch(actions.logout())
     }
 }
-
-export default (connect(mapStateToProps, mapDispatchToProps)(Header));
