@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/auth';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 /*
     Author: Kanchan Wakchaure
@@ -52,3 +55,20 @@ export default function Header() {
     </div>
   );
 }
+
+}
+
+const mapStateToProps = (state) => {
+  return {
+      loading: state.loading,
+      error: state.error
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(actions.logout())
+    }
+}
+
+export default (connect(mapStateToProps, mapDispatchToProps)(Header));

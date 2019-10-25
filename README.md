@@ -50,6 +50,10 @@ Go to the directory Travlendar/frontend:
 
 ```npm install```
 
+```npm i --save react-redux```
+
+```npm i --save redux redux-thunk```
+
 ```npm start```
 
 Open [http://localhost:3000](http://localhost:3000) to view React Server in the browser.
