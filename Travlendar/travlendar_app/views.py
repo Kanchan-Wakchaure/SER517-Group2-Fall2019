@@ -10,6 +10,10 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+#import datetime
+from .alerts import send_email
+import pytz
+
 
 #from rest_framework import generics
 
@@ -60,5 +64,80 @@ def EventList(request):
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
         return Response({'data': serializer.data},status=status.HTTP_200_OK)
+
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Email(request):
+   
+    
+    if request.method == 'GET':
+        print("EMAIL")
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+
+
+        #tz = pytz.timezone('US/Arizona')
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            print(i['date'])
+            if i['date'] == d:
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+                
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
+            
+
+        #return Response({'data': serializer.data},status=status.HTTP_200_OK)
+
+        return HttpResponse("Got Email Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Text(request):
+
+    if request.method == 'GET':
+        print("TEXT")
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+        
+        #tz = pytz.timezone('US/Arizona')
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            
+            if i['date'] == d:
+
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
+
+
+                
+        return HttpResponse("Got Text Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
