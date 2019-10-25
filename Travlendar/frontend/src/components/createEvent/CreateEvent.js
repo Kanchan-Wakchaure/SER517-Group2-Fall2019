@@ -2,7 +2,7 @@
 // References: 	//https://www.digitalocean.com
 
 import React from 'react';
-import {FormGroup, Button, TextField, InputAdornment, Input } from '@material-ui/core';
+import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
 import EventsService from '../../Services/EventsService';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EventIcon from '@material-ui/icons/Event';
@@ -27,7 +27,6 @@ class CreateEvent extends React.Component {
                 date: '',
                 time:'',
                 duration: '',
-                source: '',
                 destination: ''
             },
             notifyUsers: [],
@@ -47,7 +46,6 @@ class CreateEvent extends React.Component {
             "date": this.state.eventDetails.date,
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
-            "source": this.state.eventDetails.source,
             "destination": this.state.eventDetails.destination,
             "notifyUsers": JSON.stringify(this.state.notifyUsers)
         }
@@ -184,29 +182,13 @@ handleRemoveInput = idx => () => {
                    <FormGroup>
                    <TextField variant="outlined"
                                required
-                               id="source"
-                               fullWidth
-                               label="Start At"
-                               name="source"
-                               value={this.state.eventDetails.source}
-                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
-                               onChange = { event => this.handleInputChange(event, 'source') }
-                               InputProps={{
-                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
-                                                        <RoomIcon />
-                                                    </InputAdornment>
-                                                  ) }}/>
-                   </FormGroup><br/>
-                   <FormGroup>
-                   <TextField variant="outlined"
-                               required
-                               id="destination"
+                               id="location"
                                fullWidth
                                label="Go to"
-                               name="destination"
-                               value={this.state.eventDetails.destination}
-                               style={{paddingLeft: '5px',paddingRight:'15px'}}
-                               onChange = { event => this.handleInputChange(event, 'destination') }
+                               name="location"
+                               value={this.state.eventDetails.location}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'location') }
                                InputProps={{
                                     endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
                                                         <RoomIcon />
