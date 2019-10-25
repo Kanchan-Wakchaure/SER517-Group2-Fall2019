@@ -29,6 +29,10 @@ class CreateEvent extends React.Component {
                 duration: '',
                 destination: ''
             },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
+            },
             notifyUsers: [],
             email: '',
             phone: ''
@@ -182,13 +186,29 @@ handleRemoveInput = idx => () => {
                    <FormGroup>
                    <TextField variant="outlined"
                                required
-                               id="location"
+                               id="source"
+                               fullWidth
+                               label="Start At"
+                               name="source"
+                               value={this.state.eventDetails.source}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'source') }
+                               InputProps={{
+                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
+                                                        <RoomIcon />
+                                                    </InputAdornment>
+                                                  ) }}/>
+                   </FormGroup><br/>
+                   <FormGroup>
+                   <TextField variant="outlined"
+                               required
+                               id="destination"
                                fullWidth
                                label="Go to"
-                               name="location"
-                               value={this.state.eventDetails.location}
-                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
-                               onChange = { event => this.handleInputChange(event, 'location') }
+                               name="destination"
+                               value={this.state.eventDetails.destination}
+                               style={{paddingLeft: '5px',paddingRight:'15px'}}
+                               onChange = { event => this.handleInputChange(event, 'destination') }
                                InputProps={{
                                     endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
                                                         <RoomIcon />
