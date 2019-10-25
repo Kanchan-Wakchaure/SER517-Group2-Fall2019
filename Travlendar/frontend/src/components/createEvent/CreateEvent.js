@@ -14,7 +14,7 @@ import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoT
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import './CreateEvent.css';
-import Map from './../map.js';
+import Map from '../map/Map.js';
 
 const eventService=new EventsService();
 

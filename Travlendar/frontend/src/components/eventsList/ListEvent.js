@@ -23,8 +23,9 @@ class ListEvent extends Component{
             console.log(result);
             self.setState({ events:  result.data})
         }).catch(()=>{
-          alert('User is not logged in');
+          alert('Some error occurred');
         });
+
     }
 
     render(){
@@ -32,7 +33,7 @@ class ListEvent extends Component{
             <div className="event_list">
             <ul>
                 {this.state.events.map(e=>
-                    <li>
+                    <li key={e.id}>
                         <div>{e.title}</div>
                         <div className="event_list_date">{e.time}</div>
                         <div>{e.destination}</div>
