@@ -9,11 +9,10 @@ import {
 import * as parkData from "../data/tempe-schedule.json";
 import mapStyles from "../mapStyles/retromapStyles";
 
-
-
 function Map() {
   const [selectedPark, setSelectedPark] = useState(null);
-
+  const lat = 33.4255;
+  const lng= -111.9490;
   useEffect(() => {
     const listener = e => {
       if (e.key === "Escape") {
@@ -33,6 +32,16 @@ function Map() {
       defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
       defaultOptions={{ styles: mapStyles }}
     >
+    <Marker
+          key={24}
+          name="My Marker"
+          color="blue"
+          position={{ lat: 33.6255, lng: -111.9409 }}
+          draggable={true}
+          onClick={() => {
+            alert("Prev position "+lat+ lng);
+          }}
+        />
       {parkData.features.map(park => (
         <Marker
           key={park.properties.PARK_ID}
@@ -43,9 +52,6 @@ function Map() {
           onClick={() => {
             setSelectedPark(park);
           }}
-
-          
-         
         />
       ))}
 
