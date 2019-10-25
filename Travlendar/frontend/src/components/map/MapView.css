@@ -1,0 +1,14 @@
+.map {
+    width: 94%;
+    height: 550px;
+    padding: 0 50px;
+}
+
+.error{
+background-color: red;
+
+}
+
+.cover{
+overflow: hidden;
+}

@@ -16,6 +16,11 @@ class Event(models.Model):
         default=1
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    long=models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    lat=models.DecimalField(max_digits=9, decimal_places=6, default=0)
+
     notifyUsers = models.CharField(max_length=300, default="")
+
 
 
