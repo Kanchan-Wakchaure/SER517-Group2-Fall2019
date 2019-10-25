@@ -2,11 +2,13 @@ from datetime import timedelta
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+from djongo.models.json import JSONField
+
 class Event(models.Model):
     title = models.CharField(max_length=300)
     date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=False, blank=False)
-    source = models.CharField(max_length=300)
+    source = models.CharField(max_length=300,default="")
     destination = models.CharField(max_length=300)
     duration= models.DurationField(default=timedelta())
     creator = models.ForeignKey(
@@ -15,5 +17,6 @@ class Event(models.Model):
         default=1
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    notifyUsers = models.CharField(max_length=300, default="")
 
 

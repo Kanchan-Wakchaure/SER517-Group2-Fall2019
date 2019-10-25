@@ -18,7 +18,7 @@ from rest_framework.decorators import permission_classes
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    print("session age",request.session.get_expiry_age())
+    print(request.data);
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
@@ -47,11 +47,12 @@ def EventList(request):
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-               return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
         else:
             print("++++++++BAD REQUEST++++++++")
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         event_list = Event.objects.all()

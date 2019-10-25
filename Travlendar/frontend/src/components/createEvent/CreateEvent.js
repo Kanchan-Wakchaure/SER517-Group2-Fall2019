@@ -48,8 +48,9 @@ class CreateEvent extends React.Component {
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
             "source": this.state.eventDetails.source,
-            "destination": this.state.eventDetails.destination
-        }          
+            "destination": this.state.eventDetails.destination,
+            "notifyUsers": JSON.stringify(this.state.notifyUsers)
+        }
         ).then((result)=>{
           alert("See View events tab.");
         }).catch(()=>{
@@ -90,7 +91,7 @@ class CreateEvent extends React.Component {
 
   handleInputs = () => {
     this.setState({
-      notifyUsers: this.state.notifyUsers.concat([{ email: "",phone:"" }])
+      notifyUsers: this.state.notifyUsers.concat([{ email: '',phone:'' }])
     });
   };
 
