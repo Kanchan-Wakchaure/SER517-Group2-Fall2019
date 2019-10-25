@@ -36,7 +36,6 @@ class Header extends React.Component{
               <Typography variant="h6" className="title">
                 Travlendar
               </Typography>
-              <span>
               <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
                 <HomeIcon/>
               </IconButton>
@@ -44,7 +43,11 @@ class Header extends React.Component{
                     this.props.isAuthenticated ?
                     (<span>
                       <Button color="inherit" href="/CreateEvent">Create Event</Button>
-                      <Button color="inherit" href="/listevent">View Events</Button>                   
+                      <Button color="inherit" href="/listevent">View Events</Button>   
+                      <Button color="inherit"  href="/map">View Map</Button>
+                      <Button color="inherit" href="/login">Login</Button>
+                      <Button color="inherit" href="/textalert">TextAlert</Button>
+                      <Button color="inherit" href="/emailalert">EmailAlert</Button>                
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
                     </span>)
                     :
@@ -55,14 +58,12 @@ class Header extends React.Component{
                       </span>
                     )
                 }
-    </span>
             </Toolbar>
           </AppBar>
               }
         </div>
       );
     }
-
 }
 
 const mapStateToProps = (state) => {
