@@ -10,6 +10,8 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import './CreateEvent.css';
 import Map from './../map.js';
@@ -30,8 +32,11 @@ class CreateEvent extends React.Component {
             markerPosition: {
                 lat: 33.4255,
                 lng: -111.9400
-            }
-         };
+            },
+            notifyUsers: [],
+            email: '',
+            phone: ''
+        };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -45,8 +50,9 @@ class CreateEvent extends React.Component {
             "date": this.state.eventDetails.date,
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
-            "destination": this.state.eventDetails.location
-        }          
+            "destination": this.state.eventDetails.location,
+            "notifyUsers": JSON.stringify(this.state.notifyUsers)
+        }
         ).then((result)=>{
           alert("See View events tab.");
         }).catch(()=>{
@@ -55,8 +61,8 @@ class CreateEvent extends React.Component {
       }
 
 	handleSubmit(event) {
-	    event.preventDefault();
-        this.handleCreate();
+	   event.preventDefault();
+       this.handleCreate();
     }
 
     handleInputChange(event, inputPropName) {
@@ -64,6 +70,36 @@ class CreateEvent extends React.Component {
         newState.eventDetails[inputPropName] = event.target.value;
         this.setState(newState);
      }
+
+    handleEmailChange = idx => evt => {
+        const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
+          if (idx !== sidx) return notifyUser;
+          return { ...notifyUser, email: evt.target.value };
+        });
+
+        this.setState({ notifyUsers: newNotifyUsers });
+    };
+
+    handlePhoneChange = idx => evt => {
+        const newNotifyUsers = this.state.notifyUsers.map((notifyUser, sidx) => {
+          if (idx !== sidx) return notifyUser;
+          return { ...notifyUser, phone: evt.target.value };
+        });
+
+        this.setState({ notifyUsers: newNotifyUsers });
+    };
+
+  handleInputs = () => {
+    this.setState({
+      notifyUsers: this.state.notifyUsers.concat([{ email: '',phone:'' }])
+    });
+  };
+
+handleRemoveInput = idx => () => {
+    this.setState({
+      notifyUsers: this.state.notifyUsers.filter((s, sidx) => idx !== sidx)
+    });
+  };
 
 	render() {
 		return(
@@ -155,7 +191,7 @@ class CreateEvent extends React.Component {
                                label="Go to"
                                name="location"
                                value={this.state.eventDetails.location}
-                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               style={{paddingLeft: '5px',paddingRight:'15px'}}
                                onChange = { event => this.handleInputChange(event, 'location') }
                                InputProps={{
                                     endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
@@ -163,6 +199,38 @@ class CreateEvent extends React.Component {
                                                     </InputAdornment>
                                                   ) }}/>
                    </FormGroup><br/>
+                   <FormGroup>
+                       <div>
+                           {this.state.notifyUsers.map((notifyUser, idx) => (
+                           <div>
+                                <TextField
+                                    value={notifyUser.email}
+                                    variant="outlined"
+                                    style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'45%'}}
+                                    label="User email ID"
+                                    onChange={this.handleEmailChange(idx)}/>
+                                     <TextField
+                                    value={notifyUser.phone}
+                                    variant="outlined"
+                                    style={{paddingRight:'15px', paddingBottom:'5px', width:'45%'}}
+                                    label="User phone number"
+                                    onChange={this.handlePhoneChange(idx)}/>
+                                    <HighlightOffIcon
+                                      type="button"
+                                      onClick={this.handleRemoveInput(idx)}
+                                    />
+                           </div>
+                           ))}
+                       </div>
+                       <div onClick={this.handleInputs}>
+                       <InputAdornment
+                            position="end"
+                            style={{height: '50px', paddingLeft: '75%'}}>
+                            <AddCircleOutlineTwoToneIcon />
+                            <label>Notify user</label>
+                       </InputAdornment>
+                       </div>
+                    </FormGroup>
                    <Button fullWidth style={{backgroundColor: "#3f51b5", paddingLeft: '5px',
                            paddingRight:'15px', fontColor: "white"}} onClick={this.handleSubmit} > Create Event </Button>
                    <br/><br/>
@@ -173,4 +241,5 @@ class CreateEvent extends React.Component {
 			);
 	}
 }
+
 export default CreateEvent;
