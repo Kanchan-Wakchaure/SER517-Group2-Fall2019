@@ -81,7 +81,7 @@ class Signup extends React.Component{
                             <Grid container spacing={2}
                                   alignItems="center"
                                   justify="center"
-                                  style={{backgroundColor: 'white', marginTop: '75px' }} >
+                                  style={{backgroundColor: 'white', marginTop: '10px' }} >
                                 <Grid item xs={12} align="center">
                                     <Avatar className="avatar">
                                         <LockOutlinedIcon />

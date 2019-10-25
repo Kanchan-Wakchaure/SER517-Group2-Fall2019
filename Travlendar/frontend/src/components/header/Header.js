@@ -45,7 +45,6 @@ class Header extends React.Component{
                       <Button color="inherit" href="/CreateEvent">Create Event</Button>
                       <Button color="inherit" href="/listevent">View Events</Button>   
                       <Button color="inherit"  href="/map">View Map</Button>
-                      <Button color="inherit" href="/login">Login</Button>
                       <Button color="inherit" href="/textalert">TextAlert</Button>
                       <Button color="inherit" href="/emailalert">EmailAlert</Button>                
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>

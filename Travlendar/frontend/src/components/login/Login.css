@@ -7,37 +7,34 @@
 
  .container
  {
-    align: center;
+    box-align: center;
 
  }
 
  .paper
  {
     margin: 50;
-    align: center;
+    box-align: center;
     display: flex;
-    flexDirection: column;
-    alignItems: center;
-    background: theme.palette.common.white;
+    flex-direction: column;
+    align-items: center;
  }
 
  .avatar
   {
-    margin: theme.spacing(2);
-    align: center;
-    backgroundColor: theme.palette.secondary.main;
+    box-align: center;
+    background-color: blueviolet;
     padding: 3;
   }
 
  .form
  {  height: '60%';
-    marginTop:'100px';
+    margin-top:'100px';
     width: '90%';
-    align: center;
+    box-align: center;
  }
 
 .submit
 {
-    margin: theme.spacing(3, 0, 2);
-    backgroundColor: "#C53E3E";
+    background-color: "#C53E3E";
 }
