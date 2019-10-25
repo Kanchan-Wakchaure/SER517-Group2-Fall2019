@@ -43,7 +43,6 @@ class CreateEvent extends React.Component {
 
 	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django
 	handleCreate(){
-
 	eventService.createEvent(
           {
             "title": this.state.eventDetails.title,

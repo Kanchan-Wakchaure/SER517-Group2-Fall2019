@@ -25,8 +25,11 @@ from django.apps import apps
 def EventList(request):
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
         if serializer.is_valid():
-            min_diff = 1000000000000.00
+            serializer.validated_data["creator"] = b
+            ''' min_diff = 1000000000000.00
             prev_event=[]
             #Finding the previous event
             for item in Event.objects.all():
@@ -42,27 +45,26 @@ def EventList(request):
                 if diff_delta>0:
                     if diff_delta< min_diff:
                         min_diff=diff_delta
-                        prev_event = item
-
+                        prev_event = item'''
             #Checking if there is any conflict while creating new event with previous event
-            try:
-                prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
-                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                    findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                   return Response(status=status.HTTP_400_BAD_REQUEST)
-            except Exception:
+            #try:
+                #prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
+                #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+            findLongLat(serializer)
+            serializer.save()
+            print("Event created")
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                #else:
+                 #  return Response(status=status.HTTP_400_BAD_REQUEST)
+            ''' except Exception:
                 findLongLat(serializer)
                 serializer.save()
                 print("Event created")
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED) '''
 
 
         else:
-            print("++++++++BAD REQUEST++++++++")
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     """ getting all event data from db"""
@@ -109,7 +111,6 @@ def Email(request):
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
 
-
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
         d = "2019-10-07"
@@ -124,8 +125,8 @@ def Email(request):
                 
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-
-                send_email('raisakhatun@gmail.com', subject, content )
+                print(str(request.user))
+                send_email(str(request.user), subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)

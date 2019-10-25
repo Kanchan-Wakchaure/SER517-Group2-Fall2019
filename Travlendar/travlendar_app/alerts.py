@@ -32,4 +32,4 @@ def send_email(receiver, subject, content):
 
     except Exception as e:
         print("KAJA")
-        print(e.message)
+        print(e)
