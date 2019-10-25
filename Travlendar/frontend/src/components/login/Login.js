@@ -10,7 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import './Login.css';
 import LoginService from '../../Services/LoginService';
-
+import * as actions from '../../store/actions/auth';
+import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const loginService = new LoginService();
 
@@ -29,26 +31,11 @@ class Login extends React.Component{
 		this.handlechange = this.handlechange.bind(this);
 	}
 
-    handleRegister(){
-        loginService.login(
-            {
-                'username': this.state.userDetails.email,
-                'password': this.state.userDetails.password
-            }
-        ).then((result)=>{
-            alert('You are signed in!');
-        }).catch(()=>{
-          alert('Could not sign in, please try again.');
-        });
-
-    }
-
-    handleSubmit(user){
+   handleSubmit(user){
         user.preventDefault();
-        this.handleRegister();
-    }
-
-
+        this.props.onAuth(this.state.userDetails.email, this.state.userDetails.password);
+        this.props.history.push('/Homepage');
+    } 
 
     handlechange(user, inputPropName)
     {
@@ -58,71 +45,102 @@ class Login extends React.Component{
     }
 
     render(){
+        let errorMessage = null;
+        if (this.props.error) {
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            );
+        }
 
         return(
-            <Container component="main" maxWidth="xs" className="test">
-                <CssBaseline />
-                <div className="paper">
-                    <form className="form" noValidate>
-                        <Grid container spacing={2}
-                              alignItems="center"
-                              justify="center"
-                              style={{backgroundColor: 'white', marginTop: '75px' }} >
-                            <Grid item xs={12} align="center">
-                                <Avatar className="avatar">
-                                    <LockOutlinedIcon />
-                                </Avatar>
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                <Typography component="h1" variant="h5" >
-                                    Login
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           id="email"
-                                           label="Email Address"
-                                           name="email"
-                                           autoComplete="email"
-                                           value={this.state.userDetails.email}
-                                           onChange = { user => this.handlechange(user, 'email') }/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           name="password"
-                                           label="Password"
-                                           type="password"
-                                           id="password"
-                                           autoComplete="current-password"
-                                           value={this.state.userDetails.password1}
-                                           onChange = { user => this.handlechange(user, 'password') }/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        className="submit"
-                                        onClick={this.handleSubmit}>
-                                    Login
-                                </Button>
-                            </Grid>
+            <div>
+                {errorMessage}
+                {
+                    this.props.loading ?
 
-                            <Grid item align="center">
-                                <Link href="/signup" variant="body2">
-                                    Not Registered yet? Sign up
-                                </Link>
+                    <CircularProgress color="secondary" style={{align: 'center'}}/>
+                    
+                    :
+
+                    <Container component="main" maxWidth="xs" className="test">
+                    <CssBaseline />
+                    <div className="paper">
+                        <form className="form">
+                            <Grid container spacing={2}
+                                  alignItems="center"
+                                  justify="center"
+                                  style={{backgroundColor: 'white', marginTop: '10px' }} >
+                                <Grid item xs={12} align="center">
+                                    <Avatar className="avatar">
+                                        <LockOutlinedIcon />
+                                    </Avatar>
+                                </Grid>
+                                <Grid item xs={12} align="center">
+                                    <Typography component="h1" variant="h5" >
+                                        Login
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
+                                               id="email"
+                                               label="Email Address"
+                                               name="email"
+                                               autoComplete="email"
+                                               value={this.state.userDetails.email}
+                                               onChange = { user => this.handlechange(user, 'email') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
+                                               name="password"
+                                               label="Password"
+                                               type="password"
+                                               id="password"
+                                               autoComplete="current-password"
+                                               value={this.state.userDetails.password1}
+                                               onChange = { user => this.handlechange(user, 'password') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className="submit"
+                                            onClick={this.handleSubmit}>
+                                        Login
+                                    </Button>
+                                </Grid>
+    
+                                <Grid item align="center">
+                                    <Link href="/signup" variant="body2">
+                                        Not Registered yet? Sign up
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-            </Container>
+                        </form>
+                    </div>
+                </Container>
+
+                }
+            </div>
         );
     }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        error: state.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (username, password) => dispatch(actions.authLogin(username, password)) 
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

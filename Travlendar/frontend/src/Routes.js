@@ -1,4 +1,4 @@
-export const HOMEPAGE = '/Homepage';
+export const HOMEPAGE = '/';
 export const SIGNUP = '/Signup';
 export const LOGIN = '/Login';
 export const CREATE_EVENT = '/CreateEvent';
