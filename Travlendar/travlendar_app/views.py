@@ -7,7 +7,7 @@ from rest_framework.decorators import authentication_classes
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime, date, time
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
@@ -15,11 +15,11 @@ import requests
 import os
 from .alerts import send_email
 import pytz
-
+from django.apps import apps
 #from rest_framework import generics
 
 #api for create event and get all eventss
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
@@ -67,7 +67,9 @@ def EventList(request):
 
     """ getting all event data from db"""
     if request.method == 'GET':
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -93,7 +95,7 @@ def findLongLat(serializer):
 
 
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
@@ -131,7 +133,7 @@ def Email(request):
         return HttpResponse("Got Email Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Text(request):

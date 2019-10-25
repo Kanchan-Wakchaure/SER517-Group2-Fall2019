@@ -11,10 +11,11 @@
 
   .menuButton {
     marginLeft:"auto";
-    marginRight: -12;
+    marginRight: "auto";
   }
 
   .title {
     flexGrow: 1;
     fontSize: 30;
+    marginLeft:"auto";
   }
