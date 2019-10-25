@@ -7,13 +7,13 @@ from rest_framework.decorators import authentication_classes
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime, date, time
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 #import datetime
 from .alerts import send_email
 import pytz
-
+from rest_framework.authtoken.models import Token
 
 #from rest_framework import generics
 
@@ -22,6 +22,13 @@ import pytz
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
+    try:
+        token = Token.objects.get(key="3c311246b38055161ddd3775d3cc39c24ccf7")
+        print(token)
+    except Token.DoesNotExist as e:
+        print("Token Doesn't exist")
+
+
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
