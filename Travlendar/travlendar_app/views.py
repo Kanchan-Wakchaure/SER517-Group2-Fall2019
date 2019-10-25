@@ -15,7 +15,11 @@ import requests
 import os
 from .alerts import send_email
 import pytz
+<<<<<<< HEAD
 from django.apps import apps
+=======
+
+>>>>>>> Sprint-3
 #from rest_framework import generics
 
 #api for create event and get all eventss
@@ -67,9 +71,13 @@ def EventList(request):
 
     """ getting all event data from db"""
     if request.method == 'GET':
+<<<<<<< HEAD
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
+=======
+        event_list = Event.objects.all()
+>>>>>>> Sprint-3
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -95,7 +103,11 @@ def findLongLat(serializer):
 
 
 
+<<<<<<< HEAD
 @authentication_classes([TokenAuthentication])
+=======
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+>>>>>>> Sprint-3
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
@@ -133,7 +145,11 @@ def Email(request):
         return HttpResponse("Got Email Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+<<<<<<< HEAD
 @authentication_classes([TokenAuthentication])
+=======
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+>>>>>>> Sprint-3
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Text(request):
