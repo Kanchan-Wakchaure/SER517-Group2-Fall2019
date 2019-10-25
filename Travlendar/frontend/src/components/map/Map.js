@@ -10,12 +10,14 @@ import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 
 
-
-
 function Map() {
 
   const [selectedPark, setSelectedPark] = useState(null);
   const [events, setEvents]=useState([]);
+
+
+  const lat = 33.4255;
+  const lng= -111.9490;
 
   useEffect(() => {
     const eventService=new EventsService();
@@ -42,6 +44,18 @@ function Map() {
       defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
       defaultOptions={{ styles: mapStyles }}
     >
+
+      
+    <Marker
+          key={24}
+          name="My Marker"
+          color="blue"
+          position={{ lat: 33.6255, lng: -111.9409 }}
+          draggable={true}
+          onClick={() => {
+            alert("Prev position "+lat+ lng);
+          }}
+        />
       {events.map(park => (
         <Marker
           key={park.id}

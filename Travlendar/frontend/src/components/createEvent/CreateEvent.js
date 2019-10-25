@@ -25,10 +25,13 @@ class CreateEvent extends React.Component {
                 date: '',
                 time:'',
                 duration: '',
-                source: '',
-                destination: ''
+                location: ''
+            },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
             }
-        };
+         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -42,8 +45,7 @@ class CreateEvent extends React.Component {
             "date": this.state.eventDetails.date,
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
-            "source": this.state.eventDetails.source,
-            "destination": this.state.eventDetails.destination
+            "destination": this.state.eventDetails.location
         }          
         ).then((result)=>{
           alert("See View events tab.");
@@ -148,29 +150,13 @@ class CreateEvent extends React.Component {
                    <FormGroup>
                    <TextField variant="outlined"
                                required
-                               id="source"
-                               fullWidth
-                               label="Start At"
-                               name="source"
-                               value={this.state.eventDetails.source}
-                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
-                               onChange = { event => this.handleInputChange(event, 'source') }
-                               InputProps={{
-                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
-                                                        <RoomIcon />
-                                                    </InputAdornment>
-                                                  ) }}/>
-                   </FormGroup><br/>
-                   <FormGroup>
-                   <TextField variant="outlined"
-                               required
-                               id="destination"
+                               id="location"
                                fullWidth
                                label="Go to"
-                               name="destination"
-                               value={this.state.eventDetails.destination}
-                               style={{paddingLeft: '5px',paddingRight:'15px'}}
-                               onChange = { event => this.handleInputChange(event, 'destination') }
+                               name="location"
+                               value={this.state.eventDetails.location}
+                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
+                               onChange = { event => this.handleInputChange(event, 'location') }
                                InputProps={{
                                     endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
                                                         <RoomIcon />
