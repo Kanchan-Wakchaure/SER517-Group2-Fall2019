@@ -12,7 +12,7 @@ import './Login.css';
 import LoginService from '../../Services/LoginService';
 import * as actions from '../../store/actions/auth';
 import { connect } from 'react-redux';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const loginService = new LoginService();
 
@@ -31,24 +31,10 @@ class Login extends React.Component{
 		this.handlechange = this.handlechange.bind(this);
 	}
 
-    handleRegister(){
-        loginService.login(
-            {
-                'username': this.state.userDetails.email,
-                'password': this.state.userDetails.password
-            }
-        ).then((result)=>{
-            alert('You are logged in successfully');
-        }).catch(()=>{
-          alert('Could not sign in, please try again.');
-        });
-
-    }
-
     handleSubmit(user){
         user.preventDefault();
         this.props.onAuth(this.state.userDetails.email, this.state.userDetails.password);
-        this.props.history.push('/');
+        this.props.history.push('/Homepage');
     }
 
 
@@ -66,69 +52,81 @@ class Login extends React.Component{
                 <p>{this.props.error.message}</p>
             );
         }
-        return(
-                <div>{errorMessage}
-                <Container component="main" maxWidth="xs" className="test">
-                <CssBaseline />
-                <div className="paper">
-                    <form className="form" noValidate>
-                        <Grid container spacing={2}
-                              alignItems="center"
-                              justify="center"
-                              style={{backgroundColor: 'white', marginTop: '75px' }} >
-                            <Grid item xs={12} align="center">
-                                <Avatar className="avatar">
-                                    <LockOutlinedIcon />
-                                </Avatar>
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                <Typography component="h1" variant="h5" >
-                                    Login
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           id="email"
-                                           label="Email Address"
-                                           name="email"
-                                           autoComplete="email"
-                                           value={this.state.userDetails.email}
-                                           onChange = { user => this.handlechange(user, 'email') }/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField variant="outlined"
-                                           required
-                                           fullWidth
-                                           name="password"
-                                           label="Password"
-                                           type="password"
-                                           id="password"
-                                           autoComplete="current-password"
-                                           value={this.state.userDetails.password1}
-                                           onChange = { user => this.handlechange(user, 'password') }/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        className="submit"
-                                        onClick={this.handleSubmit}>
-                                    Login
-                                </Button>
-                            </Grid>
 
-                            <Grid item align="center">
-                                <Link href="/signup" variant="body2">
-                                    Not Registered yet? Sign up
-                                </Link>
+        return(
+            <div>
+                {errorMessage}
+                {
+                    this.props.loading ?
+
+                    <CircularProgress color="secondary" style={{align: 'center'}}/>
+                    
+                    :
+
+                    <Container component="main" maxWidth="xs" className="test">
+                    <CssBaseline />
+                    <div className="paper">
+                        <form className="form" noValidate>
+                            <Grid container spacing={2}
+                                  alignItems="center"
+                                  justify="center"
+                                  style={{backgroundColor: 'white', marginTop: '75px' }} >
+                                <Grid item xs={12} align="center">
+                                    <Avatar className="avatar">
+                                        <LockOutlinedIcon />
+                                    </Avatar>
+                                </Grid>
+                                <Grid item xs={12} align="center">
+                                    <Typography component="h1" variant="h5" >
+                                        Login
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
+                                               id="email"
+                                               label="Email Address"
+                                               name="email"
+                                               autoComplete="email"
+                                               value={this.state.userDetails.email}
+                                               onChange = { user => this.handlechange(user, 'email') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
+                                               name="password"
+                                               label="Password"
+                                               type="password"
+                                               id="password"
+                                               autoComplete="current-password"
+                                               value={this.state.userDetails.password1}
+                                               onChange = { user => this.handlechange(user, 'password') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className="submit"
+                                            onClick={this.handleSubmit}>
+                                        Login
+                                    </Button>
+                                </Grid>
+    
+                                <Grid item align="center">
+                                    <Link href="/signup" variant="body2">
+                                        Not Registered yet? Sign up
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-            </Container></div>
+                        </form>
+                    </div>
+                </Container>
+
+                }
+            </div>
         );
     }
 }

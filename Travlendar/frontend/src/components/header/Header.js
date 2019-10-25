@@ -16,7 +16,6 @@ import * as actions from '../../store/actions/auth';
 */
 
 class Header extends React.Component{
-
     render() {
       return (
         <div className="root">
