@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 /*
     Author: Kanchan Wakchaure
@@ -16,9 +17,20 @@ import * as actions from '../../store/actions/auth';
 */
 
 class Header extends React.Component{
+  constructor(props) {
+    super(props);
+  } 
     render() {
       return (
         <div className="root">
+              {
+                    this.props.loading ?
+
+                    <CircularProgress color="secondary" 
+                    style={{ 
+                      align: 'center'}}/>
+                    
+                    :
           <AppBar position="fixed" style = {{height: '50px'}}>
             <Toolbar style={{height: '20px'}}>
               <Typography variant="h6" className="title">
@@ -46,10 +58,18 @@ class Header extends React.Component{
     </span>
             </Toolbar>
           </AppBar>
+              }
         </div>
       );
     }
 
+}
+
+const mapStateToProps = (state) => {
+  return {
+      loading: state.loading,
+      error: state.error
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -58,4 +78,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default (connect(null, mapDispatchToProps)(Header));
+export default (connect(mapStateToProps, mapDispatchToProps)(Header));

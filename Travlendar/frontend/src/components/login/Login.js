@@ -17,8 +17,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const loginService = new LoginService();
 
 class Login extends React.Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             userDetails: {
@@ -31,12 +31,11 @@ class Login extends React.Component{
 		this.handlechange = this.handlechange.bind(this);
 	}
 
-    handleSubmit(user){
+   handleSubmit(user){
         user.preventDefault();
         this.props.onAuth(this.state.userDetails.email, this.state.userDetails.password);
         this.props.history.push('/Homepage');
-    }
-
+    } 
 
     handlechange(user, inputPropName)
     {
@@ -66,7 +65,7 @@ class Login extends React.Component{
                     <Container component="main" maxWidth="xs" className="test">
                     <CssBaseline />
                     <div className="paper">
-                        <form className="form" noValidate>
+                        <form className="form">
                             <Grid container spacing={2}
                                   alignItems="center"
                                   justify="center"
