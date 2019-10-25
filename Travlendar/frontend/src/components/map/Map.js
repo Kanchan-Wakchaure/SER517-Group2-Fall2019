@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   withGoogleMap,
   withScriptjs,
@@ -6,156 +6,107 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import Geocode from "react-geocode";
-import Autocomplete from 'react-google-autocomplete';
-Geocode.setApiKey("AIzaSyAJ35XQSCGqEHRB4AdmMZnQ8i8FAoAembQ");
-Geocode.enableDebug();
-class Maps extends React.Component{
-constructor( props ){
-  super( props );
-  this.state = {
-   address: '',
-   city: '',
-   area: '',
-   state: '',
-   mapPosition: {
-    lat: this.props.center.lat,
-    lng: this.props.center.lng
-   },
-   markerPosition: {
-    lat: this.props.center.lat,
-    lng: this.props.center.lng
-    },
-    selectedPark:0,
-    setSelectedPark:0,
-    events:'',
-    setEvents:''
- }
- }
- componentDidMount() {
-  Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
-   response => {
-    const address = response.results[0].formatted_address,
-     addressArray =  response.results[0].address_components,
-     city = this.getCity( addressArray ),
-     area = this.getArea( addressArray ),
-     state = this.getState( addressArray );
+import mapStyles from "./mapStyles/retromapStyles";
+import EventsService from '../../Services/EventsService';
 
-    console.log( 'city', city, area, state );
 
-    this.setState( {
-     address: ( address ) ? address : '',
-     area: ( area ) ? area : '',
-     city: ( city ) ? city : '',
-     state: ( state ) ? state : '',
-    } )
-   },
-   error => {
-    console.error(error);
-   }
+function Map() {
+
+  const [selectedPark, setSelectedPark] = useState(null);
+  const [events, setEvents]=useState([]);
+
+
+  const lat = 33.4255;
+  const lng= -111.9490;
+
+  useEffect(() => {
+    const eventService=new EventsService();
+    eventService.getEvents().then(function (result) {
+        setEvents(result.data);
+        console.log(result);
+        }).catch(()=>{
+          alert('Some error occurred');
+        });
+    const listener = e => {
+      if (e.key === "Escape") {
+        setSelectedPark(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
+
+  return (
+    <GoogleMap
+      defaultZoom={10}
+      defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+      defaultOptions={{ styles: mapStyles }}
+    >
+
+
+    <Marker
+          key={24}
+          name="My Marker"
+          color="blue"
+          position={{ lat: 33.6255, lng: -111.9409 }}
+          draggable={true}
+          onClick={() => {
+            alert("Prev position "+lat+ lng);
+          }}
+        />
+      {events.map(park => (
+        <Marker
+          key={park.id}
+          position={{
+            lat: parseFloat(park.lat),
+            lng: parseFloat(park.long)
+          }}
+          onClick={() => {
+            setSelectedPark(park);
+          }}
+
+        />
+      ))}
+
+
+      {selectedPark && (
+        <InfoWindow
+          onCloseClick={() => {
+            setSelectedPark(null);
+          }}
+
+          position={{
+            lat: parseFloat(selectedPark.lat),
+            lng: parseFloat(selectedPark.long)
+          }}
+        >
+          <div>
+            <h2>{selectedPark.title}</h2>
+            <p>{selectedPark.destination}</p>
+            <p>{selectedPark.title}</p>
+            <p>{selectedPark.time}</p>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
   );
- };
- shouldComponentUpdate( nextProps, nextState ){
-  if (
-   this.state.markerPosition.lat !== this.props.center.lat ||
-   this.state.address !== nextState.address ||
-   this.state.city !== nextState.city ||
-   this.state.area !== nextState.area ||
-   this.state.state !== nextState.state
-  ) {
-   return true
-  } else if ( this.props.center.lat === nextProps.center.lat ){
-   return false
-  }
- }
- getCity = ( addressArray ) => {
-  let city = '';
-  for( let i = 0; i < addressArray.length; i++ ) {
-   if ( addressArray[ i ].types[0] && 'administrative_area_level_2' === addressArray[ i ].types[0] ) {
-    city = addressArray[ i ].long_name;
-    return city;
-   }
-  }
- };
- getArea = ( addressArray ) => {
-  let area = '';
-  for( let i = 0; i < addressArray.length; i++ ) {
-   if ( addressArray[ i ].types[0]  ) {
-    for ( let j = 0; j < addressArray[ i ].types.length; j++ ) {
-     if ( 'sublocality_level_1' === addressArray[ i ].types[j] || 'locality' === addressArray[ i ].types[j] ) {
-      area = addressArray[ i ].long_name;
-      return area;
-     }
-    }
-   }
-  }
- };
- getState = ( addressArray ) => {
-  let state = '';
-  for( let i = 0; i < addressArray.length; i++ ) {
-   for( let i = 0; i < addressArray.length; i++ ) {
-    if ( addressArray[ i ].types[0] && 'administrative_area_level_1' === addressArray[ i ].types[0] ) {
-     state = addressArray[ i ].long_name;
-     return state;
-    }
-   }
-  }
- };
- onChange = ( event ) => {
-  this.setState({ [event.target.name]: event.target.value });
- };
- onInfoWindowClose = ( event ) => {
-};
-render(){
-const AsyncMap = withScriptjs(
-   withGoogleMap(
-    props => (
-     <GoogleMap google={this.props.google}
-      defaultZoom={this.props.zoom}
-      defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
-     >
-</GoogleMap>
-)
-   )
-  );
-let map;
-  if( this.props.center.lat !== undefined ) {
-   map = <div>
-     <div>
-      <div className="form-group">
-       <label htmlFor="">City</label>
-       <input type="text" name="city" className="form-control" onChange={ this.onChange } readOnly="readOnly" value={ this.state.city }/>
-      </div>
-      <div className="form-group">
-       <label htmlFor="">Area</label>
-       <input type="text" name="area" className="form-control" onChange={ this.onChange } readOnly="readOnly" value={ this.state.area }/>
-      </div>
-      <div className="form-group">
-       <label htmlFor="">State</label>
-       <input type="text" name="state" className="form-control" onChange={ this.onChange } readOnly="readOnly" value={ this.state.state }/>
-      </div>
-      <div className="form-group">
-       <label htmlFor="">Address</label>
-       <input type="text" name="address" className="form-control" onChange={ this.onChange } readOnly="readOnly" value={ this.state.address }/>
-      </div>
-     </div>
-     <AsyncMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGe5vjL8wBmilLzoJ0jNIwe9SAuH2xS_0&libraries=places"
-      loadingElement={
-       <div style={{ height: `100%` }} />
-      }
-      containerElement={
-       <div style={{ height: this.props.height }} />
-      }
-      mapElement={
-       <div style={{ height: `100%` }} />
-      }
-     />
-    </div>
-} else {
-   map = <div style={{height: this.props.height}} />
-  }
-  return( map )
- }
 }
-export default Maps;
+
+const MapWrapped = withScriptjs(withGoogleMap(Map));
+
+export default function MAP() {
+  return (
+    <div  style={{width: "45vw", height: "90vh" }}>
+      <MapWrapped
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+          process.env.REACT_APP_GOOGLE_KEY
+        }`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `100%` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
+    </div>
+  );
+}
