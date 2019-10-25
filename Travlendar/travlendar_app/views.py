@@ -84,9 +84,8 @@ def Email(request):
 
 
         #tz = pytz.timezone('US/Arizona')
-        d = str(datetime.today()).split(" ")[0]
-        #d = "2019-10-07"
-        print(d)
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -95,6 +94,11 @@ def Email(request):
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
+                
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -116,13 +120,14 @@ def Text(request):
         serializer = EventSerializer(events, context={'request': request}, many=True)
         
         #tz = pytz.timezone('US/Arizona')
-        d = str(datetime.today()).split(" ")[0]
-        #d = "2019-10-07"
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
             
             if i['date'] == d:
+
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
