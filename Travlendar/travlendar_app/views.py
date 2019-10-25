@@ -10,8 +10,11 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+
 import requests
 import os
+from .alerts import send_email
+import pytz
 
 #from rest_framework import generics
 
@@ -20,7 +23,6 @@ import os
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    print("session age",request.session.get_expiry_age())
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
@@ -58,6 +60,7 @@ def EventList(request):
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
         else:
             print("++++++++BAD REQUEST++++++++")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -65,9 +68,6 @@ def EventList(request):
     """ getting all event data from db"""
     if request.method == 'GET':
         event_list = Event.objects.all()
-        #paginator = Paginator(event_list, 25)
-        #page = request.GET.get('page')
-        #events = paginator.get_page(page)
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -90,3 +90,80 @@ def findLongLat(serializer):
     if api_response_dict['status'] == 'OK':
         serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
+
+
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Email(request):
+   
+    
+    if request.method == 'GET':
+        print("EMAIL")
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+
+
+        #tz = pytz.timezone('US/Arizona')
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            print(i['date'])
+            if i['date'] == d:
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+                
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('raisakhatun@gmail.com', subject, content )
+            
+
+        #return Response({'data': serializer.data},status=status.HTTP_200_OK)
+
+        return HttpResponse("Got Email Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def Text(request):
+
+    if request.method == 'GET':
+        print("TEXT")
+        event_list = Event.objects.all()
+        paginator = Paginator(event_list, 25)
+        page = request.GET.get('page')
+        events = paginator.get_page(page)
+        serializer = EventSerializer(events, context={'request': request}, many=True)
+        
+        #tz = pytz.timezone('US/Arizona')
+        #d = str(datetime.today()).split(" ")[0]
+        d = "2019-10-07"
+
+        od = serializer.data
+        for i in od:
+            
+            if i['date'] == d:
+
+                print(i['title'])
+                print(i['time'])
+                print(i['destination'])
+
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
+
+
+                
+        return HttpResponse("Got Text Alert Activation")
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+

@@ -8,8 +8,14 @@ import Signup from './components/register/Signup';
 import Login from './components/login/Login';
 import CreateEvent from './components/createEvent/CreateEvent';
 import ListEvent from './components/eventsList/ListEvent';
+
 import Map from './components/map/MapView';
-import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP } from './Routes.js';
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT } from './Routes.js';
+
+import Email from './components/email/Email';
+import Text from './components/text/Text';
+
+
 
 function App() {
   return (
@@ -25,6 +31,8 @@ function App() {
                     <Route path={CREATE_EVENT} component={CreateEvent} />
                     <Route path={EVENTS_LIST} component={ListEvent}/>
                     <Route path={EVENTS_MAP} component={Map}/>
+                    <Route path={EMAIL} component={Email}/>
+                    <Route path={TEXT} component={Text}/>
 
                 </Switch>
             </div>

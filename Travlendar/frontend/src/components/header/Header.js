@@ -45,6 +45,8 @@ export default function Header() {
           <Button color="inherit"  href="/map">View Map</Button>
           <Button color="inherit" href="/login">Login</Button>
           <Button color="inherit" href="/Signup">Sign Up</Button>
+          <Button color="inherit" href="/textalert">TextAlert</Button>
+          <Button color="inherit" href="/emailalert">EmailAlert</Button>
         </Toolbar>
       </AppBar>
     </div>
