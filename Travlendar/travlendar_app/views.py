@@ -10,8 +10,10 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-import datetime
+#import datetime
 from .alerts import send_email
+import pytz
+
 
 #from rest_framework import generics
 
@@ -81,21 +83,19 @@ def Email(request):
         serializer = EventSerializer(events, context={'request': request}, many=True)
 
 
-        #d = str(datetime.datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        #tz = pytz.timezone('US/Arizona')
+        d = str(datetime.today()).split(" ")[0]
+        #d = "2019-10-07"
+        print(d)
 
         od = serializer.data
         for i in od:
-            
+            print(i['date'])
             if i['date'] == d:
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
-                
-                subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-                print(content)
-                send_email('kaustuv95@gmail.com', subject, content )
+            
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
 
@@ -114,8 +114,10 @@ def Text(request):
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
-        #d = str(datetime.datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        
+        #tz = pytz.timezone('US/Arizona')
+        d = str(datetime.today()).split(" ")[0]
+        #d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -125,7 +127,10 @@ def Text(request):
                 print(i['time'])
                 print(i['destination'])
 
+                subject = i['title']
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
 
+                send_email('kaustuv95@gmail.com', subject, content )
 
 
                 
