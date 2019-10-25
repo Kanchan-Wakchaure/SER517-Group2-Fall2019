@@ -54,8 +54,8 @@ function Map() {
         }));
         console.log("Events",events);
 
-        const origin = { lat:33.424966, lng:-111.880139}//waypoints.shift().location;
-        const destination = { lat:33.327726, lng:-111.823020} //waypoints.pop().location;//
+        const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+        const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
 
         const directionsService = new google.maps.DirectionsService();
 
@@ -71,6 +71,7 @@ function Map() {
             //console.log("RESULT:"+result)
             if (status === google.maps.DirectionsStatus.OK) {
                 setDirections(result);
+                console.log("Directions",result)
             } else {
             setError(result);
             }
@@ -79,10 +80,10 @@ function Map() {
     },[events])
 
 
-    /*
+
     if (error) {
-    return <h1>{error}</h1>;
-    } */
+    return <h1 class="error">one of the location unreachable</h1>;
+    }
     return (
     <GoogleMap
     defaultZoom={10}
@@ -99,7 +100,7 @@ function Map() {
     }
 
     {events.map(park => (
-    <div
+    <Marker
         key={park.id}
         position={{
         lat: parseFloat(park.lat),
