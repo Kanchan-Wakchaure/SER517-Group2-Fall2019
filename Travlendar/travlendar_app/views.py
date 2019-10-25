@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+
 from .models import Event
 from .serializers import EventSerializer
 from rest_framework.response import Response
@@ -7,28 +8,21 @@ from rest_framework.decorators import authentication_classes
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime, date, time
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 #import datetime
 from .alerts import send_email
 import pytz
 from rest_framework.authtoken.models import Token
-
+from django.apps import apps
 #from rest_framework import generics
 
 #api for create event and get all eventss
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
 def EventList(request):
-    try:
-        token = Token.objects.get(key="3c311246b38055161ddd3775d3cc39c24ccf7")
-        print(token)
-    except Token.DoesNotExist as e:
-        print("Token Doesn't exist")
-
-
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
         if serializer.is_valid():
@@ -64,7 +58,9 @@ def EventList(request):
             print("++++++++BAD REQUEST++++++++")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)
@@ -74,7 +70,7 @@ def EventList(request):
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
@@ -112,7 +108,7 @@ def Email(request):
         return HttpResponse("Got Email Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Text(request):
