@@ -27,7 +27,7 @@ class CreateEvent extends React.Component {
                 date: '',
                 time:'',
                 duration: '',
-                destination: ''
+                location: ''
             },
             markerPosition: {
                 lat: 33.4255,
@@ -50,7 +50,7 @@ class CreateEvent extends React.Component {
             "date": this.state.eventDetails.date,
             "time": this.state.eventDetails.time,
             "duration": this.state.eventDetails.duration,
-            "destination": this.state.eventDetails.destination,
+            "destination": this.state.eventDetails.location,
             "notifyUsers": JSON.stringify(this.state.notifyUsers)
         }
         ).then((result)=>{
@@ -186,29 +186,13 @@ handleRemoveInput = idx => () => {
                    <FormGroup>
                    <TextField variant="outlined"
                                required
-                               id="source"
-                               fullWidth
-                               label="Start At"
-                               name="source"
-                               value={this.state.eventDetails.source}
-                               style={{paddingLeft: '5px',paddingRight:'15px', height:'45px'}}
-                               onChange = { event => this.handleInputChange(event, 'source') }
-                               InputProps={{
-                                    endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
-                                                        <RoomIcon />
-                                                    </InputAdornment>
-                                                  ) }}/>
-                   </FormGroup><br/>
-                   <FormGroup>
-                   <TextField variant="outlined"
-                               required
-                               id="destination"
+                               id="location"
                                fullWidth
                                label="Go to"
-                               name="destination"
-                               value={this.state.eventDetails.destination}
+                               name="location"
+                               value={this.state.eventDetails.location}
                                style={{paddingLeft: '5px',paddingRight:'15px'}}
-                               onChange = { event => this.handleInputChange(event, 'destination') }
+                               onChange = { event => this.handleInputChange(event, 'location') }
                                InputProps={{
                                     endAdornment: ( <InputAdornment position="end" style={{height: '50px'}}>
                                                         <RoomIcon />
