@@ -99,8 +99,6 @@ def findLongLat(serializer):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
-   
-    
     if request.method == 'GET':
         print("EMAIL")
         modela = apps.get_model('users', 'CustomUser')
@@ -138,6 +136,7 @@ def Email(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Text(request):
+    PHN = '+14808592874'
 
     if request.method == 'GET':
         print("TEXT")

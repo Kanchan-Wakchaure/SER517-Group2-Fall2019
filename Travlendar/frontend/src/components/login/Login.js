@@ -9,12 +9,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import './Login.css';
-import LoginService from '../../Services/LoginService';
 import * as actions from '../../store/actions/auth';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const loginService = new LoginService();
 
 class Login extends React.Component{
     constructor(props) {
