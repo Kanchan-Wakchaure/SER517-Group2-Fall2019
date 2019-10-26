@@ -1,8 +1,6 @@
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from twilio.rest import Client
-
 
 SENDER = 'ser517group2@gmail.com'
 

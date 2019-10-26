@@ -27,6 +27,7 @@ def EventList(request):
     if request.method == 'POST':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
+
         if serializer.is_valid():
             serializer.validated_data["creator"] = b
             min_diff = 1000000000000.00
@@ -56,6 +57,7 @@ def EventList(request):
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
                   return Response(status=status.HTTP_400_BAD_REQUEST)
+                   return Response(status=status.HTTP_400_BAD_REQUEST)
             except Exception:
                 findLongLat(serializer)
                 serializer.save()
@@ -113,7 +115,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -139,8 +141,6 @@ def Email(request):
 @api_view(['GET'])
 def Text(request):
 
-    PHN = '+14808592874'
-
     if request.method == 'GET':
         print("TEXT")
         modela = apps.get_model('users', 'CustomUser')
@@ -155,7 +155,7 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -169,7 +169,9 @@ def Text(request):
                 subject = i['title']
                 content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_text(PHN, content )
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+
+                send_email('kaustuv95@gmail.com', subject, content )
 
 
                 
