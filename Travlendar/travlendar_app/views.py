@@ -13,7 +13,7 @@ from rest_framework.decorators import permission_classes
 
 import requests
 import os
-from .alerts import send_email, send_text
+from .alerts import send_email
 import pytz
 from django.apps import apps
 #from rest_framework import generics
@@ -25,12 +25,14 @@ from django.apps import apps
 def EventList(request):
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
-
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
         if serializer.is_valid():
+            serializer.validated_data["creator"] = b
             min_diff = 1000000000000.00
             prev_event=[]
             #Finding the previous event
-            for item in Event.objects.all():
+            for item in Event.objects.filter(creator_id=getattr(b, 'id')):
                 prev_event=item
                 prev_time = item.time
                 curr_time = serializer.validated_data.get("time")
@@ -44,7 +46,6 @@ def EventList(request):
                     if diff_delta< min_diff:
                         min_diff=diff_delta
                         prev_event = item
-
             #Checking if there is any conflict while creating new event with previous event
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
@@ -54,17 +55,14 @@ def EventList(request):
                     print("Event created")
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
-                   return Response(status=status.HTTP_400_BAD_REQUEST)
-            except Exception as e:
-
+                  return Response(status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
                 findLongLat(serializer)
                 serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
         else:
-            print("++++++++BAD REQUEST++++++++")
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     """ getting all event data from db"""
@@ -103,16 +101,17 @@ def findLongLat(serializer):
 def Email(request):
     if request.method == 'GET':
         print("EMAIL")
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)
         serializer = EventSerializer(events, context={'request': request}, many=True)
 
-
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -124,8 +123,8 @@ def Email(request):
                 
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-
-                send_email('raisakhatun@gmail.com', subject, content )
+                print(str(request.user))
+                send_email(str(request.user), subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -138,11 +137,13 @@ def Email(request):
 @api_view(['GET'])
 def Text(request):
 
-    PHN = '+14808592874'
-
     if request.method == 'GET':
         print("TEXT")
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
+        phone = getattr(b, 'phone_number')
+        print(phone)
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)
@@ -150,7 +151,7 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-07"
 
         od = serializer.data
         for i in od:
@@ -162,10 +163,9 @@ def Text(request):
                 print(i['destination'])
 
                 subject = i['title']
-                content = ' Appointment at %s time : %s ' % (i['destination'], i['time'])
+                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
 
-                send_text(PHN, content )
-                #send_email('kaustuv95@gmail.com', subject, content )
+                send_email('kaustuv95@gmail.com', subject, content )
 
 
                 
