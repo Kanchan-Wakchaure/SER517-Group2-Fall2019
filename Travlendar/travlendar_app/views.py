@@ -19,6 +19,9 @@ from django.apps import apps
 #from rest_framework import generics
 
 #api for create event and get all eventss
+
+
+
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
@@ -115,7 +118,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
@@ -141,6 +144,8 @@ def Email(request):
 @api_view(['GET'])
 def Text(request):
 
+    PHN = '+14808592874'
+
     if request.method == 'GET':
         print("TEXT")
         modela = apps.get_model('users', 'CustomUser')
@@ -155,23 +160,20 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
             
             if i['date'] == d:
 
-                print(i['title'])
-                print(i['time'])
-                print(i['destination'])
+                
 
                 subject = i['title']
                 content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
 
-                send_email('kaustuv95@gmail.com', subject, content )
+                send_text(PHN, content )
 
 
                 
