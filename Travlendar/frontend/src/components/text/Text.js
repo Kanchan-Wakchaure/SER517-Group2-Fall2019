@@ -31,7 +31,7 @@ class Text extends Component{
 
 
     render(){
-            alert('This feature will be completed in next sprint') ;
+            alert('A text message is sent to you phone number') ;
             this.props.history.push('/');
             return <Homepage/>;
     }

@@ -230,7 +230,7 @@ handleRemoveInput = idx => () => {
                        <div onClick={this.handleInputs}>
                        <InputAdornment
                             position="end"
-                            style={{height: '50px', paddingRight: '50%'}}>
+                            style={{height: '50px', paddingRight: '40%'}}>
                             <AddCircleOutlineTwoToneIcon />
                             <label>Send text messages to users</label>
                        </InputAdornment>
