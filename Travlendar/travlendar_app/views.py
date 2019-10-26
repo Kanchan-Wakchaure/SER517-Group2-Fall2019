@@ -103,7 +103,9 @@ def Email(request):
     
     if request.method == 'GET':
         print("EMAIL")
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)
@@ -139,7 +141,11 @@ def Text(request):
 
     if request.method == 'GET':
         print("TEXT")
-        event_list = Event.objects.all()
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
+        phone = getattr(b, 'phone_number')
+        print(phone)
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         events = paginator.get_page(page)
