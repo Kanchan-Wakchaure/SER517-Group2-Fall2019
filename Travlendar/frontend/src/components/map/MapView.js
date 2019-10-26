@@ -60,7 +60,7 @@ function Map() {
         directionsService.route(
         {
             origin: origin,
-            destination: destination,
+            destination: origin,
             travelMode: google.maps.TravelMode.DRIVING,
             waypoints: waypoints,
 
@@ -98,7 +98,7 @@ function Map() {
     }
 
     {events.map(park => (
-    <Marker
+    <div
         key={park.id}
         position={{
         lat: parseFloat(park.lat),
