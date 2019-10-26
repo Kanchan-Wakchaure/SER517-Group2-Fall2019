@@ -2,6 +2,7 @@
 import  React, { Component } from  'react';
 import EventsService from '../../Services/EventsService';
 import './ListEvent.css';
+import Homepage from '../home/Homepage';
 
 const eventService=new EventsService();
 
@@ -29,19 +30,25 @@ class ListEvent extends Component{
     }
 
     render(){
-        return(
-            <div className="event_list">
-            <ul>
-                {this.state.events.map(e=>
-                    <li key={e.id}>
-                        <div>{e.title}</div>
-                        <div className="event_list_date">{e.time}</div>
-                        <div>{e.destination}</div>
-                    </li>
-                )}
-             </ul>
-            </div>
-        )
+        if(localStorage.getItem('token')==null){
+            return <Homepage/>
+        }
+        else
+        {
+            return (
+                <div className="event_list">
+                <ul>
+                    {this.state.events.map(e=>
+                        <li key={e.id}>
+                            <div>{e.title}</div>
+                            <div className="event_list_date">{e.time}</div>
+                            <div>{e.destination}</div>
+                        </li>
+                    )}
+                </ul>
+                </div>
+            );
+        }   
     }
 }
 

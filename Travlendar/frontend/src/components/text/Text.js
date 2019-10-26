@@ -1,8 +1,11 @@
 //@author raisa 10-08-19
 import  React, { Component } from  'react';
 import Alert from '../../Services/AlertService';
+import Homepage from '../home/Homepage';
 
 const alertService=new Alert();
+
+
 
 class Text extends Component{
 
@@ -26,14 +29,11 @@ class Text extends Component{
         });
     }
 
+
     render(){
-        return(
-            <div className="alertStatus">
-                
-             "Text Alert Activated"
-             
-            </div>
-        )
+            alert('This feature will be completed in next sprint') ;
+            this.props.history.push('/');
+            return <Homepage/>;
     }
 }
 

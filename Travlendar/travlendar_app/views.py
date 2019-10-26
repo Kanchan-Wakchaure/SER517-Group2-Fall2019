@@ -101,8 +101,6 @@ def findLongLat(serializer):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
-   
-    
     if request.method == 'GET':
         print("EMAIL")
         event_list = Event.objects.all()
@@ -167,6 +165,7 @@ def Text(request):
                 content = ' Appointment at %s time : %s ' % (i['destination'], i['time'])
 
                 send_text(PHN, content )
+                #send_email('kaustuv95@gmail.com', subject, content )
 
 
                 

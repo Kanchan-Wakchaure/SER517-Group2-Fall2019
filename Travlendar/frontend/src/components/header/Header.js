@@ -17,10 +17,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 */
 
 class Header extends React.Component{
-  constructor(props) {
-    super(props);
-  } 
-    render() {
+
+  render() {
       return (
         <div className="root">
               {
