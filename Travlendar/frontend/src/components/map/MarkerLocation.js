@@ -1,7 +1,7 @@
 import React from 'react'
 import { withGoogleMap, GoogleMap, withScriptjs, InfoWindow, Marker } from "react-google-maps";
 import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyAJ35XQSCGqEHRB4AdmMZnQ8i8FAoAembQ");
+Geocode.setApiKey("APIKEY.txt");
 Geocode.enableDebug();
 class MarkerLocation extends React.Component{
 constructor( props ){
