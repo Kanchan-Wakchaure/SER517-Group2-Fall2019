@@ -43,6 +43,7 @@ class CreateEvent extends React.Component {
 
 	//https://www.digitalocean.com/community/tutorials/how-to-build-a-modern-web-application-to-manage-customer-information-with-django
 	handleCreate(){
+
 	eventService.createEvent(
           {
             "title": this.state.eventDetails.title,
@@ -206,13 +207,13 @@ handleRemoveInput = idx => () => {
                                     value={notifyUser.email}
                                     variant="outlined"
                                     style={{paddingLeft: '5px',paddingRight:'15px',paddingBottom:'5px', width:'45%'}}
-                                    label="Email ID"
+                                    label="User email ID"
                                     onChange={this.handleEmailChange(idx)}/>
                                      <TextField
                                     value={notifyUser.phone}
                                     variant="outlined"
                                     style={{paddingRight:'15px', paddingBottom:'5px', width:'45%'}}
-                                    label="Phone number"
+                                    label="User phone number"
                                     onChange={this.handlePhoneChange(idx)}/>
                                     <HighlightOffIcon
                                       type="button"
