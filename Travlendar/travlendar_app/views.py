@@ -29,10 +29,10 @@ def EventList(request):
         b = modela.objects.get(email=request.user)
         if serializer.is_valid():
             serializer.validated_data["creator"] = b
-            ''' min_diff = 1000000000000.00
+            min_diff = 1000000000000.00
             prev_event=[]
             #Finding the previous event
-            for item in Event.objects.all():
+            for item in Event.objects.filter(creator_id=getattr(b, 'id')):
                 prev_event=item
                 prev_time = item.time
                 curr_time = serializer.validated_data.get("time")
@@ -45,24 +45,22 @@ def EventList(request):
                 if diff_delta>0:
                     if diff_delta< min_diff:
                         min_diff=diff_delta
-                        prev_event = item'''
+                        prev_event = item
             #Checking if there is any conflict while creating new event with previous event
-            #try:
-                #prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
-                #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-            findLongLat(serializer)
-            serializer.save()
-            print("Event created")
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-                #else:
-                 #  return Response(status=status.HTTP_400_BAD_REQUEST)
-            ''' except Exception:
+            try:
+                prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
+                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+                    findLongLat(serializer)
+                    serializer.save()
+                    print("Event created")
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                  return Response(status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
                 findLongLat(serializer)
                 serializer.save()
                 print("Event created")
-                return Response(serializer.data, status=status.HTTP_201_CREATED) '''
-
-
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
