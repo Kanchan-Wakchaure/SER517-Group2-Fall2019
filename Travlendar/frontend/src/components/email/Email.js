@@ -1,6 +1,7 @@
 //@author raisa 10-08-19
 import  React, { Component } from  'react';
 import Alert from '../../Services/AlertService';
+import Homepage from '../home/Homepage';
 
 const alertService=new Alert();
 
@@ -27,13 +28,9 @@ class Email extends Component{
     }
 
     render(){
-        return(
-            <div className="alertStatus">
-
-                "Email Alert Activated"
-                
-            </div>
-        )
+        alert('Email is sent to your account successfully') ;
+        this.props.history.push('/');
+        return <Homepage/>;
     }
 }
 

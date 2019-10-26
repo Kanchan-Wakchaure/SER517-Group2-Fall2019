@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Homepage from '../home/Homepage';
 
 import './CreateEvent.css';
 import Map from '../map/Map.js';
@@ -102,6 +103,11 @@ handleRemoveInput = idx => () => {
   };
 
 	render() {
+    if(localStorage.getItem('token')==null){
+      return <Homepage/>
+    }
+    else
+    {
 		return(
 			<Container>
                 <CssBaseline />
@@ -225,9 +231,9 @@ handleRemoveInput = idx => () => {
                        <div onClick={this.handleInputs}>
                        <InputAdornment
                             position="end"
-                            style={{height: '50px', paddingLeft: '75%'}}>
+                            style={{height: '50px', paddingRight: '40%'}}>
                             <AddCircleOutlineTwoToneIcon />
-                            <label>Notify user</label>
+                            <label>Send text messages to users</label>
                        </InputAdornment>
                        </div>
                     </FormGroup>
@@ -238,7 +244,8 @@ handleRemoveInput = idx => () => {
                 </div>
                 </div>
             </Container>
-			);
+      );
+                           }
 	}
 }
 

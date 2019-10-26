@@ -10,9 +10,7 @@ import {
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
-
-
-
+import Homepage from '../home/Homepage';
 
 function Map() {
     const [events, setEvents]=useState([]);
@@ -62,7 +60,7 @@ function Map() {
         directionsService.route(
         {
             origin: origin,
-            destination: destination,
+            destination: origin,
             travelMode: google.maps.TravelMode.DRIVING,
             waypoints: waypoints,
 
@@ -100,7 +98,7 @@ function Map() {
     }
 
     {events.map(park => (
-    <Marker
+    <div
         key={park.id}
         position={{
         lat: parseFloat(park.lat),
@@ -144,6 +142,11 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 
 export default function MAP() {
+  if(localStorage.getItem('token')==null){
+    return <Homepage/>
+  }
+  else
+  {
   return (
     <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
       <MapWrapped
@@ -156,6 +159,7 @@ export default function MAP() {
       />
     </div>
   );
+      }
 }
 
 //directionsService taken from https://github.com/tomchentw/react-google-maps/blob/master/src/components/DirectionsRenderer.md
