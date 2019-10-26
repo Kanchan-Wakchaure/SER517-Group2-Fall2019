@@ -1,8 +1,14 @@
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from twilio.rest import Client
+
 
 SENDER = 'ser517group2@gmail.com'
+
+
+
+TWILIO_NUMBER = '+19139560188'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,3 +39,8 @@ def send_email(receiver, subject, content):
     except Exception as e:
         print("KAJA")
         print(e)
+
+def send_text(phn, content):
+
+    client = Client(ACC_SID, AUTH)
+    client.messages.create(to=phn, from_= TWILIO_NUMBER, body= content)
