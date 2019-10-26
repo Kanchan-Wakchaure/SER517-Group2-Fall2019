@@ -13,7 +13,7 @@ from rest_framework.decorators import permission_classes
 
 import requests
 import os
-from .alerts import send_email
+from .alerts import send_email, send_text
 import pytz
 from django.apps import apps
 #from rest_framework import generics
@@ -25,6 +25,7 @@ from django.apps import apps
 def EventList(request):
     serializer = EventSerializer(data=request.data)
     if request.method == 'POST':
+
         if serializer.is_valid():
             min_diff = 1000000000000.00
             prev_event=[]
@@ -54,7 +55,8 @@ def EventList(request):
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
                    return Response(status=status.HTTP_400_BAD_REQUEST)
-            except Exception:
+            except Exception as e:
+
                 findLongLat(serializer)
                 serializer.save()
                 print("Event created")
@@ -112,7 +114,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
@@ -138,6 +140,8 @@ def Email(request):
 @api_view(['GET'])
 def Text(request):
 
+    PHN = '+14808592874'
+
     if request.method == 'GET':
         print("TEXT")
         event_list = Event.objects.all()
@@ -148,7 +152,7 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
@@ -160,9 +164,9 @@ def Text(request):
                 print(i['destination'])
 
                 subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+                content = ' Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_email('kaustuv95@gmail.com', subject, content )
+                send_text(PHN, content )
 
 
                 
