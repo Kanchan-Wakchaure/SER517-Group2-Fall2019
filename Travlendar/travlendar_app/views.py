@@ -11,9 +11,10 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
+
 import requests
 import os
-from .alerts import send_email
+from .alerts import send_email, send_text
 import pytz
 from django.apps import apps
 #from rest_framework import generics
@@ -111,7 +112,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
@@ -152,21 +153,19 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-25"
 
         od = serializer.data
         for i in od:
             
             if i['date'] == d:
 
-                print(i['title'])
-                print(i['time'])
-                print(i['destination'])
+                
 
                 subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+                content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_email('kaustuv95@gmail.com', subject, content )
+                send_text(PHN, content )
 
 
                 
