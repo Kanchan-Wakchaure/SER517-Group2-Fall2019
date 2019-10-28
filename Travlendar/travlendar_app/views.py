@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
 
+
 import requests
 import os
 from .alerts import send_email, send_text
@@ -95,15 +96,17 @@ def findLongLat(serializer):
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
 
 
-
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
     if request.method == 'GET':
         print("EMAIL")
+
         modela = apps.get_model('users', 'CustomUser')
+        
         b = modela.objects.get(email=request.user)
+        print(request.user)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
@@ -124,8 +127,8 @@ def Email(request):
                 
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-                print(str(request.user))
-                send_email(str(request.user), subject, content )
+                #print(str(request.user))
+                send_email('kaustuv95@gmail.com', subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
