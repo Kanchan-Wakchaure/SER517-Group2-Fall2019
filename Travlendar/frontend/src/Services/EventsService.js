@@ -5,7 +5,8 @@ export default class EventsService{
 
     createEvent(event){
         const url = API_URL+'/api/events/';
-        return axios.post(url,event);
+        return  axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
+            .then(response => response.data);
     }
 
     getEvents() {
