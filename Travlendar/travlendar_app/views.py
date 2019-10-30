@@ -51,13 +51,13 @@ def EventList(request):
             #Checking if there is any conflict while creating new event with previous event
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
-                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                    findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                  return Response(status=status.HTTP_400_BAD_REQUEST)
+                #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+                findLongLat(serializer)
+                serializer.save()
+                print("Event created")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                '''else:
+                  return Response(status=status.HTTP_400_BAD_REQUEST)'''
             except Exception:
                 findLongLat(serializer)
                 serializer.save()
