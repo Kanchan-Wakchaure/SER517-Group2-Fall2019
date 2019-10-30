@@ -128,7 +128,7 @@ def Email(request):
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
                 #print(str(request.user))
-                send_email('kaustuv95@gmail.com', subject, content )
+                send_email(request.user, subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
