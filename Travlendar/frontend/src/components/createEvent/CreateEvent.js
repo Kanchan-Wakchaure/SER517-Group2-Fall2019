@@ -77,6 +77,7 @@ class CreateEvent extends React.Component {
                     ref.setState({form_date_error:""});
                     ref.setState({form_time_error:""});
                     ref.setState({form_destination_error:""});
+                    ref.setState({form_success:""});
 
                 }
                 else if(error.response.status===400){
@@ -107,6 +108,10 @@ class CreateEvent extends React.Component {
                     ref.setState({form_date_error:date_error});
                     ref.setState({form_time_error:time_error});
                     ref.setState({form_destination_error:destination_error});
+                    ref.setState({form_success:""});
+                    ref.setState({form_conflict:""});
+
+
                 }
                 else if(error.response.status===500){
                     console.log("Internal server error");
