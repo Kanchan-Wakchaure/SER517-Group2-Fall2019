@@ -9,6 +9,7 @@
 On command prompt  run the following commands.
 
 
+
 ```pip3 install django djongo dnspython django-cors-headers djangorestframework django-rest-auth django-allauth requests sendgrid twilio coverage==4.5.4```
 
 
@@ -20,7 +21,10 @@ and paste it to the folder Travlendar/frontend/. Note: Ensure file name is '.env
 
 Copy the file sendgrid.txt (https://drive.google.com/drive/u/1/folders/0AC9iWNkKaMtAUk9PVA) to the folder where manage.py resides.
 
-Copy the file twilio.txt (https://docs.google.com/document/d/1oSOWq9UUES5T547IrBqlMIxz14hzI-iN7xh7MPdd2CE/edit) to the folder where manage.py resides.
+
+Copy the file twilio.txt (https://drive.google.com/drive/u/1/folders/0AC9iWNkKaMtAUk9PVA) to the folder where manage.py resides. 
+
+
 
 Goto the directory which has manage.py in cmd.
 

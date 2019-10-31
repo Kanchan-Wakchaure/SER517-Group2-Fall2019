@@ -11,9 +11,11 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
+
+
 import requests
 import os
-from .alerts import send_email
+from .alerts import send_email, send_text
 import pytz
 from django.apps import apps
 #from rest_framework import generics
@@ -49,13 +51,13 @@ def EventList(request):
             #Checking if there is any conflict while creating new event with previous event
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
-                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                    findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                  return Response(status=status.HTTP_400_BAD_REQUEST)
+                #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+                findLongLat(serializer)
+                serializer.save()
+                print("Event created")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                '''else:
+                  return Response(status=status.HTTP_400_BAD_REQUEST)'''
             except Exception:
                 findLongLat(serializer)
                 serializer.save()
@@ -94,15 +96,17 @@ def findLongLat(serializer):
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
 
 
-
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Email(request):
     if request.method == 'GET':
         print("EMAIL")
+
         modela = apps.get_model('users', 'CustomUser')
+        
         b = modela.objects.get(email=request.user)
+        print(request.user)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
@@ -111,7 +115,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-30"
 
         od = serializer.data
         for i in od:
@@ -123,12 +127,14 @@ def Email(request):
                 
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-                print(str(request.user))
-                send_email(str(request.user), subject, content )
+                #print(str(request.user))
+                receiver = str(request.user)
+
+                send_email(receiver, subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
-
+        print(request.user)
         return HttpResponse("Got Email Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -152,21 +158,19 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-07"
+        d = "2019-10-30"
 
         od = serializer.data
         for i in od:
             
             if i['date'] == d:
 
-                print(i['title'])
-                print(i['time'])
-                print(i['destination'])
+                
 
                 subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+                content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_email('kaustuv95@gmail.com', subject, content )
+                send_text(PHN, content )
 
 
                 

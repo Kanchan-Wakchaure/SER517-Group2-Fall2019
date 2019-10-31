@@ -48,5 +48,3 @@ def send_text(phn, content):
 
     client = Client(ACC_SID, AUTH)
     client.messages.create(to=phn, from_= TWILIO_NUMBER, body= content)
-
-

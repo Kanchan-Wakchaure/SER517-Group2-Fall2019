@@ -25,7 +25,7 @@ class Text extends Component{
             console.log(result);
             self.setState({ events:  result.data})
         }).catch(()=>{
-          alert('User is not logged in');
+          alert('Bugs !!');
         });
     }
 
