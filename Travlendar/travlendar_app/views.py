@@ -10,14 +10,14 @@ from datetime import datetime, date, time
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-
-
-
 import requests
 import os
 from .alerts import send_email, send_text
-import pytz
 from django.apps import apps
+from .getdate import DATE , TIME
+
+
+
 #from rest_framework import generics
 
 #api for create event and get all eventss
@@ -115,12 +115,12 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-30"
+        
 
         od = serializer.data
         for i in od:
             print(i['date'])
-            if i['date'] == d:
+            if i['date'] == DATE:
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
@@ -158,12 +158,12 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-30"
+        
 
         od = serializer.data
         for i in od:
             
-            if i['date'] == d:
+            if i['date'] == DATE:
 
                 
 
