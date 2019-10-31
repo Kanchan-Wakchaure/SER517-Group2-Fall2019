@@ -38,10 +38,17 @@ class ListEvent extends Component{
             return (
                 <div className="event_list">
                 <ul>
+                    <li>
+                        <div>Event description</div>
+                        <div>Time</div>
+                        <div>Duration</div>
+                        <div>Location</div>
+                    </li>
                     {this.state.events.map(e=>
                         <li key={e.id}>
                             <div>{e.title}</div>
                             <div className="event_list_date">{e.time}</div>
+                            <div>{e.duration}</div>
                             <div>{e.destination}</div>
                         </li>
                     )}

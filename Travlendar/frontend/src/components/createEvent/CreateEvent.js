@@ -72,7 +72,7 @@ class CreateEvent extends React.Component {
             if (error.response) {
 
                 if(error.response.status===406){
-                    ref.setState({form_conflict:"This event conflicts with previous"});
+                    ref.setState({form_conflict:"This event conflicts with another. Please check your agenda."});
                     ref.setState({form_title_error:""});
                     ref.setState({form_date_error:""});
                     ref.setState({form_time_error:""});
