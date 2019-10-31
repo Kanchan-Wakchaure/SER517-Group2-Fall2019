@@ -33,10 +33,11 @@ def EventList(request):
         print("USER:   ",request.user)
         if serializer.is_valid():
             serializer.validated_data["creator"] = b
-            min_diff = 1000000000000.00
-            prev_event=[]
+            curr_date = serializer.validated_data.get("date")
+            min_diff = float("inf")
+            prev_event=None
             #Finding the previous event
-            for item in Event.objects.filter(creator_id=getattr(b, 'id')):
+            for item in Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=curr_date):
                 prev_event=item
                 prev_time = item.time
                 curr_time = serializer.validated_data.get("time")
@@ -54,13 +55,13 @@ def EventList(request):
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
 
-                #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
-                findLongLat(serializer)
-                serializer.save()
-                print("Event created")
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-                '''else:
-                  return Response(status=status.HTTP_406_NOT_ACCEPTABLE)'''
+                if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
+                    findLongLat(serializer)
+                    serializer.save()
+                    print("Event created")
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
             except Exception:
                 findLongLat(serializer)
