@@ -17,6 +17,7 @@ function Map() {
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
+    const [no_event_text, setNo_event_text]=useState("");
     const google=window.google;
 
 
@@ -26,15 +27,18 @@ function Map() {
     setEvents(result.data);
     console.log(result);
     //events=result.data;
-    }).catch(error=>{
-    console.log(error)
-    alert('Some error occurred');
+    }).catch(function (error){
+            if (error.response){
+                if(error.response.status===404){
+                    setNo_event_text("You have no events on current date to display.")
+                }
+            }
     });
 
     const listener = e => {
-    if (e.key === "Escape") {
-    setSelectedPark(null);
-    }
+        if (e.key === "Escape") {
+        setSelectedPark(null);
+        }
     };
     window.addEventListener("keydown", listener);
     return () => {

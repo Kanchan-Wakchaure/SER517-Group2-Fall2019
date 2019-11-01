@@ -128,7 +128,7 @@ def EventList(request):
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today)
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         if serializer.data==[]:
-            return Response({'data': serializer.data}, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
