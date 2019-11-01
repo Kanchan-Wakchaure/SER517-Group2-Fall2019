@@ -123,8 +123,12 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
+        today = date.today()
+        print("Today:",today)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today)
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
+        if serializer.data==[]:
+            return Response({'data': serializer.data}, status=status.HTTP_204_NO_CONTENT)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
