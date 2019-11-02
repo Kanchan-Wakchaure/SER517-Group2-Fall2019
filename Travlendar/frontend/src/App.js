@@ -26,7 +26,7 @@ class App extends Component{
       return (
       <div>
         <Header {...this.props}/>
-        <div className="cover" >
+        <div className="cover">
             <BrowserRouter>
                 <div>
                     <Switch>
