@@ -18,6 +18,7 @@ function Map() {
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
     const [no_event_text, setNo_event_text]=useState("");
+    const [show, setShow]=useState(false);
     const google=window.google;
 
 
@@ -26,11 +27,13 @@ function Map() {
     eventService.getEvents().then(function (result) {
     setEvents(result.data);
     console.log(result);
+    setShow(true);
     //events=result.data;
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    setNo_event_text("You have no events on current date to display.")
+                    setNo_event_text("You have no events on today's date to display. Please add some events on today's date.")
+                    setShow(false);
                 }
             }
     });
@@ -86,59 +89,69 @@ function Map() {
     if (error) {
     return <h1 class="error">one of the location unreachable</h1>;
     }
-    return (
-    <GoogleMap
-    defaultZoom={10}
-    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-    defaultOptions={{ styles: mapStyles }}
-    >
 
-    {
-    directions && (
-    <DirectionsRenderer
-     directions={directions} />
-    )
+    if(show==true){
+
+        return (
+            <GoogleMap
+                defaultZoom={10}
+                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                defaultOptions={{ styles: mapStyles }}
+            >
+            {
+                directions && (
+                <DirectionsRenderer
+                 directions={directions} />
+                )
+
+            }
+
+            {events.map(park => (
+                <div
+                    key={park.id}
+                    position={{
+                        lat: parseFloat(park.lat),
+                        lng: parseFloat(park.long)
+                    }}
+                    onClick={() => {
+                        setSelectedPark(park);
+                    }}
+
+                />
+            ))}
+
+            {selectedPark && (
+                <InfoWindow
+                onCloseClick={() => {
+                setSelectedPark(null);
+            }}
+
+            position={{
+                lat: parseFloat(selectedPark.lat),
+                lng: parseFloat(selectedPark.long)
+            }}
+            >
+            <div>
+                <h2>{selectedPark.title}</h2>
+                <p>{selectedPark.destination}</p>
+                <p>{selectedPark.title}</p>
+                <p>{selectedPark.time}</p>
+            </div>
+                </InfoWindow>
+            )}
+                </GoogleMap>
+            );
 
     }
+    else{
+        return(
+            
+             <div>
+                <h1 className="no_event">{no_event_text}</h1>
+             </div>
+        )
+    }
 
-    {events.map(park => (
-    <div
-        key={park.id}
-        position={{
-        lat: parseFloat(park.lat),
-        lng: parseFloat(park.long)
-        }}
-        onClick={() => {
-        setSelectedPark(park);
-        }}
-
-    />
-    ))}
-
-
-
-
-    {selectedPark && (
-    <InfoWindow
-    onCloseClick={() => {
-    setSelectedPark(null);
-    }}
-
-    position={{
-    lat: parseFloat(selectedPark.lat),
-    lng: parseFloat(selectedPark.long)
-    }}
-    >
-    <div>
-    <h2>{selectedPark.title}</h2>
-    <p>{selectedPark.destination}</p>
-    <p>{selectedPark.title}</p>
-    <p>{selectedPark.time}</p>
-    </div>
-    </InfoWindow>
-    )}
-    </GoogleMap>
-    );
 }
 
 const MapWrapped = withScriptjs(withGoogleMap(Map));
@@ -151,19 +164,22 @@ export default function MAP() {
   }
   else
   {
-  return (
-    <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
-      <MapWrapped
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
-          process.env.REACT_APP_GOOGLE_KEY
-        }`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-      />
-    </div>
-  );
-      }
+
+        return (
+        <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+          <MapWrapped
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+              process.env.REACT_APP_GOOGLE_KEY
+            }`}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+        </div>
+        );
+
+
+   }
 }
 
 //directionsService taken from https://github.com/tomchentw/react-google-maps/blob/master/src/components/DirectionsRenderer.md

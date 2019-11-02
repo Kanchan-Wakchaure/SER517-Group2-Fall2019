@@ -13,10 +13,7 @@ class ListEvent extends Component{
         this.state  = {
             events: [],
             no_event_text:" ",
-            description:" ",
-            time:" ",
-            duration:" ",
-            location:" "
+            show:false
 
         };
         //this.nextPage  =  this.nextPage.bind(this);
@@ -28,19 +25,13 @@ class ListEvent extends Component{
         eventService.getEvents().then(function (result) {
             //console.log("status:",result.status)
             self.setState({ events:  result.data})
-            self.setState({ description:"Event Description"})
-            self.setState({ time:"Time"})
-            self.setState({ duration:"Duration"})
-            self.setState({ location:"Location"})
+            self.setState({show:true})
 
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    self.setState({no_event_text:"You have no events on current date to display."})
-                    self.setState({ description:""})
-                    self.setState({ time:""})
-                    self.setState({ duration:""})
-                    self.setState({ location:""})
+                    self.setState({no_event_text:"You have no events on today's date to display. Please add some events on today's date."})
+                    self.setState({show:false})
 
                 }
 
@@ -56,27 +47,44 @@ class ListEvent extends Component{
         }
         else
         {
-            return (
+
+            if(this.state.show){
+
+                return (
                 <div className="event_list">
-                <div><h1 className="no_event">{this.state.no_event_text}</h1></div>
-                <ul>
-                    <li>
-                        <div>{this.state.description}</div>
-                        <div>{this.state.time}</div>
-                        <div>{this.state.duration}</div>
-                        <div>{this.state.location}</div>
-                    </li>
-                    {this.state.events.map(e=>
-                        <li key={e.id} >
-                            <div>{e.title}</div>
-                            <div className="event_list_date">{e.time}</div>
-                            <div>{e.duration}</div>
-                            <div>{e.destination}</div>
+                    <ul>
+                        <li>
+                            <div>Description</div>
+                            <div>Time</div>
+                            <div>Duration</div>
+                            <div>Location</div>
                         </li>
-                    )}
-                </ul>
+                        {this.state.events.map(e=>
+                            <li key={e.id} >
+                                <div>{e.title}</div>
+                                <div className="event_list_date">{e.time}</div>
+                                <div>{e.duration}</div>
+                                <div>{e.destination}</div>
+                            </li>
+                        )}
+                    </ul>
                 </div>
-            );
+                );
+
+
+            }
+            else{
+
+                return(
+                    <div>
+                        <h1 className="no_event">{this.state.no_event_text}</h1>
+                    </div>
+
+                )
+
+
+            }
+
         }   
     }
 }

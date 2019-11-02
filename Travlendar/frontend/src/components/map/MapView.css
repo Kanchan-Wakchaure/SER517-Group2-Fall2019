@@ -12,3 +12,7 @@ background-color: red;
 .cover{
 overflow: hidden;
 }
+
+.no_event{
+    text-align:center;
+}
