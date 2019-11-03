@@ -171,7 +171,7 @@ def Email(request):
 
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-30"
 
         od = serializer.data
         for i in od:
@@ -184,11 +184,13 @@ def Email(request):
                 subject = i['title']
                 content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
                 #print(str(request.user))
-                send_email(request.user, subject, content )
+                receiver = str(request.user)
+
+                send_email(receiver, subject, content )
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
-
+        print(request.user)
         return HttpResponse("Got Email Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -212,7 +214,7 @@ def Text(request):
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
-        d = "2019-10-25"
+        d = "2019-10-30"
 
         od = serializer.data
         for i in od:
