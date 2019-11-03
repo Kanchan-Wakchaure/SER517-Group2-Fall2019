@@ -145,11 +145,20 @@ function Map() {
     }
     else{
         return(
-            
-             <div>
-                <h1 className="no_event">{no_event_text}</h1>
-             </div>
+                <div>
+                    <div>
+                         <h1  className="no_event" >{no_event_text}</h1>
+                         <br/>
+                     </div>
+                    <GoogleMap
+                    defaultZoom={10}
+                    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                    defaultOptions={{ styles: mapStyles }}
+                    >
+                    </GoogleMap>
+                 </div>
         )
+
     }
 
 }

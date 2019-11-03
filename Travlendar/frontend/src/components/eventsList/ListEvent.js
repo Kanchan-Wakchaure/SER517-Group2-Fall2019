@@ -16,8 +16,7 @@ class ListEvent extends Component{
             show:false
 
         };
-        //this.nextPage  =  this.nextPage.bind(this);
-        //this.handleDelete  =  this.handleDelete.bind(this);
+
     }
     componentDidMount() {
     //
@@ -71,7 +70,6 @@ class ListEvent extends Component{
                 </div>
                 );
 
-
             }
             else{
 
@@ -81,7 +79,6 @@ class ListEvent extends Component{
                     </div>
 
                 )
-
 
             }
 
