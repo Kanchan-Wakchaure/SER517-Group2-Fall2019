@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from .models import Event
 from .serializers import EventSerializer
@@ -29,6 +30,7 @@ def EventList(request):
     if request.method == 'POST':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
+        print("USER:   ",request.user)
         if serializer.is_valid():
             serializer.validated_data["creator"] = b
             min_diff = 1000000000000.00
@@ -51,13 +53,15 @@ def EventList(request):
             #Checking if there is any conflict while creating new event with previous event
             try:
                 prev_event_time=datetime.combine(date.min,prev_event.time ) - datetime.min
+
                 #if abs(float((prev_event_time+prev_event.duration).total_seconds())) < abs(curr_time_delta):
                 findLongLat(serializer)
                 serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
                 '''else:
-                  return Response(status=status.HTTP_400_BAD_REQUEST)'''
+                  return Response(status=status.HTTP_406_NOT_ACCEPTABLE)'''
+
             except Exception:
                 findLongLat(serializer)
                 serializer.save()
