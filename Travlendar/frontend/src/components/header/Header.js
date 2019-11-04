@@ -8,6 +8,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 /*
     Author: Kanchan Wakchaure
@@ -17,8 +19,26 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 */
 
 class Header extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+          anchorEl: null
+        };
+      }
 
-  render() {
+
+      handleClick = (event) => {
+        this.setState({
+          anchorEl: event.currentTarget,
+        })
+      };
+
+      handleClose = () => {
+        this.setState({
+          anchorEl: null,
+        })
+      };
+   render() {
       return (
         <div className="root">
               {
@@ -44,8 +64,23 @@ class Header extends React.Component{
                       <Button color="inherit" href="/CreateEvent">Add Event</Button>
                       <Button color="inherit" href="/listevent">Agenda</Button>   
                       <Button color="inherit"  href="/map">View Events</Button>
-                      <Button color="inherit" href="/textalert">Send Text Alert</Button>
-                      <Button color="inherit" href="/emailalert">Send Email Alert</Button>                
+                      <Button color="inherit" className="menu_button" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
+                      Alert
+                      </Button>
+                      <Menu
+                      id="simple-menu"
+                      anchorEl={this.state.anchorEl}
+                      keepMounted
+                      open={Boolean(this.state.anchorEl)}
+                      onClose={this.handleClose}
+                      >
+                      <MenuItem>
+                        <Button color="inherit" href="/textalert">Send Text Alert</Button>
+                      </MenuItem>
+                      <MenuItem>
+                        <Button color="inherit" href="/emailalert">Send Email Alert</Button>
+                      </MenuItem>
+                      </Menu>
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
                     </span>)
                     :
