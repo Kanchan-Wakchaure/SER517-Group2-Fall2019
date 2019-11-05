@@ -123,7 +123,7 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        today = date.today()
+        today = DATE
         print("Today:",today)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today)
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
