@@ -138,18 +138,41 @@ def findLongLat(serializer):
     # reading map key from text file
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
+    '''
+        with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
         line = f.readline()
         REACT_APP_GOOGLE_KEY = f.readline().strip()
-    api_key = REACT_APP_GOOGLE_KEY
-    print("api key",api_key)
+        api_key = REACT_APP_GOOGLE_KEY
+        print("api key",api_key)
+    
+    '''
     api_response = requests.get(
-        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, api_key))
+        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, get_api_key()))
     api_response_dict = api_response.json()
     # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
     if api_response_dict['status'] == 'OK':
         serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
+
+def get_api_key():
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
+        line = f.readline()
+        REACT_APP_GOOGLE_KEY = f.readline().strip()
+    api_key = REACT_APP_GOOGLE_KEY
+    print("api key",api_key)
+    return api_key
+
+def reachable(A,B):
+    A=" "
+    B=" "
+    url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
+    r = requests.get(url + 'origins = ' + A +
+                     '&destinations = ' + B +
+                     '&key = ' + get_api_key())
+    print("distance:",r.rows[0].duration.value)
+
+
 
 
 @authentication_classes([TokenAuthentication])
