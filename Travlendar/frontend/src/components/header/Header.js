@@ -45,7 +45,8 @@ class Header extends React.Component{
                       <Button color="inherit" href="/listevent">Agenda</Button>   
                       <Button color="inherit"  href="/map">View Events</Button>
                       <Button color="inherit" href="/textalert">Send Text Alert</Button>
-                      <Button color="inherit" href="/emailalert">Send Email Alert</Button>                
+                      <Button color="inherit" href="/emailalert">Send Email Alert</Button>
+                      <Button color="inherit" href="/about">About Us</Button>
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
                     </span>)
                     :
@@ -53,6 +54,7 @@ class Header extends React.Component{
                       <span>
                          <Button color="inherit" href="/Login">Login</Button>
                          <Button color="inherit" href="/Signup">Sign Up</Button>
+                         <Button color="inherit" href="/about">About Us</Button>
                       </span>
                     )
                 }
