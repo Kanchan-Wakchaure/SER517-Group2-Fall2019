@@ -148,14 +148,14 @@ export default function MAP() {
   else
   {
   return (
-    <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+    <div className="map">
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY
         }`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
+        loadingElement={<div style={{ height: '100%'}}/>}
+        containerElement={<div style={{ height: '100%' }}  />}
+        mapElement={<div style={{ height: '100%' }} />}
       />
     </div>
   );
