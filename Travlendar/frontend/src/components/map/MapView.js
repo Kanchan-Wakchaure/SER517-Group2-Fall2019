@@ -206,8 +206,9 @@ export default function MAP() {
   else
   {
 
+
         return (
-        <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+        <div className="map"
           <MapWrapped
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
               process.env.REACT_APP_GOOGLE_KEY
@@ -221,6 +222,8 @@ export default function MAP() {
 
 
    }
+
+
 }
 
 //directionsService taken from https://github.com/tomchentw/react-google-maps/blob/master/src/components/DirectionsRenderer.md
