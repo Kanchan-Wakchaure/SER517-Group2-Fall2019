@@ -44,10 +44,10 @@ class Header extends React.Component{
               {
                     this.props.loading ?
 
-                    <CircularProgress color="secondary" 
-                    style={{ 
+                    <CircularProgress color="secondary"
+                    style={{
                       align: 'center'}}/>
-                    
+
                     :
           <AppBar position="fixed" style = {{height: '50px'}}>
             <Toolbar style={{height: '20px'}}>
@@ -59,12 +59,12 @@ class Header extends React.Component{
               <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
                 <HomeIcon/>
               </IconButton>
-              
+
                 {
                     this.props.isAuthenticated ?
                     (<span>
                       <Button color="inherit" href="/CreateEvent">Add Event</Button>
-                      <Button color="inherit" href="/listevent">Agenda</Button>   
+                      <Button color="inherit" href="/listevent">Agenda</Button>
                       <Button color="inherit"  href="/map">View Events</Button>
                       <Button color="inherit" className="menu_button" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
                       Alert

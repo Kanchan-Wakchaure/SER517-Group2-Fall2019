@@ -14,6 +14,7 @@ function Map() {
 
   const [selectedPark, setSelectedPark] = useState(null);
   const [events, setEvents]=useState([]);
+  const [no_event_text, setNo_event_text]=useState(" ");
 
 
   const lat = 33.4255;
@@ -24,9 +25,13 @@ function Map() {
     eventService.getEvents().then(function (result) {
         setEvents(result.data);
         console.log(result);
-        }).catch(()=>{
-          alert('Some error occurred');
-        });
+        }).catch(function (error){
+            if (error.response){
+                if(error.response.status===404){
+                    setNo_event_text("You have no events on current date to display.")
+                }
+            }
+    });
     const listener = e => {
       if (e.key === "Escape") {
         setSelectedPark(null);
