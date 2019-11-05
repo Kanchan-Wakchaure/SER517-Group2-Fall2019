@@ -22,6 +22,12 @@ import Box from '@material-ui/core/Box';
 import React from 'react';
 
 import './About.css';
+import namratha from './images/namratha.png';
+import kanchan from './images/kanchan.jpg';
+import mounika from './images/mounika.jpg';
+import kaustuv from './images/kaustuv.jpg';
+import raisa from './images/raisa.jpg';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -77,32 +83,37 @@ const useStyles = makeStyles(theme => ({
 const tiers = [
   {
     title: 'Kanchan Wakchaure',
-    img: '0',
+    img: kanchan,
     buttonText: 'View bio',
+    buttonLink: 'https://www.linkedin.com/in/kanchan-wakchaure-7822238a/',
     buttonVariant: 'outlined'
   },
   {
     title: 'Namratha Olety Venkatesh',
-    img: '0',
+    img: namratha,
     buttonText: 'View bio',
+    buttonLink: 'https://www.linkedin.com/in/namrathaov/',
     buttonVariant: 'outlined'
   },
   {
     title: 'Vijaya Mounika Gadde',
-    img: '0',
+    img: mounika,
     buttonText: 'View bio',
+    buttonLink: 'https://www.linkedin.com/in/mounika-gadde/',
     buttonVariant: 'outlined'
   },
   {
     title: 'Kaustuv Deolal',
-    img: '0',
+    img: kaustuv,
     buttonText: 'View bio',
+    buttonLink: 'https://www.linkedin.com/in/kaustuv16/',
     buttonVariant: 'outlined'
   },
   {
     title: 'Raisa Khatun',
-    img: '0',
+    img: raisa,
     buttonText: 'View bio',
+    buttonLink: 'https://www.linkedin.com/in/raisa-khatun/',
     buttonVariant: 'outlined'
   },
 ];
@@ -151,13 +162,14 @@ export default function About() {
                 />
                 <CardContent>
                   <div className={classes.cardPricing}>
-                    <Typography variant="h6" color="textSecondary">
-                      <img src={tier.img}/>
-                    </Typography>
+                      <img src={tier.img} style={{
+     width: '300px',
+     height: '200px',
+  }}/>
                   </div>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary">
+                  <Button fullWidth variant={tier.buttonVariant} color="primary" href={tier.buttonLink}>
                     {tier.buttonText}
                   </Button>
                 </CardActions>
