@@ -51,9 +51,11 @@ class Header extends React.Component{
                     :
           <AppBar position="fixed" style = {{height: '50px'}}>
             <Toolbar style={{height: '20px'}}>
+             <Button color="inherit" href="/Homepage">
               <Typography variant="h6" className="title">
                 Travlendar
               </Typography>
+              </Button>
               <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
                 <HomeIcon/>
               </IconButton>
