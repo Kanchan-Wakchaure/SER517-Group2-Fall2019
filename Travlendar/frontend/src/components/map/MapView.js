@@ -20,6 +20,7 @@ function Map() {
     const [no_event_text, setNo_event_text]=useState("");
     const [show, setShow]=useState(false);
     const google=window.google;
+    let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 
     useEffect(() => {
@@ -134,10 +135,11 @@ function Map() {
             }
 
             {
-            events.map(park => (
+            events.map((park,i) => (
                 <Marker
                     key={park.id}
-                    defaultLabel="B"
+                    defaultLabel={labels[i]}
+                    //defaultIcon={park.id.toString()}
                     position={{
                         lat: parseFloat(park.lat),
                         lng: parseFloat(park.long)
@@ -147,7 +149,8 @@ function Map() {
                     }}
 
                 />
-            ))}
+            )
+            )}
 
             {selectedPark && (
                 <InfoWindow
