@@ -60,7 +60,7 @@ function Map() {
         console.log("Events",events);
 
         const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-        const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
+        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
 
         const directionsService = new google.maps.DirectionsService();
 
@@ -91,6 +91,18 @@ function Map() {
     }
 
     if(show==true){
+    let originMarker = null;
+    let i=0;
+    originMarker = (
+        <Marker
+          defaultLabel="HOME"
+          defaultIcon={null}
+          position={{
+            lat: 33.377210,
+            lng: -111.908560
+          }}
+        />
+      );
 
         return (
             <GoogleMap
@@ -98,17 +110,34 @@ function Map() {
                 defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
                 defaultOptions={{ styles: mapStyles }}
             >
+            {originMarker}
             {
                 directions && (
                 <DirectionsRenderer
-                 directions={directions} />
+                 directions={directions}
+                 options={{
+                 /*
+                    polylineOptions: {
+                    storkeColor: "#2249a3",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 4
+                    },
+                    preserveViewport: true,
+                    */
+                    suppressMarkers: true,
+
+                  }}
+
+                 />
                 )
 
             }
 
-            {events.map(park => (
-                <div
+            {
+            events.map(park => (
+                <Marker
                     key={park.id}
+                    defaultLabel="B"
                     position={{
                         lat: parseFloat(park.lat),
                         lng: parseFloat(park.long)
