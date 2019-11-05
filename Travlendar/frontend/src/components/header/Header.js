@@ -83,6 +83,7 @@ class Header extends React.Component{
                         <Button color="inherit" href="/emailalert">Send Email Alert</Button>
                       </MenuItem>
                       </Menu>
+                      <Button color="inherit" href="/about">About Us</Button>
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
                     </span>)
                     :
@@ -90,6 +91,7 @@ class Header extends React.Component{
                       <span>
                          <Button color="inherit" href="/Login">Login</Button>
                          <Button color="inherit" href="/Signup">Sign Up</Button>
+                         <Button color="inherit" href="/about">About Us</Button>
                       </span>
                     )
                 }
