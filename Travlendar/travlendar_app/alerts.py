@@ -81,4 +81,9 @@ def send_email(receiver, subject, content, email_list):
 def send_text(phn, content):
 
     client = Client(ACC_SID, AUTH)
+
+    print(phn)
+
+    phn = phn[0]
+
     client.messages.create(to=phn, from_= TWILIO_NUMBER, body= content)

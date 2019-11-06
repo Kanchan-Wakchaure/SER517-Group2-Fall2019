@@ -231,6 +231,7 @@ def Text(request):
 
 
     if request.method == 'GET':
+
         print("TEXT")
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
@@ -252,11 +253,20 @@ def Text(request):
             if i['date'] == DATE:
 
                 
+                phn_list = [PHN]
+
+                users_dict_raw = i['notifyUsers']
+
+                if users_dict_raw != '[]':
+
+                    for e in eval(users_dict_raw):
+
+                        phn_list.append(e['phone'])
 
                 subject = i['title']
                 content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_text(PHN, content )
+                send_text(phn_list, content )
 
 
                 
