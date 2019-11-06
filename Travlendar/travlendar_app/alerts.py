@@ -23,6 +23,8 @@ with open(os.path.join(BASE_DIR, "twilio.txt")) as f:
 
 def send_email(receiver, subject, content, email_list):
 
+    sg = SendGridAPIClient(SENDGRID_API_KEY)
+
     if email_list == '[]':
 
 
@@ -34,7 +36,7 @@ def send_email(receiver, subject, content, email_list):
         print(message)
         try:
 
-            sg = SendGridAPIClient(SENDGRID_API_KEY)
+           
 
             print(SENDGRID_API_KEY)
 
@@ -44,13 +46,24 @@ def send_email(receiver, subject, content, email_list):
             print(response.headers)
 
         except Exception as e:
-            print("KAJA")
+            
             print(e)
     else:
 
-        print('in receiver')
-        print(receiver)
+        
+        try:
 
+            #receiver logged in 
+
+            message = Mail( from_email=SENDER, to_emails=receiver, subject=subject, html_content=content)
+            response = sg.send(message)
+
+        except Exception as e:
+
+            print(e)
+
+
+        #receiver as in attendes
         for receiver in email_list:
 
 
@@ -64,17 +77,13 @@ def send_email(receiver, subject, content, email_list):
         
             try:
 
-                sg = SendGridAPIClient(SENDGRID_API_KEY)
-
-                print(SENDGRID_API_KEY)
-
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)
                 print(response.headers)
 
             except Exception as e:
-                print("KAJA")
+                
                 print(e)
 
 
