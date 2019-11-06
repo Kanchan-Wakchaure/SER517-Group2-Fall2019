@@ -3,6 +3,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import *
 from twilio.rest import Client
 import datetime
+from .getdate import DATE , TIME
 
 
 TWILIO_NUMBER = '+19139560188'
@@ -28,10 +29,11 @@ def send_email(receiver, subject, content, email_list, dt_time):
 
     date_time_obj = datetime.datetime.strptime(dt_time, '%Y-%m-%d %H:%M:%S')
     date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 5)
-
-
     time_stamp = int(date_time_obj.strftime("%s"))
-    print(email_list)
+    
+    current_dt = datetime.datetime.strptime(DATE + " " + TIME, '%Y-%m-%d %H:%M:%S')
+    current_timestamp = int(current_dt.strftime("%s"))
+
 
     if email_list == []:
 
@@ -43,17 +45,19 @@ def send_email(receiver, subject, content, email_list, dt_time):
             subject=subject,
             html_content=content)
 
+
         message.send_at = SendAt(time_stamp, p=0)
         print(message)
         print("activated")
+        
         try:
 
-            print(SENDGRID_API_KEY)
+            if time_stamp > current_timestamp:
 
-            response = sg.send(message)
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
 
         except Exception as e:
             
@@ -79,10 +83,12 @@ def send_email(receiver, subject, content, email_list, dt_time):
         
             try:
 
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
+                if time_stamp > current_timestamp:
+
+                    response = sg.send(message)
+                    print(response.status_code)
+                    print(response.body)
+                    print(response.headers)
 
             except Exception as e:
                 
