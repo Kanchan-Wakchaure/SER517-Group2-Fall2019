@@ -1,7 +1,8 @@
 import os
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import *
 from twilio.rest import Client
+import datetime
 
 
 TWILIO_NUMBER = '+19139560188'
@@ -21,22 +22,31 @@ with open(os.path.join(BASE_DIR, "twilio.txt")) as f:
     AUTH = creds[1]
 
 
-def send_email(receiver, subject, content, email_list):
+def send_email(receiver, subject, content, email_list, dt_time):
 
     sg = SendGridAPIClient(SENDGRID_API_KEY)
 
-    if email_list == '[]':
+    date_time_obj = datetime.datetime.strptime(dt_time, '%Y-%m-%d %H:%M:%S')
+    date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 5)
 
+
+    time_stamp = int(date_time_obj.strftime("%s"))
+    print(email_list)
+
+    if email_list == []:
+
+        
 
         message = Mail(
             from_email=SENDER,
             to_emails=receiver,
             subject=subject,
             html_content=content)
-        print(message)
-        try:
 
-           
+        message.send_at = SendAt(time_stamp, p=0)
+        print(message)
+        print("activated")
+        try:
 
             print(SENDGRID_API_KEY)
 
@@ -50,28 +60,20 @@ def send_email(receiver, subject, content, email_list):
             print(e)
     else:
 
+
         
-        try:
+        email_list.append(receiver)
 
-            #receiver logged in 
-
-            message = Mail( from_email=SENDER, to_emails=receiver, subject=subject, html_content=content)
-            response = sg.send(message)
-
-        except Exception as e:
-
-            print(e)
-
-
-        #receiver as in attendes
-        for receiver in email_list:
+        for rcv in email_list:
 
 
             message = Mail(
             from_email=SENDER,
-            to_emails=receiver,
+            to_emails=rcv,
             subject=subject,
             html_content=content)
+
+            message.send_at = SendAt(time_stamp, p=0)
             
             print(message)
         
@@ -86,7 +88,6 @@ def send_email(receiver, subject, content, email_list):
                 
                 print(e)
 
-
 def send_text(phn, content):
 
     client = Client(ACC_SID, AUTH)
@@ -96,3 +97,7 @@ def send_text(phn, content):
     phn = phn[0]
 
     client.messages.create(to=phn, from_= TWILIO_NUMBER, body= content)
+
+
+
+

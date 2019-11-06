@@ -16,7 +16,6 @@ import os
 from .alerts import send_email, send_text
 from django.apps import apps
 from .getdate import DATE, TIME
-
 from django.utils import timezone
 
 
@@ -210,9 +209,9 @@ def Email(request):
 
 
 
-                
-                
-                send_email(receiver, subject, content , email_list)
+                dt_time = DATE + " " + i['time']
+            
+                send_email(receiver, subject, content , email_list, dt_time)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
