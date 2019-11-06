@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from datetime import datetime, date, time
+from datetime import datetime
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
@@ -15,7 +15,11 @@ import requests
 import os
 from .alerts import send_email, send_text
 from django.apps import apps
-from .getdate import DATE , TIME
+from .getdate import DATE, TIME
+
+from django.utils import timezone
+
+
 
 
 
@@ -123,7 +127,10 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
+        
         today = DATE
+
+        
         print("Today:",today)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today)
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
@@ -152,6 +159,7 @@ def findLongLat(serializer):
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
 
 
+
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
@@ -172,11 +180,15 @@ def Email(request):
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
         
+       
 
         od = serializer.data
         for i in od:
-            print(i['date'])
+
             if i['date'] == DATE:
+
+                
+
                 print(i['title'])
                 print(i['time'])
                 print(i['destination'])
@@ -186,7 +198,21 @@ def Email(request):
                 #print(str(request.user))
                 receiver = str(request.user)
 
-                send_email(receiver, subject, content )
+                email_list = []
+
+                users_dict_raw = i['notifyUsers']
+                print(users_dict_raw)
+                if users_dict_raw != '[]':
+
+                    for e in eval(users_dict_raw):
+
+                        email_list.append(e['email'])
+
+
+
+                
+                
+                send_email(receiver, subject, content , email_list)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -199,6 +225,10 @@ def Email(request):
 @api_view(['GET'])
 def Text(request):
     PHN = '+14808592874'
+
+
+    
+
 
     if request.method == 'GET':
         print("TEXT")

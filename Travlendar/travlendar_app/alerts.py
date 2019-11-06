@@ -21,28 +21,62 @@ with open(os.path.join(BASE_DIR, "twilio.txt")) as f:
     AUTH = creds[1]
 
 
-def send_email(receiver, subject, content):
+def send_email(receiver, subject, content, email_list):
 
-    message = Mail(
-        from_email=SENDER,
-        to_emails=receiver,
-        subject=subject,
-        html_content=content)
-    print(message)
-    try:
+    if email_list == '[]':
 
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
 
-        print(SENDGRID_API_KEY)
+        message = Mail(
+            from_email=SENDER,
+            to_emails=receiver,
+            subject=subject,
+            html_content=content)
+        print(message)
+        try:
 
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+            sg = SendGridAPIClient(SENDGRID_API_KEY)
 
-    except Exception as e:
-        print("KAJA")
-        print(e)
+            print(SENDGRID_API_KEY)
+
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+
+        except Exception as e:
+            print("KAJA")
+            print(e)
+    else:
+
+        print('in receiver')
+        print(receiver)
+
+        for receiver in email_list:
+
+
+            message = Mail(
+            from_email=SENDER,
+            to_emails=receiver,
+            subject=subject,
+            html_content=content)
+            
+            print(message)
+        
+            try:
+
+                sg = SendGridAPIClient(SENDGRID_API_KEY)
+
+                print(SENDGRID_API_KEY)
+
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+
+            except Exception as e:
+                print("KAJA")
+                print(e)
+
 
 def send_text(phn, content):
 
