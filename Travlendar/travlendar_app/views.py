@@ -87,11 +87,15 @@ def EventList(request):
                 print("curr_lat: ",serializer.validated_data.get("lat"))
                 print("curr_long: ", serializer.validated_data.get("long"))
                 travel_time= reachable(serializer.validated_data.get("lat"), serializer.validated_data.get("long"),next_event.lat,next_event.long )
+                if travel_time==-1:
+                    return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                if travel_time==-2 or travel_time==-3 or travel_time==-4 :
+                    return Response('unreachable',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 print("travel_time: ", travel_time)
                 if abs(float((curr_time_delta+curr_duration).total_seconds())) >= abs(float((next_event_time).total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
                 if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time) >= abs(float((next_event_time).total_seconds())):
-                    return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+                    return Response('next',status=status.HTTP_412_PRECONDITION_FAILED)
                 #findLongLat(serializer)
                 serializer.save()
                 print("Event created")
@@ -101,31 +105,73 @@ def EventList(request):
             if p==1 and n==0:
                 print("prev event: ", prev_event.time)
                 prev_event_time = datetime.combine(date.min, prev_event.time) - datetime.min
+                travel_time = reachable(prev_event.lat, prev_event.long,serializer.validated_data.get("lat"), serializer.validated_data.get("long"))
+
+                if travel_time==-1:
+                    return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                if travel_time==-2 or travel_time==-3 or travel_time==-4 :
+                    return Response('unreachable',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                 if abs(float((prev_event_time+prev_event.duration).total_seconds())) >= abs(float(curr_time_delta.total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-                else:
-                    #findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+                if abs(float((prev_event_time + prev_event.duration).total_seconds())+travel_time) >= abs(float(curr_time_delta.total_seconds())):
+                    return Response('prev',status=status.HTTP_412_PRECONDITION_FAILED)
+
+                #findLongLat(serializer)
+                serializer.save()
+                print("Event created")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
             # Checking if there is any conflict while creating new event with both previous event and next event
             if p==1 and n==1:
                 print("prev event: ", prev_event.time)
                 print("next event: ", next_event.time)
+                next=0
+                prev=0
                 prev_event_time = datetime.combine(date.min, prev_event.time) - datetime.min
                 next_event_time = datetime.combine(date.min, next_event.time) - datetime.min
+                travel_time_wrt_prev = reachable(prev_event.lat, prev_event.long, serializer.validated_data.get("lat"),
+                                        serializer.validated_data.get("long"))
+                travel_time_wrt_next = reachable(serializer.validated_data.get("lat"), serializer.validated_data.get("long"),
+                                        next_event.lat, next_event.long)
+                if travel_time_wrt_prev == -1:
+                    return Response('API', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                if travel_time_wrt_prev == -2 or travel_time_wrt_prev == -3 or travel_time_wrt_prev == -4:
+                    return Response('unreachable', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                if travel_time_wrt_next == -1:
+                    return Response('API', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                if travel_time_wrt_next == -2 or travel_time_wrt_next == -3 or travel_time_wrt_next == -4:
+                    return Response('unreachable', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                 if abs(float((prev_event_time + prev_event.duration).total_seconds())) >= abs(float(curr_time_delta.total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-                elif abs(float((curr_time_delta + curr_duration).total_seconds())) >= abs(float((next_event_time).total_seconds())):
+
+                if abs(float((curr_time_delta + curr_duration).total_seconds())) >= abs(float((next_event_time).total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-                else:
-                    #findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+                if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time_wrt_next) >= abs(float((next_event_time).total_seconds())):
+                    next=1
+
+                if abs(float((prev_event_time + prev_event.duration).total_seconds()) + travel_time_wrt_prev) >= abs(float(curr_time_delta.total_seconds())):
+                    prev=1
+
+                if next==1 and prev==0:
+                    return Response('next',status=status.HTTP_412_PRECONDITION_FAILED)
+
+                if next==0 and prev==1:
+                    return Response('prev', status=status.HTTP_412_PRECONDITION_FAILED)
+
+                if next == 1 and prev == 1:
+                    return Response('both', status=status.HTTP_412_PRECONDITION_FAILED)
+
+                serializer.save()
+                print("Event created")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
             # If there is no events in db on that day
             if p==0 and n==0:
@@ -186,9 +232,19 @@ def reachable(A_lat,A_long,B_lat,B_long):
     r = requests.get(url)
     print("url: ", url)
     x = r.json()
-    duration=x['rows'][0]['elements'][0]['duration']['value']
-    print("duration:",duration)
-    return duration
+    print('status: ',x['status'])
+    print("data: ",x)
+    if x['status']=='OK':
+        if x['rows'][0]['elements'][0]['status']=='ZERO_RESULTS':
+            return -2
+        if x['rows'][0]['elements'][0]['status']=='NOT_FOUND':
+            return -3
+        if x['rows'][0]['elements'][0]['status']=='MAX_ROUTE_LENGTH_EXCEEDED':
+            return -4
+        duration=x['rows'][0]['elements'][0]['duration']['value']
+        print("duration:",duration)
+        return duration
+    return -1
 
 
 

@@ -84,13 +84,35 @@ class CreateEvent extends React.Component {
 
                 }
                 else if(error.response.status===412){
-                    ref.setState({form_travel_conflict_next:"Travel time between this event and next event is too short."});
-                    ref.setState({form_conflict:""});
-                    ref.setState({form_title_error:""});
-                    ref.setState({form_date_error:""});
-                    ref.setState({form_time_error:""});
-                    ref.setState({form_destination_error:""});
-                    ref.setState({form_success:""});
+                    console.log("text: ",error.response.data);
+                    if(error.response.data==='next'){
+                        ref.setState({form_travel_conflict_next:"Travel time between this event and next event is too short. Cannot insert."});
+                        ref.setState({form_conflict:""});
+                        ref.setState({form_title_error:""});
+                        ref.setState({form_date_error:""});
+                        ref.setState({form_time_error:""});
+                        ref.setState({form_destination_error:""});
+                        ref.setState({form_success:""});
+                    }
+                    if(error.response.data==='prev'){
+                        ref.setState({form_travel_conflict_next:"Travel time between previous event and this event is too short. Cannot insert."});
+                        ref.setState({form_conflict:""});
+                        ref.setState({form_title_error:""});
+                        ref.setState({form_date_error:""});
+                        ref.setState({form_time_error:""});
+                        ref.setState({form_destination_error:""});
+                        ref.setState({form_success:""});
+                    }
+                    if(error.response.data==='both'){
+                        ref.setState({form_travel_conflict_next:"Travel time between both the previous event and next event with respect to this event is too short. Cannot insert."});
+                        ref.setState({form_conflict:""});
+                        ref.setState({form_title_error:""});
+                        ref.setState({form_date_error:""});
+                        ref.setState({form_time_error:""});
+                        ref.setState({form_destination_error:""});
+                        ref.setState({form_success:""});
+                    }
+
 
                 }
                 else if(error.response.status===400){
@@ -128,7 +150,10 @@ class CreateEvent extends React.Component {
 
                 }
                 else if(error.response.status===500){
-                    console.log("Internal server error");
+                    if(error.response.data=='API')
+                    console.log("Internal server error due to google MAP API");
+                    if(error.response.data=='unreachable')
+                    console.log("Address entered is unreachable.");
                 }
                 else{
                     console.log("some other error occurred.")
