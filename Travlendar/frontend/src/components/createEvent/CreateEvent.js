@@ -23,28 +23,7 @@ const eventService=new EventsService();
 class CreateEvent extends React.Component {
 	constructor(props) {
         super(props);
-        this.state = {
-            eventDetails: {
-                title: '',
-                date: '',
-                time:'',
-                duration: '',
-                location: ''
-            },
-            markerPosition: {
-                lat: 33.4255,
-                lng: -111.9400
-            },
-            notifyUsers: [],
-            email: '',
-            phone: '',
-            form_title_error:'',
-            form_date_error:'',
-            form_time_error:'',
-            form_destination_error:'',
-            form_conflict:' ',
-            form_success:' '
-        };
+        this.state = this.getInitialState();
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -65,12 +44,7 @@ class CreateEvent extends React.Component {
             ref.setState({form_success:"You have successfully created an event!"});
             NotificationManager.success("You have successfully created an event!", "Successful");
 
-            ref.setState({form_title_error:""});
-            ref.setState({form_date_error:""});
-            ref.setState({form_time_error:""});
-            ref.setState({form_destination_error:""});
-            ref.setState({form_conflict:""});
-
+            this.setState(this.getInitialState());
         }).catch(function (error) {
             if (error.response) {
 
@@ -127,7 +101,31 @@ class CreateEvent extends React.Component {
             }
         });
       }
-
+    getInitialState() {
+        const initialState = {
+            eventDetails: {
+                title: '',
+                date: '',
+                time:'',
+                duration: '',
+                location: ''
+            },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
+            },
+            notifyUsers: [],
+            email: '',
+            phone: '',
+            form_title_error:'',
+            form_date_error:'',
+            form_time_error:'',
+            form_destination_error:'',
+            form_conflict:' ',
+            form_success:' '
+        };
+        return initialState;
+}
 	handleSubmit(event) {
 	   console.log("this2:", this.state.form_error)
 	   event.preventDefault();
