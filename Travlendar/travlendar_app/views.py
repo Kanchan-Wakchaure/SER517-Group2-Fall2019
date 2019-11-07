@@ -43,6 +43,7 @@ def EventList(request):
             curr_duration = serializer.validated_data.get("duration")
             p=0
             n=0
+            travel_time=0
 
             # Finding the nearest previous event and next event from the event that will be created.
             for item in Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=curr_date):
@@ -85,15 +86,16 @@ def EventList(request):
                 next_event_time = datetime.combine(date.min, next_event.time) - datetime.min
                 print("curr_lat: ",serializer.validated_data.get("lat"))
                 print("curr_long: ", serializer.validated_data.get("long"))
-                reachable(serializer.validated_data.get("lat"), serializer.validated_data.get("long"),next_event.lat,next_event.long )
-
+                travel_time= reachable(serializer.validated_data.get("lat"), serializer.validated_data.get("long"),next_event.lat,next_event.long )
+                print("travel_time: ", travel_time)
                 if abs(float((curr_time_delta+curr_duration).total_seconds())) >= abs(float((next_event_time).total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-                else:
-                    #findLongLat(serializer)
-                    serializer.save()
-                    print("Event created")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time) >= abs(float((next_event_time).total_seconds())):
+                    return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+                #findLongLat(serializer)
+                serializer.save()
+                print("Event created")
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
             # Checking if there is any conflict while creating new event with previous event
             if p==1 and n==0:
@@ -184,7 +186,9 @@ def reachable(A_lat,A_long,B_lat,B_long):
     r = requests.get(url)
     print("url: ", url)
     x = r.json()
-    print("distance:",x['rows'][0]['elements'][0]['duration']['value'])
+    duration=x['rows'][0]['elements'][0]['duration']['value']
+    print("duration:",duration)
+    return duration
 
 
 

@@ -42,7 +42,8 @@ class CreateEvent extends React.Component {
             form_time_error:'',
             form_destination_error:'',
             form_conflict:' ',
-            form_success:' '
+            form_success:' ',
+            form_travel_conflict_next:' '
         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -67,12 +68,24 @@ class CreateEvent extends React.Component {
             ref.setState({form_time_error:""});
             ref.setState({form_destination_error:""});
             ref.setState({form_conflict:""});
+            ref.setState({form_travel_conflict_next:""});
 
         }).catch(function (error) {
             if (error.response) {
 
                 if(error.response.status===406){
                     ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
+                    ref.setState({form_title_error:""});
+                    ref.setState({form_date_error:""});
+                    ref.setState({form_time_error:""});
+                    ref.setState({form_destination_error:""});
+                    ref.setState({form_success:""});
+                    ref.setState({form_travel_conflict_next:""});
+
+                }
+                else if(error.response.status===412){
+                    ref.setState({form_travel_conflict_next:"Travel time between this event and next event is too short."});
+                    ref.setState({form_conflict:""});
                     ref.setState({form_title_error:""});
                     ref.setState({form_date_error:""});
                     ref.setState({form_time_error:""});
@@ -110,6 +123,7 @@ class CreateEvent extends React.Component {
                     ref.setState({form_destination_error:destination_error});
                     ref.setState({form_success:""});
                     ref.setState({form_conflict:""});
+                    ref.setState({form_travel_conflict_next:""});
 
 
                 }
@@ -307,6 +321,7 @@ handleRemoveInput = idx => () => {
                    </form>
                    <div id="form-error">
                     <div>{this.state.form_conflict}</div>
+                    <div>{this.state.form_travel_conflict_next}</div>
                     <div>{this.state.form_title_error}</div>
                     <div>{this.state.form_date_error}</div>
                     <div>{this.state.form_time_error}</div>
