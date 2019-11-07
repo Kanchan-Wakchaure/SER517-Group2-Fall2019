@@ -16,34 +16,14 @@ import Homepage from '../home/Homepage';
 
 import './CreateEvent.css';
 import Map from '../map/Map.js';
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
 
 class CreateEvent extends React.Component {
 	constructor(props) {
         super(props);
-        this.state = {
-            eventDetails: {
-                title: '',
-                date: '',
-                time:'',
-                duration: '',
-                location: ''
-            },
-            markerPosition: {
-                lat: 33.4255,
-                lng: -111.9400
-            },
-            notifyUsers: [],
-            email: '',
-            phone: '',
-            form_title_error:'',
-            form_date_error:'',
-            form_time_error:'',
-            form_destination_error:'',
-            form_conflict:' ',
-            form_success:' '
-        };
+        this.state = this.getInitialState();
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -62,17 +42,15 @@ class CreateEvent extends React.Component {
         }
         ).then((response)=>{
             ref.setState({form_success:"You have successfully created an event!"});
-            ref.setState({form_title_error:""});
-            ref.setState({form_date_error:""});
-            ref.setState({form_time_error:""});
-            ref.setState({form_destination_error:""});
-            ref.setState({form_conflict:""});
+            NotificationManager.success("You have successfully created an event!", "Successful");
 
+            this.setState(this.getInitialState());
         }).catch(function (error) {
             if (error.response) {
 
                 if(error.response.status===406){
                     ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
+                    NotificationManager.warning("This event conflicts with another event. Please check your agenda.")
                     ref.setState({form_title_error:""});
                     ref.setState({form_date_error:""});
                     ref.setState({form_time_error:""});
@@ -101,7 +79,7 @@ class CreateEvent extends React.Component {
                     }
                     if(error.response.data.destination!==undefined){
                         destination_error="Please provide a location";
-                      
+
                     }
 
                     ref.setState({form_title_error:title_error});
@@ -111,19 +89,43 @@ class CreateEvent extends React.Component {
                     ref.setState({form_success:""});
                     ref.setState({form_conflict:""});
 
-
+                    NotificationManager.error("Please re-check event information.", "Error");
                 }
                 else if(error.response.status===500){
-                    console.log("Internal server error");
+                    NotificationManager.error("Unable to create an event at the moment.", "Error");
                 }
                 else{
-                    console.log("some other error occurred.")
+                    NotificationManager.error("Unable to create an event at the moment.", "Error");
                 }
 
             }
         });
       }
-
+    getInitialState() {
+        const initialState = {
+            eventDetails: {
+                title: '',
+                date: '',
+                time:'',
+                duration: '',
+                location: ''
+            },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
+            },
+            notifyUsers: [],
+            email: '',
+            phone: '',
+            form_title_error:'',
+            form_date_error:'',
+            form_time_error:'',
+            form_destination_error:'',
+            form_conflict:' ',
+            form_success:' '
+        };
+        return initialState;
+}
 	handleSubmit(event) {
 	   console.log("this2:", this.state.form_error)
 	   event.preventDefault();
