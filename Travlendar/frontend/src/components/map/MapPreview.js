@@ -9,6 +9,7 @@ import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
+import mapStyles from "./mapStyles/retromapStyles";
 
 const eventService=new EventsService();
 class MapPreview extends React.Component {
@@ -118,7 +119,8 @@ let es = []
     return (
       <GoogleMap
         defaultZoom={10}
-        defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+        defaultCenter={{ lat: 33.168040, lng: -111.635400 }}
+        defaultOptions={{ styles: mapStyles }}
         >
           { this.state.progress && (
             <>
@@ -134,12 +136,14 @@ let es = []
 const MapComponent = withScriptjs(withGoogleMap(MapPreview))
 
 export default () => (
+<div className="map">
   <MapComponent
   googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
           process.env.REACT_APP_GOOGLE_KEY
         }`}
   loadingElement={<div style={{ height: `100%` }} />}
-  containerElement={<div style={{ height: `400px`, width: '500px' }} />}
+  containerElement={<div style={{ height: `100%` }} />}
   mapElement={<div style={{ height: `100%` }} />}
   />
+  </div>
 )
