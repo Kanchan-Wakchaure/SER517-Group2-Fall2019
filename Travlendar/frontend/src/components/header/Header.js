@@ -12,7 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 /*
-    Author: Kanchan Wakchaure
+    Author: Kanchan Wakchaure,Vijaya Mounika Gadde
     Date: 10-04-2019
     Description: Header component for homepage
     References: https://material-ui.com
@@ -63,9 +63,26 @@ class Header extends React.Component{
                 {
                     this.props.isAuthenticated ?
                     (<span>
+                     <Button color="inherit" className="menu_button" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
+                      Event
+                     </Button>
+                     <Menu
+                      id="simple-menu"
+                      anchorEl={this.state.anchorEl}
+                      keepMounted
+                      open={Boolean(this.state.anchorEl)}
+                      onClose={this.handleClose}
+                      >
+                     <MenuItem>
                       <Button color="inherit" href="/CreateEvent">Add Event</Button>
+                     </MenuItem>
+                     <MenuItem>
                       <Button color="inherit" href="/listevent">Agenda</Button>
+                     </MenuItem>
+                     <MenuItem>
                       <Button color="inherit"  href="/map">View Events</Button>
+                     </MenuItem>
+                     </Menu>
                       <Button color="inherit" className="menu_button" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
                       Alert
                       </Button>
