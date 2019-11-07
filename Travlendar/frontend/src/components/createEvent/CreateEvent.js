@@ -16,6 +16,7 @@ import Homepage from '../home/Homepage';
 
 import './CreateEvent.css';
 import Map from '../map/Map.js';
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
 
@@ -62,6 +63,8 @@ class CreateEvent extends React.Component {
         }
         ).then((response)=>{
             ref.setState({form_success:"You have successfully created an event!"});
+            NotificationManager.success("You have successfully created an event!", "Successful");
+
             ref.setState({form_title_error:""});
             ref.setState({form_date_error:""});
             ref.setState({form_time_error:""});
@@ -73,6 +76,7 @@ class CreateEvent extends React.Component {
 
                 if(error.response.status===406){
                     ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
+                    NotificationManager.warning("This event conflicts with another event. Please check your agenda.")
                     ref.setState({form_title_error:""});
                     ref.setState({form_date_error:""});
                     ref.setState({form_time_error:""});
@@ -101,7 +105,7 @@ class CreateEvent extends React.Component {
                     }
                     if(error.response.data.destination!==undefined){
                         destination_error="Please provide a location";
-                      
+
                     }
 
                     ref.setState({form_title_error:title_error});
@@ -111,13 +115,13 @@ class CreateEvent extends React.Component {
                     ref.setState({form_success:""});
                     ref.setState({form_conflict:""});
 
-
+                    NotificationManager.error("Please re-check event information.", "Error");
                 }
                 else if(error.response.status===500){
-                    console.log("Internal server error");
+                    NotificationManager.error("Unable to create an event at the moment.", "Error");
                 }
                 else{
-                    console.log("some other error occurred.")
+                    NotificationManager.error("Unable to create an event at the moment.", "Error");
                 }
 
             }
