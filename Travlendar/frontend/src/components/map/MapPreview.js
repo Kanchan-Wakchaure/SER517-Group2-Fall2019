@@ -86,7 +86,7 @@ let es = []
   }
   console.log(t.path)
 }).catch(()=>{
-          alert('Some error occurred at 32');
+          alert('Create your events for today.');
         }).finally(()=>{
         this.path = this.path.map((coordinates, i, array) => {
       if (i === 0) {
