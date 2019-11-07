@@ -1,13 +1,14 @@
 /*
     Author: Namratha Olety Venkatesh
     Date: 11-01-2019
-    Description: About page for Travlendar
+    Description: Preview events for Map
     References: https://dev.to/zerquix18/
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
 */
 import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
 import EventsService from '../../Services/EventsService';
+import './MapView.css';
 
 const eventService=new EventsService();
 class MapPreview extends React.Component {

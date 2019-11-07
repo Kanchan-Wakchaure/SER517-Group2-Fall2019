@@ -7,10 +7,13 @@ import {
   InfoWindow,
   DirectionsRenderer,
 } from "react-google-maps";
+import Button from '@material-ui/core/Button';
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import Homepage from '../home/Homepage';
+import MapControl from './MapControl';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 function Map() {
     const [events, setEvents]=useState([]);
@@ -111,6 +114,9 @@ function Map() {
                 defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
                 defaultOptions={{ styles: mapStyles }}
             >
+            <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
+     <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+    </MapControl>
             {originMarker}
             {
                 directions && (
