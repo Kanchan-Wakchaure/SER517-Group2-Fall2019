@@ -28,17 +28,23 @@ def send_email(receiver, subject, content, email_list, dt_time):
     sg = SendGridAPIClient(SENDGRID_API_KEY)
 
     date_time_obj = datetime.datetime.strptime(dt_time, '%Y-%m-%d %H:%M:%S')
-    date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 5)
+    date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 1)
     time_stamp = int(date_time_obj.strftime("%s"))
+
+    print(dt_time)
     
     current_dt = datetime.datetime.strptime(DATE + " " + TIME, '%Y-%m-%d %H:%M:%S')
     current_timestamp = int(current_dt.strftime("%s"))
 
+    print(current_dt)
+
+    print(receiver)
+    print(email_list)
 
     if email_list == []:
 
         
-
+        print("in email_list")
         message = Mail(
             from_email=SENDER,
             to_emails=receiver,
@@ -52,12 +58,13 @@ def send_email(receiver, subject, content, email_list, dt_time):
         
         try:
 
-            if time_stamp > current_timestamp:
+            #if time_stamp > current_timestamp:
+            print(" in time_stamp")
 
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
 
         except Exception as e:
             
@@ -83,12 +90,12 @@ def send_email(receiver, subject, content, email_list, dt_time):
         
             try:
 
-                if time_stamp > current_timestamp:
+                #if time_stamp > current_timestamp:
 
-                    response = sg.send(message)
-                    print(response.status_code)
-                    print(response.body)
-                    print(response.headers)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
 
             except Exception as e:
                 
