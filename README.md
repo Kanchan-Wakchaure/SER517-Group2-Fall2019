@@ -60,6 +60,12 @@ Go to the directory Travlendar/frontend:
 
 ```npm i --save redux redux-thunk```
 
+```npm install --save react-notifications```
+
+```npm install --save react-geocode```
+
+```npm install --save react-google-autocomplete```
+
 ```npm start```
 
 Open [http://localhost:3000](http://localhost:3000) to view React Server in the browser.
