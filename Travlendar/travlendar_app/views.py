@@ -15,7 +15,9 @@ import requests, json
 import os
 from .alerts import send_email, send_text
 from django.apps import apps
-from .getdate import DATE , TIME
+from .getdate import DATE, TIME
+from django.utils import timezone
+
 
 
 
@@ -190,7 +192,10 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
+        
         today = DATE
+
+        
         print("Today:",today)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
@@ -213,6 +218,7 @@ def findLongLat(serializer):
     if api_response_dict['status'] == 'OK':
         serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
+
 
 
 # Getting api key from txt file.
@@ -249,6 +255,7 @@ def reachable(A_lat,A_long,B_lat,B_long):
 
 
 # API for Sending email alert
+
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
@@ -269,21 +276,41 @@ def Email(request):
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
         
+       
 
         od = serializer.data
-        for i in od:
-            print(i['date'])
-            if i['date'] == DATE:
-                print(i['title'])
-                print(i['time'])
-                print(i['destination'])
-                
-                subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-                #print(str(request.user))
-                receiver = str(request.user)
+        
+        #for i in od[-1]:
+        i = od[-1]
+            
+        if i['date'] == DATE:
 
-                send_email(receiver, subject, content )
+            
+
+            print(i['title'])
+            print(i['time'])
+            print(i['destination'])
+            
+            subject = i['title']
+            content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+            #print(str(request.user))
+            receiver = str(request.user)
+
+            email_list = []
+
+            users_dict_raw = i['notifyUsers']
+            print(users_dict_raw)
+            if users_dict_raw != []:
+
+                for e in eval(users_dict_raw):
+
+                    email_list.append(e['email'])
+
+
+
+            dt_time = DATE + " " + i['time']
+        
+            send_email(receiver, subject, content , email_list, dt_time)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -299,7 +326,12 @@ def Email(request):
 def Text(request):
     PHN = '+14808592874'
 
+
+    
+
+
     if request.method == 'GET':
+
         print("TEXT")
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
@@ -316,16 +348,26 @@ def Text(request):
         
 
         od = serializer.data
-        for i in od:
+        i = od[-1]
+        #for i in od:
             
-            if i['date'] == DATE:
+        if i['date'] == DATE:
 
-                
+            
+            phn_list = [PHN]
 
-                subject = i['title']
-                content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
+            users_dict_raw = i['notifyUsers']
 
-                send_text(PHN, content )
+            if users_dict_raw != '[]':
+
+                for e in eval(users_dict_raw):
+
+                    phn_list.append(e['phone'])
+
+            subject = i['title']
+            content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
+
+            send_text(phn_list, content )
 
 
                 
