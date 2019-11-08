@@ -90,8 +90,6 @@ class Map extends React.Component {
 
         if(error.response.status===406){
             NotificationManager.warning("This event conflicts with another event. Please check your agenda.","",6000);
-
-
         }
         else if(error.response.status===412){
             console.log("text: ",error.response.data);
@@ -101,11 +99,9 @@ class Map extends React.Component {
             }
             if(error.response.data==='prev'){
                 NotificationManager.warning("Travel time between previous event and this event is too short. Cannot insert."," ",6000);
-
             }
             if(error.response.data==='both'){
                 NotificationManager.warning("Travel time between both the previous event and next event with respect to this event is too short. Cannot insert."," ",6000);
-
             }
 
 
@@ -113,26 +109,17 @@ class Map extends React.Component {
         else if(error.response.status===400){
 
             if(error.response.data.title!==undefined){
-
                 NotificationManager.error("Please provide an event description", "Error");
-
             }
             if(error.response.data.date!==undefined){
-
                 NotificationManager.error("Please provide a date", "Error");
-
             }
             if(error.response.data.time!==undefined){
-
                 NotificationManager.error("Please provide a time", "Error");
-
             }
             if(error.response.data.destination!==undefined){
-
                 NotificationManager.error("Please provide a location", "Error");
             }
-
-
 
         }
         else if(error.response.status===500){
@@ -145,7 +132,6 @@ class Map extends React.Component {
             {
                 NotificationManager.error("Address entered is unreachable.","Error");
             }
-
 
         }
         else{
