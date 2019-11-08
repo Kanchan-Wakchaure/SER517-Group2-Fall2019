@@ -13,7 +13,7 @@ class CreateEvent extends React.Component {
 
   render(){
 		return(
-			<div style={{ marginTop: '-80px' }}>
+			<div style={{ marginTop: '-10px' }} >
 				<Map
 					google={this.props.google}
 					center={{lat: 33.424564, lng: -111.928001}}

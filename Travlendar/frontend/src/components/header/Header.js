@@ -59,7 +59,7 @@ class Header extends React.Component{
                 {
                     this.props.isAuthenticated ?
                     (<span>
-                      <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'800px'}}>
+                      <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'10px'}}>
                         <HomeIcon/>
                       </IconButton>
                       <Button color="inherit" href="/about">About Us</Button>
@@ -88,7 +88,7 @@ class Header extends React.Component{
                     :
                     (
                       <span>
-                        <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'1100px'}}>
+                        <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'10px'}}>
                           <HomeIcon/>
                         </IconButton>
                         <Button color="inherit" href="/about">About Us</Button>

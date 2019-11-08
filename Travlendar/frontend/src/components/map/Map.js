@@ -9,6 +9,7 @@ import Autocomplete from 'react-google-autocomplete';
 import EventsService from '../../Services/EventsService';
 import '../createEvent/CreateEvent.css';
 import { NotificationManager } from 'react-notifications';
+import Container from '@material-ui/core/Container';
 
 /*
     Author: Kanchan Wakchaure
@@ -158,7 +159,7 @@ class Map extends React.Component {
 
 	handleSubmit(event) {
     event.preventDefault();
-      this.handleCreate(this);
+    this.handleCreate(this);
   }
 
   handleInputChange(event, inputPropName) {
@@ -348,17 +349,18 @@ class Map extends React.Component {
                     onDragEnd={ this.onMarkerDragEnd }
                     position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}/>
             <Marker />
-            
+            <br/>
             {/* For Auto complete Search Box */}
             <Autocomplete
               style={{
-                width: '100%',
+                width: '99%',
                 height: '40px',
                 align: 'center',
                 paddingLeft: '5px',
                 paddingRight: '5px',
                 marginTop: '2px',
                 marginBottom: '500px',
+                marginRight: '5px',
                 justify: 'center'
               }}
               onPlaceSelected={ this.onPlaceSelected }
@@ -373,7 +375,8 @@ class Map extends React.Component {
       let map;
       if( this.props.center.lat !== undefined ) {
         map = 
-            <form style={{backgroundColor: '#e8eaf6', marginTop: '30px', marginBottom: '0px'}}>
+        <Container>
+            <form style={{backgroundColor: 'white', marginTop: '30px', marginBottom: '0px'}}>
               <FormGroup>
                 <h2 style={{textAlign: 'center', color: "#3f51b5"}}> <u>CREATE EVENT</u ></h2><br/>
               </FormGroup>
@@ -388,7 +391,7 @@ class Map extends React.Component {
                            onChange = { event => this.handleInputChange(event, 'title') }
                 />
               </FormGroup>
-              <br/>
+              <br/> <br/>
               <FormGroup>
                 <TextField variant="outlined"
                            required
@@ -398,9 +401,10 @@ class Map extends React.Component {
                            name="date"
                            value={this.state.eventDetails.date}
                            style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
+                           InputLabelProps={{ shrink: true }}
                            onChange = { event => this.handleInputChange(event, 'date') }
                   />
-              </FormGroup><br/>
+              </FormGroup><br/><br/>
               <FormGroup>
                 <TextField variant="outlined"
                            required
@@ -410,9 +414,10 @@ class Map extends React.Component {
                            name="time"
                            value={this.state.eventDetails.time}
                            style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
+                           InputLabelProps={{ shrink: true }}
                            onChange = { event => this.handleInputChange(event, 'time') }
                 />
-              </FormGroup><br/>
+              </FormGroup><br/><br/>
               <FormGroup>
                 <TextField variant="outlined"
                            type="number"
@@ -423,7 +428,7 @@ class Map extends React.Component {
                            value={this.state.eventDetails.duration}
                            style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
                            onChange = { event => this.handleInputChange(event, 'duration') }
-                />
+                /><br/>
               </FormGroup><br/>
               <FormGroup>
                 <TextField variant="outlined"
@@ -436,6 +441,7 @@ class Map extends React.Component {
                            style={{paddingLeft: '5px',paddingRight:'5px'}}
                            onChange = { event => this.handleInputChange(event, 'address') }/>
               </FormGroup> <br/>
+              <FormGroup>
               <AsyncMap
                   googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUopytfPOU40AvS9RkEk0SSg1awyNxNqA&libraries=places"
                   loadingElement={
@@ -448,6 +454,7 @@ class Map extends React.Component {
                     <div style={{ height: `100%`, paddingLeft: '5px', paddingRight:'5px'}} />
                   } 
               />
+              </FormGroup>
             <br/><br/><br/>
             <FormGroup>
                 <div>
@@ -480,14 +487,15 @@ class Map extends React.Component {
               </FormGroup>  
               <br/>
             <FormGroup>
-            <div style={{textAlign: 'center'}}> 
-            <Button variant="contained" size="large" color="primary" onClick={this.handleSubmit} > 
+            <div style={{textAlign: 'center', marginLeft: '5px', marginRight: '5px'}}> 
+            <Button fullWidth variant="contained" size="large" color="primary" onClick={this.handleSubmit} > 
               Create Event                       
             </Button>  
             </div>
             </FormGroup>
             <br/>          
             </form>
+            </Container>
       } else {
         map = <div style={{height: this.props.height}} />
       }
