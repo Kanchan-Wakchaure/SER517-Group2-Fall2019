@@ -16,35 +16,16 @@ import Homepage from '../home/Homepage';
 
 import './CreateEvent.css';
 import Map from '../map/Map.js';
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
 
 class CreateEvent extends React.Component {
 	constructor(props) {
         super(props);
-        this.state = {
-            eventDetails: {
-                title: '',
-                date: '',
-                time:'',
-                duration: '',
-                location: ''
-            },
-            markerPosition: {
-                lat: 33.4255,
-                lng: -111.9400
-            },
-            notifyUsers: [],
-            email: '',
-            phone: '',
-            form_title_error:'',
-            form_date_error:'',
-            form_time_error:'',
-            form_destination_error:'',
-            form_conflict:' ',
-            form_success:' ',
-            form_travel_conflict_next:' '
-        };
+
+        this.state = this.getInitialState();
+
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
@@ -62,107 +43,100 @@ class CreateEvent extends React.Component {
             "notifyUsers": JSON.stringify(this.state.notifyUsers)
         }
         ).then((response)=>{
-            ref.setState({form_success:"You have successfully created an event!"});
-            ref.setState({form_title_error:""});
-            ref.setState({form_date_error:""});
-            ref.setState({form_time_error:""});
-            ref.setState({form_destination_error:""});
-            ref.setState({form_conflict:""});
-            ref.setState({form_travel_conflict_next:""});
 
+            NotificationManager.success("You have successfully created an event!", "Successful");
+
+            this.setState(this.getInitialState());
         }).catch(function (error) {
             if (error.response) {
 
                 if(error.response.status===406){
-                    ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
-                    ref.setState({form_title_error:""});
-                    ref.setState({form_date_error:""});
-                    ref.setState({form_time_error:""});
-                    ref.setState({form_destination_error:""});
-                    ref.setState({form_success:""});
-                    ref.setState({form_travel_conflict_next:""});
+                    NotificationManager.warning("This event conflicts with another event. Please check your agenda.","",6000);
+
 
                 }
                 else if(error.response.status===412){
                     console.log("text: ",error.response.data);
                     if(error.response.data==='next'){
-                        ref.setState({form_travel_conflict_next:"Travel time between this event and next event is too short. Cannot insert."});
-                        ref.setState({form_conflict:""});
-                        ref.setState({form_title_error:""});
-                        ref.setState({form_date_error:""});
-                        ref.setState({form_time_error:""});
-                        ref.setState({form_destination_error:""});
-                        ref.setState({form_success:""});
+                        NotificationManager.warning("Travel time between this event and next event is too short. Cannot insert."," ",6000);
+
                     }
                     if(error.response.data==='prev'){
-                        ref.setState({form_travel_conflict_next:"Travel time between previous event and this event is too short. Cannot insert."});
-                        ref.setState({form_conflict:""});
-                        ref.setState({form_title_error:""});
-                        ref.setState({form_date_error:""});
-                        ref.setState({form_time_error:""});
-                        ref.setState({form_destination_error:""});
-                        ref.setState({form_success:""});
+                        NotificationManager.warning("Travel time between previous event and this event is too short. Cannot insert."," ",6000);
+
                     }
                     if(error.response.data==='both'){
-                        ref.setState({form_travel_conflict_next:"Travel time between both the previous event and next event with respect to this event is too short. Cannot insert."});
-                        ref.setState({form_conflict:""});
-                        ref.setState({form_title_error:""});
-                        ref.setState({form_date_error:""});
-                        ref.setState({form_time_error:""});
-                        ref.setState({form_destination_error:""});
-                        ref.setState({form_success:""});
+                        NotificationManager.warning("Travel time between both the previous event and next event with respect to this event is too short. Cannot insert."," ",6000);
+
                     }
 
 
                 }
                 else if(error.response.status===400){
-                    let msg="";
-                    let title_error="";
-                    let date_error="";
-                    let time_error="";
-                    let destination_error="";
-                    console.log("title_error",title_error)
+
                     if(error.response.data.title!==undefined){
-                        title_error="Please provide an event description";
+
+                        NotificationManager.error("Please provide an event description", "Error");
 
                     }
                     if(error.response.data.date!==undefined){
-                        date_error="Please provide a date";
+
+                        NotificationManager.error("Please provide a date", "Error");
 
                     }
                     if(error.response.data.time!==undefined){
-                        time_error="Please provide a time";
+
+                        NotificationManager.error("Please provide a time", "Error");
 
                     }
                     if(error.response.data.destination!==undefined){
-                        destination_error="Please provide a location";
-                      
+
+                        NotificationManager.error("Please provide a location", "Error");
                     }
 
-                    ref.setState({form_title_error:title_error});
-                    ref.setState({form_date_error:date_error});
-                    ref.setState({form_time_error:time_error});
-                    ref.setState({form_destination_error:destination_error});
-                    ref.setState({form_success:""});
-                    ref.setState({form_conflict:""});
-                    ref.setState({form_travel_conflict_next:""});
 
 
                 }
                 else if(error.response.status===500){
-                    if(error.response.data=='API')
-                    console.log("Internal server error due to google MAP API");
+
+                    if(error.response.data=='API'){
+                        NotificationManager.error("Internal server error due to google MAP API","Error");
+                    }
+
                     if(error.response.data=='unreachable')
-                    console.log("Address entered is unreachable.");
+                    {
+                        NotificationManager.error("Address entered is unreachable.","Error");
+                    }
+
+
                 }
                 else{
-                    console.log("some other error occurred.")
+                    NotificationManager.error("Unable to create an event at the moment.", "Error");
                 }
 
             }
         });
       }
+    getInitialState() {
+        const initialState = {
+            eventDetails: {
+                title: '',
+                date: '',
+                time:'',
+                duration: '',
+                location: ''
+            },
+            markerPosition: {
+                lat: 33.4255,
+                lng: -111.9400
+            },
+            notifyUsers: [],
+            email: '',
+            phone: '',
 
+        };
+        return initialState;
+}
 	handleSubmit(event) {
 	   console.log("this2:", this.state.form_error)
 	   event.preventDefault();
@@ -344,15 +318,7 @@ handleRemoveInput = idx => () => {
                            paddingRight:'15px', fontColor: "white"}} onClick={this.handleSubmit} > Create Event </Button>
                    <br/><br/>
                    </form>
-                   <div id="form-error">
-                    <div>{this.state.form_conflict}</div>
-                    <div>{this.state.form_travel_conflict_next}</div>
-                    <div>{this.state.form_title_error}</div>
-                    <div>{this.state.form_date_error}</div>
-                    <div>{this.state.form_time_error}</div>
-                    <div>{this.state.form_destination_error}</div>
-                   </div>
-                   <div id="event-created">{this.state.form_success}</div>
+
                 </div>
                 </div>
             </Container>

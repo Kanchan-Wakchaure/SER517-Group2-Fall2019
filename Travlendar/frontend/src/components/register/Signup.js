@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import './Signup.css';
 import SignupService from '../../Services/SignupService';
+import { NotificationManager } from 'react-notifications';
 
 /*
     Author: Kanchan Wakchaure
@@ -50,9 +51,9 @@ class Signup extends React.Component{
                 "username": this.state.userDetails.email,
             }
         ).then((result)=>{
-          alert("You are registered successfully!");
+          NotificationManager.success("You are registered successfully!", "Successful");
         }).catch(()=>{
-          alert('There was an error! Please re-check your form.');
+          NotificationManager.error('There was an error! Please provide valid email, phone and password.');
         });
 
     }

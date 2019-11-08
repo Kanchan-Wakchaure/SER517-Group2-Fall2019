@@ -6,6 +6,7 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
+import { NotificationManager } from 'react-notifications';
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 
@@ -28,7 +29,7 @@ function Map() {
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    setNo_event_text("You have no events on current date to display.")
+                    NotificationManager.info("You have no events on current date to display.")
                 }
             }
     });
