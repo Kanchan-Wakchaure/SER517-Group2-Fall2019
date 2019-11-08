@@ -58,14 +58,14 @@ const tiers = [
     buttonVariant: 'outlined'
   },
   {
-    title: 'Namratha Olety Venkatesh',
+    title: 'Namratha Olety',
     img: namratha,
     buttonText: 'View bio',
     buttonLink: 'https://www.linkedin.com/in/namrathaov/',
     buttonVariant: 'outlined'
   },
   {
-    title: 'Vijaya Mounika Gadde',
+    title: 'Mounika Gadde',
     img: mounika,
     buttonText: 'View bio',
     buttonLink: 'https://www.linkedin.com/in/mounika-gadde/',
