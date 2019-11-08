@@ -46,13 +46,7 @@ class Map extends React.Component {
             },
             notifyUsers: [],
             email: '',
-            phone: '',
-            form_title_error:'',
-            form_date_error:'',
-            form_time_error:'',
-            form_destination_error:'',
-            form_conflict:' ',
-            form_success:' '
+            phone: ''
         };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -74,12 +68,6 @@ class Map extends React.Component {
         notifyUsers: [],
         email: '',
         phone: '',
-        form_title_error:'',
-        form_date_error:'',
-        form_time_error:'',
-        form_destination_error:'',
-        form_conflict:' ',
-        form_success:' '
     };
     return initialState;
 }
@@ -94,7 +82,6 @@ class Map extends React.Component {
         "notifyUsers": JSON.stringify(this.state.notifyUsers)
       }
     ).then((response)=>{
-      ref.setState({form_success:"You have successfully created an event!"});
       NotificationManager.success("You have successfully created an event!", "Successful");
 
       this.setState(this.getInitialState());
@@ -102,50 +89,64 @@ class Map extends React.Component {
       if (error.response) {
 
         if(error.response.status===406){
-            ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
-            NotificationManager.warning("This event conflicts with another event. Please check your agenda.")
-            ref.setState({form_title_error:""});
-            ref.setState({form_date_error:""});
-            ref.setState({form_time_error:""});
-            ref.setState({form_destination_error:""});
-            ref.setState({form_success:""});
+            NotificationManager.warning("This event conflicts with another event. Please check your agenda.","",6000);
+
+
+        }
+        else if(error.response.status===412){
+            console.log("text: ",error.response.data);
+            if(error.response.data==='next'){
+                NotificationManager.warning("Travel time between this event and next event is too short. Cannot insert."," ",6000);
+
+            }
+            if(error.response.data==='prev'){
+                NotificationManager.warning("Travel time between previous event and this event is too short. Cannot insert."," ",6000);
+
+            }
+            if(error.response.data==='both'){
+                NotificationManager.warning("Travel time between both the previous event and next event with respect to this event is too short. Cannot insert."," ",6000);
+
+            }
+
 
         }
         else if(error.response.status===400){
-            let msg="";
-            let title_error="";
-            let date_error="";
-            let time_error="";
-            let destination_error="";
-            console.log("title_error",title_error)
+
             if(error.response.data.title!==undefined){
-                title_error="Please provide an event description";
+
+                NotificationManager.error("Please provide an event description", "Error");
 
             }
             if(error.response.data.date!==undefined){
-                date_error="Please provide a date";
+
+                NotificationManager.error("Please provide a date", "Error");
 
             }
             if(error.response.data.time!==undefined){
-                time_error="Please provide a time";
+
+                NotificationManager.error("Please provide a time", "Error");
 
             }
             if(error.response.data.destination!==undefined){
-                destination_error="Please provide a location";
 
+                NotificationManager.error("Please provide a location", "Error");
             }
 
-            ref.setState({form_title_error:title_error});
-            ref.setState({form_date_error:date_error});
-            ref.setState({form_time_error:time_error});
-            ref.setState({form_destination_error:destination_error});
-            ref.setState({form_success:""});
-            ref.setState({form_conflict:""});
 
-            NotificationManager.error("Please re-check event information.", "Error");
+
         }
         else if(error.response.status===500){
-            NotificationManager.error("Unable to create an event at the moment.", "Error");
+
+            if(error.response.data=='API'){
+                NotificationManager.error("Internal server error due to google MAP API","Error");
+            }
+
+            if(error.response.data=='unreachable')
+            {
+                NotificationManager.error("Address entered is unreachable.","Error");
+            }
+
+
         }
         else{
             NotificationManager.error("Unable to create an event at the moment.", "Error");
