@@ -12,6 +12,7 @@ import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import Homepage from '../home/Homepage';
+import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
@@ -36,7 +37,7 @@ function Map() {
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    setNo_event_text("You have no events on today's date to display. Please add some events on today's date.")
+                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
                     setShow(false);
                 }
             }
@@ -184,10 +185,6 @@ function Map() {
     else{
         return(
                 <div>
-                    <div>
-                         <h1  className="no_event" >{no_event_text}</h1>
-                         <br/>
-                     </div>
                     <GoogleMap
                     defaultZoom={10}
                     defaultCenter={{ lat: 33.4255, lng: -111.9400 }}

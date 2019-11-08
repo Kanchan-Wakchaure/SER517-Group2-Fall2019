@@ -2,6 +2,7 @@
 import  React, { Component } from  'react';
 import Alert from '../../Services/AlertService';
 import Homepage from '../home/Homepage';
+import { NotificationManager } from 'react-notifications';
 
 const alertService=new Alert();
 
@@ -23,12 +24,12 @@ class Email extends Component{
             console.log(result);
             self.setState({ events:  result.data})
         }).catch(()=>{
-          alert('Bugs !!');
+          NotificationManager.error("Unable to send email notifications at the moment.", "Error");
         });
     }
 
     render(){
-        alert('Email is sent to your account successfully') ;
+        NotificationManager.success('Email is sent to your account successfully', "Successful") ;
         this.props.history.push('/');
         return <Homepage/>;
     }

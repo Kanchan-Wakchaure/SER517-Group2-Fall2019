@@ -17,6 +17,11 @@ import Text from './components/text/Text';
 import About from './components/about/About';
 import MapPreview from './components/map/MapPreview';
 
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
+import 'react-notifications/lib/notifications.css';
+
 class App extends Component{
 
   componentDidMount() {
@@ -28,6 +33,8 @@ class App extends Component{
       return (
       <div>
         <Header {...this.props}/>
+
+            <NotificationContainer />
         <div className="cover">
             <BrowserRouter>
                 <div>
