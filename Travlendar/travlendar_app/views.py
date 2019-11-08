@@ -23,7 +23,6 @@ from django.utils import timezone
 
 
 
-
 # Api for create(POST) event and get(GET) all events
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -280,36 +279,38 @@ def Email(request):
        
 
         od = serializer.data
-        for i in od:
-
-            if i['date'] == DATE:
-
-                
-
-                print(i['title'])
-                print(i['time'])
-                print(i['destination'])
-                
-                subject = i['title']
-                content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
-                #print(str(request.user))
-                receiver = str(request.user)
-
-                email_list = []
-
-                users_dict_raw = i['notifyUsers']
-                print(users_dict_raw)
-                if users_dict_raw != '[]':
-
-                    for e in eval(users_dict_raw):
-
-                        email_list.append(e['email'])
-
-
-
-                dt_time = DATE + " " + i['time']
+        
+        #for i in od[-1]:
+        i = od[-1]
             
-                send_email(receiver, subject, content , email_list, dt_time)
+        if i['date'] == DATE:
+
+            
+
+            print(i['title'])
+            print(i['time'])
+            print(i['destination'])
+            
+            subject = i['title']
+            content = '<strong> Appointment at %s time : %s </strong>' % (i['destination'], i['time'])
+            #print(str(request.user))
+            receiver = str(request.user)
+
+            email_list = []
+
+            users_dict_raw = i['notifyUsers']
+            print(users_dict_raw)
+            if users_dict_raw != []:
+
+                for e in eval(users_dict_raw):
+
+                    email_list.append(e['email'])
+
+
+
+            dt_time = DATE + " " + i['time']
+        
+            send_email(receiver, subject, content , email_list, dt_time)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -347,25 +348,26 @@ def Text(request):
         
 
         od = serializer.data
-        for i in od:
+        i = od[-1]
+        #for i in od:
             
-            if i['date'] == DATE:
+        if i['date'] == DATE:
 
-                
-                phn_list = [PHN]
+            
+            phn_list = [PHN]
 
-                users_dict_raw = i['notifyUsers']
+            users_dict_raw = i['notifyUsers']
 
-                if users_dict_raw != '[]':
+            if users_dict_raw != '[]':
 
-                    for e in eval(users_dict_raw):
+                for e in eval(users_dict_raw):
 
-                        phn_list.append(e['phone'])
+                    phn_list.append(e['phone'])
 
-                subject = i['title']
-                content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
+            subject = i['title']
+            content = 'Appointment at %s time : %s ' % (i['destination'], i['time'])
 
-                send_text(phn_list, content )
+            send_text(phn_list, content )
 
 
                 
