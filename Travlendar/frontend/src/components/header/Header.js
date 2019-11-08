@@ -66,6 +66,7 @@ class Header extends React.Component{
                       <Button color="inherit" href="/CreateEvent">Add Event</Button>
                       <Button color="inherit" href="/listevent">Agenda</Button>
                       <Button color="inherit"  href="/map">View Events</Button>
+                      <Button color="inherit"  href="/previewroute">Preview Route</Button>
                       <Button color="inherit" className="menu_button" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
                       Alert
                       </Button>

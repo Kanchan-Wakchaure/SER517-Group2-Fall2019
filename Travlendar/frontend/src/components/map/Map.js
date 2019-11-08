@@ -10,13 +10,11 @@ import { NotificationManager } from 'react-notifications';
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 
-
 function Map() {
 
   const [selectedPark, setSelectedPark] = useState(null);
   const [events, setEvents]=useState([]);
   const [no_event_text, setNo_event_text]=useState(" ");
-
 
   const lat = 33.4255;
   const lng= -111.9490;
