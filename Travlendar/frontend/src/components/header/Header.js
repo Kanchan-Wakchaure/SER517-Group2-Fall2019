@@ -49,7 +49,7 @@ class Header extends React.Component{
                       align: 'center'}}/>
 
                     :
-          <AppBar position="fixed" style = {{height: '50px'}}>
+          <AppBar position="fixed" style = {{height: '50px', alignContent: 'right'}}>
             <Toolbar style={{height: '20px'}}>
              <Button color="inherit" href="/Homepage">
               <Typography variant="h6" className="title">
@@ -58,11 +58,10 @@ class Header extends React.Component{
               </Button>
                 {
                     this.props.isAuthenticated ?
-                    (<span>
-                      <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'10px'}}>
+                    (<span style={{marginLeft: 'auto'}}> 
+                      <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
                         <HomeIcon/>
                       </IconButton>
-                      <Button color="inherit" href="/about">About Us</Button>
                       <Button color="inherit" href="/CreateEvent">Add Event</Button>
                       <Button color="inherit" href="/listevent">Agenda</Button>
                       <Button color="inherit"  href="/map">View Events</Button>
@@ -85,16 +84,17 @@ class Header extends React.Component{
                       </MenuItem>
                       </Menu>
                       <Button color="inherit" onClick={this.props.logout}>Logout</Button>
+                      <Button color="inherit" href="/about">About Us</Button>
                     </span>)
                     :
                     (
-                      <span>
-                        <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{marginLeft:'10px'}}>
+                      <span style={{marginLeft: 'auto'}}>
+                        <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" >
                           <HomeIcon/>
                         </IconButton>
-                        <Button color="inherit" href="/about">About Us</Button>
                         <Button color="inherit" href="/Login">Login</Button>
                         <Button color="inherit" href="/Signup">Sign Up</Button>
+                        <Button color="inherit" href="/about">About Us</Button>
                       </span>
                     )
                 }
