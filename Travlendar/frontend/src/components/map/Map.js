@@ -8,6 +8,7 @@ import Geocode from "react-geocode";
 import Autocomplete from 'react-google-autocomplete';
 import EventsService from '../../Services/EventsService';
 import '../createEvent/CreateEvent.css';
+import { NotificationManager } from 'react-notifications';
 
 /*
     Author: Kanchan Wakchaure
@@ -44,13 +45,44 @@ class Map extends React.Component {
             },
             notifyUsers: [],
             email: '',
-            phone: ''
+            phone: '',
+            form_title_error:'',
+            form_date_error:'',
+            form_time_error:'',
+            form_destination_error:'',
+            form_conflict:' ',
+            form_success:' '
         };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleCreate(){
+  getInitialState() {
+    let initialState = {
+        eventDetails: {
+            title: '',
+            date: '',
+            time:'',
+            duration: '',
+            location: ''
+        },
+        markerPosition: {
+            lat: 33.4255,
+            lng: -111.9400
+        },
+        notifyUsers: [],
+        email: '',
+        phone: '',
+        form_title_error:'',
+        form_date_error:'',
+        form_time_error:'',
+        form_destination_error:'',
+        form_conflict:' ',
+        form_success:' '
+    };
+    return initialState;
+}
+  handleCreate(ref){
     eventService.createEvent(
       {
         "title": this.state.eventDetails.title,
@@ -60,17 +92,73 @@ class Map extends React.Component {
         "destination": this.state.address,
         "notifyUsers": JSON.stringify(this.state.notifyUsers)
       }
-    ).then((result)=>{
-        alert("See View events tab.");
-    }).catch(()=>{
-        alert('There was an error! Please re-check your form.');
+    ).then((response)=>{
+      ref.setState({form_success:"You have successfully created an event!"});
+      NotificationManager.success("You have successfully created an event!", "Successful");
+
+      this.setState(this.getInitialState());
+    }).catch(function (error){
+      if (error.response) {
+
+        if(error.response.status===406){
+            ref.setState({form_conflict:"This event conflicts with another event. Please check your agenda."});
+            NotificationManager.warning("This event conflicts with another event. Please check your agenda.")
+            ref.setState({form_title_error:""});
+            ref.setState({form_date_error:""});
+            ref.setState({form_time_error:""});
+            ref.setState({form_destination_error:""});
+            ref.setState({form_success:""});
+
+        }
+        else if(error.response.status===400){
+            let msg="";
+            let title_error="";
+            let date_error="";
+            let time_error="";
+            let destination_error="";
+            console.log("title_error",title_error)
+            if(error.response.data.title!==undefined){
+                title_error="Please provide an event description";
+
+            }
+            if(error.response.data.date!==undefined){
+                date_error="Please provide a date";
+
+            }
+            if(error.response.data.time!==undefined){
+                time_error="Please provide a time";
+
+            }
+            if(error.response.data.destination!==undefined){
+                destination_error="Please provide a location";
+
+            }
+
+            ref.setState({form_title_error:title_error});
+            ref.setState({form_date_error:date_error});
+            ref.setState({form_time_error:time_error});
+            ref.setState({form_destination_error:destination_error});
+            ref.setState({form_success:""});
+            ref.setState({form_conflict:""});
+
+            NotificationManager.error("Please re-check event information.", "Error");
+        }
+        else if(error.response.status===500){
+            NotificationManager.error("Unable to create an event at the moment.", "Error");
+        }
+        else{
+            NotificationManager.error("Unable to create an event at the moment.", "Error");
+        }
+
+    }
+
     });
 
   }
 
-  handleSubmit(event) {
-     event.preventDefault();
-     this.handleCreate();
+	handleSubmit(event) {
+    event.preventDefault();
+      this.handleCreate(this);
   }
 
   handleInputChange(event, inputPropName) {
