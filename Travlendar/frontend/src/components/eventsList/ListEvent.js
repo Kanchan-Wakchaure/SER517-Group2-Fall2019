@@ -3,6 +3,7 @@ import  React, { Component } from  'react';
 import EventsService from '../../Services/EventsService';
 import './ListEvent.css';
 import Homepage from '../home/Homepage';
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
 
@@ -12,7 +13,6 @@ class ListEvent extends Component{
         super(props);
         this.state  = {
             events: [],
-            no_event_text:" ",
             show:false
 
         };
@@ -25,13 +25,11 @@ class ListEvent extends Component{
             //console.log("status:",result.status)
             self.setState({ events:  result.data})
             self.setState({show:true})
-
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    self.setState({no_event_text:"You have no events on today's date to display. Please add some events on today's date."})
                     self.setState({show:false})
-
+                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.");
                 }
 
             }
@@ -75,7 +73,6 @@ class ListEvent extends Component{
 
                 return(
                     <div>
-                        <h1 className="no_event">{this.state.no_event_text}</h1>
                     </div>
 
                 )
