@@ -212,10 +212,7 @@ class Map extends React.Component {
   shouldComponentUpdate( nextProps, nextState ){
     if (
       this.state.markerPosition.lat !== this.props.center.lat ||
-      this.state.address !== nextState.address ||
-      this.state.city !== nextState.city ||
-      this.state.area !== nextState.area ||
-      this.state.state !== nextState.state
+      this.state.address !== nextState.address
     ) {
       return true
     } else if ( this.props.center.lat === nextProps.center.lat ){
