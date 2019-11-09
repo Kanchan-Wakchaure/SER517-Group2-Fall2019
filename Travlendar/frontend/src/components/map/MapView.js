@@ -7,17 +7,24 @@ import {
   InfoWindow,
   DirectionsRenderer,
 } from "react-google-maps";
+import Button from '@material-ui/core/Button';
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import Homepage from '../home/Homepage';
+import { NotificationManager } from 'react-notifications';
+import MapControl from './MapControl';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 function Map() {
     const [events, setEvents]=useState([]);
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
+    const [no_event_text, setNo_event_text]=useState("");
+    const [show, setShow]=useState(false);
     const google=window.google;
+    let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 
     useEffect(() => {
@@ -25,16 +32,21 @@ function Map() {
     eventService.getEvents().then(function (result) {
     setEvents(result.data);
     console.log(result);
+    setShow(true);
     //events=result.data;
-    }).catch(error=>{
-    console.log(error)
-    alert('Some error occurred');
+    }).catch(function (error){
+            if (error.response){
+                if(error.response.status===404){
+                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+                    setShow(false);
+                }
+            }
     });
 
     const listener = e => {
-    if (e.key === "Escape") {
-    setSelectedPark(null);
-    }
+        if (e.key === "Escape") {
+        setSelectedPark(null);
+        }
     };
     window.addEventListener("keydown", listener);
     return () => {
@@ -53,7 +65,7 @@ function Map() {
         console.log("Events",events);
 
         const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-        const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
+        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
 
         const directionsService = new google.maps.DirectionsService();
 
@@ -82,59 +94,108 @@ function Map() {
     if (error) {
     return <h1 class="error">one of the location unreachable</h1>;
     }
-    return (
-    <GoogleMap
-    defaultZoom={10}
-    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-    defaultOptions={{ styles: mapStyles }}
-    >
 
-    {
-    directions && (
-    <DirectionsRenderer
-     directions={directions} />
-    )
+    if(show==true){
+    let originMarker = null;
+    let i=0;
+    originMarker = (
+        <Marker
+          defaultLabel="HOME"
+          defaultIcon={null}
+          position={{
+            lat: 33.377210,
+            lng: -111.908560
+          }}
+        />
+      );
+
+        return (
+            <GoogleMap
+                defaultZoom={10}
+                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                defaultOptions={{ styles: mapStyles }}
+            >
+            <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
+     <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+    </MapControl>
+            {originMarker}
+            {
+                directions && (
+                <DirectionsRenderer
+                 directions={directions}
+                 options={{
+                 /*
+                    polylineOptions: {
+                    storkeColor: "#2249a3",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 4
+                    },
+                    preserveViewport: true,
+                    */
+                    suppressMarkers: true,
+
+                  }}
+
+                 />
+                )
+
+            }
+
+            {
+            events.map((park,i) => (
+                <Marker
+                    key={park.id}
+                    defaultLabel={labels[i]}
+                    //defaultIcon={park.id.toString()}
+                    position={{
+                        lat: parseFloat(park.lat),
+                        lng: parseFloat(park.long)
+                    }}
+                    onClick={() => {
+                        setSelectedPark(park);
+                    }}
+
+                />
+            )
+            )}
+
+            {selectedPark && (
+                <InfoWindow
+                onCloseClick={() => {
+                setSelectedPark(null);
+            }}
+
+            position={{
+                lat: parseFloat(selectedPark.lat),
+                lng: parseFloat(selectedPark.long)
+            }}
+            >
+            <div>
+                <h2>{selectedPark.title}</h2>
+                <p>{selectedPark.destination}</p>
+                <p>{selectedPark.title}</p>
+                <p>{selectedPark.time}</p>
+            </div>
+                </InfoWindow>
+            )}
+                </GoogleMap>
+            );
+
+    }
+    else{
+        return(
+                <div>
+                    <GoogleMap
+                    defaultZoom={10}
+                    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                    defaultOptions={{ styles: mapStyles }}
+                    >
+                    </GoogleMap>
+                 </div>
+        )
 
     }
 
-    {events.map(park => (
-    <div
-        key={park.id}
-        position={{
-        lat: parseFloat(park.lat),
-        lng: parseFloat(park.long)
-        }}
-        onClick={() => {
-        setSelectedPark(park);
-        }}
-
-    />
-    ))}
-
-
-
-
-    {selectedPark && (
-    <InfoWindow
-    onCloseClick={() => {
-    setSelectedPark(null);
-    }}
-
-    position={{
-    lat: parseFloat(selectedPark.lat),
-    lng: parseFloat(selectedPark.long)
-    }}
-    >
-    <div>
-    <h2>{selectedPark.title}</h2>
-    <p>{selectedPark.destination}</p>
-    <p>{selectedPark.title}</p>
-    <p>{selectedPark.time}</p>
-    </div>
-    </InfoWindow>
-    )}
-    </GoogleMap>
-    );
 }
 
 const MapWrapped = withScriptjs(withGoogleMap(Map));
@@ -147,19 +208,23 @@ export default function MAP() {
   }
   else
   {
-  return (
-    <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
-      <MapWrapped
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
-          process.env.REACT_APP_GOOGLE_KEY
-        }`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-      />
-    </div>
-  );
-      }
+        return (
+        <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+          <MapWrapped
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
+              process.env.REACT_APP_GOOGLE_KEY
+            }`}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+        </div>
+        );
+
+
+  }
 }
+
+
 
 //directionsService taken from https://github.com/tomchentw/react-google-maps/blob/master/src/components/DirectionsRenderer.md

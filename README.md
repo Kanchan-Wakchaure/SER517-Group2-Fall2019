@@ -10,7 +10,7 @@ On command prompt  run the following commands.
 
 
 
-```pip3 install django djongo dnspython django-cors-headers djangorestframework django-rest-auth django-allauth requests sendgrid twilio coverage==4.5.4```
+```pip3 install django djongo dnspython django-cors-headers djangorestframework django-rest-auth django-allauth requests sendgrid twilio coverage==4.5.4 tzlocal```
 
 
 Copy the file 'secretkey.txt' shared on google drive (https://drive.google.com/open?id=1RG2Dp6hjG7hmSEQNCeJuuRp6v9-0DKX2)
@@ -59,6 +59,12 @@ Go to the directory Travlendar/frontend:
 ```npm i --save react-redux```
 
 ```npm i --save redux redux-thunk```
+
+```npm install --save react-notifications```
+
+```npm install --save react-geocode```
+
+```npm install --save react-google-autocomplete```
 
 ```npm start```
 

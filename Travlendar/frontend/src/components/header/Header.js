@@ -8,6 +8,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 /*
     Author: Kanchan Wakchaure
@@ -17,43 +19,86 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 */
 
 class Header extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+          anchorEl: null
+        };
+      }
 
-  render() {
+      handleClick = (event) => {
+        this.setState({
+          anchorEl: event.currentTarget,
+        })
+      };
+
+
+      handleClose = () => {
+        this.setState({
+          anchorEl: null,
+        })
+      };
+   render() {
       return (
         <div className="root">
               {
                     this.props.loading ?
 
-                    <CircularProgress color="secondary" 
-                    style={{ 
+                    <CircularProgress color="secondary"
+                    style={{
                       align: 'center'}}/>
-                    
+
                     :
-          <AppBar position="fixed" style = {{height: '50px'}}>
+          <AppBar position="fixed" style = {{height: '50px', alignContent: 'right'}}>
             <Toolbar style={{height: '20px'}}>
-              <Typography variant="h6" className="title">
+             <Button color="inherit" href="/Homepage">
+              <Typography variant="h4" className="title" style={{textTransform: "none"}}>
                 Travlendar
               </Typography>
-              <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage">
-                <HomeIcon/>
+              </Button>
+              <IconButton edge="start" className="menuButton" color="inherit" aria-label="menu" href="/Homepage" style={{'marginLeft':'0px'}}>
+                        <HomeIcon/>
               </IconButton>
-              
-                {
-                    this.props.isAuthenticated ?
-                    (<span>
-                      <Button color="inherit" href="/CreateEvent">Add Event</Button>
-                      <Button color="inherit" href="/listevent">Agenda</Button>   
-                      <Button color="inherit"  href="/map">View Events</Button>
-                      <Button color="inherit" href="/textalert">Send Text Alert</Button>
-                      <Button color="inherit" href="/emailalert">Send Email Alert</Button>                
-                      <Button color="inherit" onClick={this.props.logout}>Logout</Button>
-                    </span>)
+              {
+                this.props.isAuthenticated ?
+                (
+                  <div style={{marginLeft: 'auto'}}>
+                    <Button color="inherit" href="/CreateEvent" style={{textTransform: "none", fontSize: '16px'}}>Add Event</Button>
+                    <Button color="inherit" href="/listevent" style={{textTransform: "none", fontSize: '16px'}}>Agenda</Button>
+                    <Button color="inherit" href="/map" style={{textTransform: "none", fontSize: '16px'}}>View Events</Button>
+                    <Button color="inherit" href="/previewroute" style={{textTransform: "none", fontSize: '16px'}}>Preview Route</Button>
+                    <Button color="inherit" 
+                            style={{textTransform: "none", fontSize: '16px'}}
+                            className="menu_button" 
+                            aria-controls="simple-menu" 
+                            aria-haspopup="true" 
+                            onClick={this.handleClick}>
+                    Alert
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={this.state.anchorEl}
+                      keepMounted
+                      open={Boolean(this.state.anchorEl)}
+                      onClose={this.handleClose}
+                    >
+                    <MenuItem>
+                      <Button color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>Send Text Alert</Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>Send Email Alert</Button>
+                    </MenuItem>
+                    </Menu>
+                    <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
+                    <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
+                    </div>)
                     :
                     (
-                      <span>
-                         <Button color="inherit" href="/Login">Login</Button>
-                         <Button color="inherit" href="/Signup">Sign Up</Button>
-                      </span>
+                      <div style={{marginLeft: 'auto'}}>
+                        <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
+                        <Button color="inherit" href="/Login" style={{textTransform: "none", fontSize: '16px'}}>Login</Button>
+                        <Button color="inherit" href="/Signup" style={{textTransform: "none", fontSize: '16px'}}>Sign Up</Button>
+                      </div>
                     )
                 }
             </Toolbar>
