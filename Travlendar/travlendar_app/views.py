@@ -252,7 +252,7 @@ def reachable(A_lat,A_long,B_lat,B_long):
         return duration
     return -1
 
-
+#sort ordered dict by 'created_at'
 
 # API for Sending email alert
 
@@ -271,7 +271,7 @@ def Email(request):
         b = modela.objects.get(email=request.user)
         print(request.user)
 
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('created_at')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
        
 
@@ -342,7 +342,7 @@ def Text(request):
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
         
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('created_at')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         
         #tz = pytz.timezone('US/Arizona')
