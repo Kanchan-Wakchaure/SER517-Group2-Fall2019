@@ -1,12 +1,13 @@
 //@author raisa 10-08-19
 import  React, { Component } from  'react';
 import EventsService from '../../Services/EventsService';
+import DeleteService from '../../Services/DeleteService';
 import './ListEvent.css';
 import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
-
+const deleteService=new DeleteService();
 class ListEvent extends Component{
 
     constructor(props) {
@@ -16,6 +17,7 @@ class ListEvent extends Component{
             show:false
 
         };
+        this.handleDelete  =  this.handleDelete.bind(this);
 
     }
     componentDidMount() {
@@ -38,6 +40,17 @@ class ListEvent extends Component{
 
     }
 
+    handleDelete(e,pk){
+        var  self  =  this;
+        deleteService.deleteEvents(pk).then(()=>{
+            var  newArr  =  self.state.events.filter(function(obj) {
+                return  obj.pk  !==  pk;
+            });
+            self.setState({events:  newArr})
+            window.location.reload();
+        });
+    }
+
     render(){
         if(localStorage.getItem('token')==null){
             return <Homepage/>
@@ -56,13 +69,18 @@ class ListEvent extends Component{
                             <div>Duration</div>
                             <div>Location</div>
                         </li>
-                        {this.state.events.map(e=>
-                            <li key={e.id} >
-                                <div>{e.title}</div>
-                                <div className="event_list_date">{e.time}</div>
-                                <div>{e.duration}</div>
-                                <div>{e.destination}</div>
+                        {this.state.events.map(ev=>
+
+                            <li key={ev.id} >
+                                <div>{ev.title}</div>
+                                <div className="event_list_date">{ev.time}</div>
+                                <div>{ev.duration}</div>
+                                <div>{ev.destination}</div>
+                                <button onClick={(e)=>  this.handleDelete(e,ev.id) }>-</button>
+
                             </li>
+
+
                         )}
                     </ul>
                 </div>

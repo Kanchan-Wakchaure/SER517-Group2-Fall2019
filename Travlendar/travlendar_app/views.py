@@ -254,6 +254,23 @@ def reachable(A_lat,A_long,B_lat,B_long):
 
 
 
+# API for delete event
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['PUT', 'DELETE'])
+def update_event(request, pk):
+    print("Inside----------------")
+    try:
+        event = Event.objects.get(id=pk)
+        print("++++++++++event+++++++++++++: ",event)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # API for Sending email alert
 
 @authentication_classes([TokenAuthentication])
