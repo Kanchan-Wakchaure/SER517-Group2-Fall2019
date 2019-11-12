@@ -107,6 +107,8 @@ def EventList(request):
             if p==1 and n==0:
                 print("prev event: ", prev_event.time)
                 prev_event_time = datetime.combine(date.min, prev_event.time) - datetime.min
+                print("prev event lat: ", prev_event.lat)
+                print("prev event long: ", prev_event.long)
                 travel_time = reachable(prev_event.lat, prev_event.long,serializer.validated_data.get("lat"), serializer.validated_data.get("long"))
 
                 if travel_time==-1:

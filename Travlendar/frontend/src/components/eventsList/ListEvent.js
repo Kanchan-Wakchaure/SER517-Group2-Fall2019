@@ -5,6 +5,8 @@ import DeleteService from '../../Services/DeleteService';
 import './ListEvent.css';
 import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 
 const eventService=new EventsService();
 const deleteService=new DeleteService();
@@ -43,11 +45,15 @@ class ListEvent extends Component{
     handleDelete(e,pk){
         var  self  =  this;
         deleteService.deleteEvents(pk).then(()=>{
-            var  newArr  =  self.state.events.filter(function(obj) {
-                return  obj.pk  !==  pk;
-            });
+            var  newArr  =  self.state.events.filter(ev=>ev.id!==pk);
+            if(newArr.length<1)
+            {
+                window.location.reload();
+            }
+            console.log("new arr: ",newArr);
             self.setState({events:  newArr})
-            window.location.reload();
+
+            //window.location.reload();
         });
     }
 
@@ -68,6 +74,7 @@ class ListEvent extends Component{
                             <div>Time</div>
                             <div>Duration</div>
                             <div>Location</div>
+                            <div></div>
                         </li>
                         {this.state.events.map(ev=>
 
@@ -76,7 +83,11 @@ class ListEvent extends Component{
                                 <div className="event_list_date">{ev.time}</div>
                                 <div>{ev.duration}</div>
                                 <div>{ev.destination}</div>
-                                <button onClick={(e)=>  this.handleDelete(e,ev.id) }>-</button>
+                                <div className="delete-event">
+                                    <IconButton aria-label="delete" color="secondary" onClick={(e)=>  this.handleDelete(e,ev.id) }>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </div>
 
                             </li>
 

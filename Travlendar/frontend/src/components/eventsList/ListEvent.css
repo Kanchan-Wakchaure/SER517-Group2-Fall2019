@@ -16,10 +16,20 @@
 .event_list ul li div {
     float: left;
 }
-.event_list div{
-width: 24%;
-}
+.event_list div:nth-of-type(1)  {width: 28%;}
+.event_list div:nth-of-type(2)  {width: 14%;}
+.event_list div:nth-of-type(3)  {width: 14%;}
+.event_list div:nth-of-type(4)  {width: 36%;}
+.event_list div:nth-of-type(5)  {width: 6%; text-align: right;}
 
 .no_event{
 text-align:center;
+}
+
+.delete-event button:hover   {background-color: #999;}
+.delete-event button {
+    padding: 0; margin:0;
+    border: none;
+    cursor: pointer;
+    display: 'none';
 }
