@@ -21,7 +21,7 @@ class MapPreview extends React.Component {
   }
 
   path = []
-
+    events = []
   velocity = 2000
   initialDate = new Date()
 
@@ -81,11 +81,16 @@ class MapPreview extends React.Component {
 renderData = () => {
 let t = this;
 let es = []
+    t.path.push({
+            lat: 33.377210,
+            lng: -111.908560
+          })
   eventService.getEvents().then(function (result) {
   var items = result.data
   for(var i = 0; i<items.length; i++) {
 
     t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
+    t.events.push(items[i])
   }
   console.log(t.path)
 }).catch(()=>{
@@ -111,7 +116,7 @@ let es = []
     })
 
     console.log(this.path)
-  const waypoints = this.path.map(p => ({
+  const waypoints = this.events.map(p => ({
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
@@ -132,7 +137,7 @@ let es = []
         (result, status) => {
             //console.log("RESULT:"+result)
             if (status === window.google.maps.DirectionsStatus.OK) {
-                this.setState({directions: result});
+                this.setState({directions: result})
             } else {
                 this.setState({error: result});
             }
@@ -145,7 +150,7 @@ let es = []
   }
 
   render = () => {
-  let originMarker = null;
+  let originMarker = null, markers = null, pinDirections = null;
     let i=0;
     originMarker = (
         <Marker
@@ -157,20 +162,21 @@ let es = []
           }}
         />
       );
-    return (
-      <GoogleMap
-        defaultZoom={10}
-        defaultCenter={{ lat: 33.168040, lng: -111.635400 }}
-        defaultOptions={{ styles: mapStyles }}
-        >
-          { this.state.progress && (
-            <>
-              <Polyline path={this.state.progress} options={{ strokeColor: "#FF0000 "}} />
-              <Marker position={this.state.progress[this.state.progress.length - 1]} />
-            </>
-          )}
-          {originMarker}
-            {
+     markers = (
+            this.events.map((park,i) => (
+                <Marker
+                    key={park.id}
+                    defaultLabel={this.state.labels[i]}
+                    defaultIcon={null}
+                    position={{
+                        lat: parseFloat(park.lat),
+                        lng: parseFloat(park.long)
+                    }}
+
+                />
+            )
+            ));
+    pinDirections = (
                 this.state.directions && (
                 <DirectionsRenderer
                  directions={this.state.directions}
@@ -189,23 +195,24 @@ let es = []
 
                  />
                 )
+    );
+    return (
+      <GoogleMap
+        defaultZoom={15}
+        defaultCenter={{ lat: 33.4255, lng: -111.9400}}
+        defaultOptions={{ styles: mapStyles }}
+        >
 
-            }
 
-            {
-            this.path.map((park,i) => (
-                <Marker
-                    key={park.id}
-                    defaultLabel={this.state.labels[i]}
-                    //defaultIcon={park.id.toString()}
-                    position={{
-                        lat: parseFloat(park.lat),
-                        lng: parseFloat(park.long)
-                    }}
-
-                />
-            )
-            )}
+          { this.state.progress && (
+            <>
+              <Polyline path={this.state.progress} options={{ strokeColor: "#FF0000 "}} />
+              <Marker position={this.state.progress[this.state.progress.length - 1]} />
+            </>
+          )}
+          {originMarker}
+          {markers}
+          {pinDirections}
       </GoogleMap>
     )
   }
