@@ -19,7 +19,7 @@ class MapContainer extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        showingInfoWindow: false,  //Hides or the shows the infoWindow
+        showingInfoWindow: true,  //Hides or the shows the infoWindow
         activeMarker: {},          //Shows the active marker upon click
         selectedPlace: {},          //Shows the infoWindow to the selected place upon a marker
         userLocation: { lat: 32, lng: 32 },
@@ -74,8 +74,10 @@ class MapContainer extends React.Component {
                  zoom={14}
                  style={mapStyles}
                  initialCenter={userLocation}>
-                <Marker onClick={this.onMarkerClick}
-                        name={'You are here'} />
+                <Marker name={'You are here'}
+                        onClick={this.onMarkerClick}
+                        animation={ google.maps.Animation.BOUNCE }
+                />
                 <InfoWindow marker={this.state.activeMarker}
                             visible={this.state.showingInfoWindow}
                             onClose={this.onClose}>
