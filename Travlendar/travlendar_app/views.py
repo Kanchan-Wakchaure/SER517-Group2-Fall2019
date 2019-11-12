@@ -309,7 +309,7 @@ def Email(request):
 
             dt_time = DATE + " " + i['time']
         
-            #send_email(receiver, subject, content , email_list, dt_time)
+            send_email(receiver, subject, content , email_list, dt_time)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
