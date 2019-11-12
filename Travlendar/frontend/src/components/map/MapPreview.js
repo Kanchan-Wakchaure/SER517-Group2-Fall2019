@@ -6,7 +6,7 @@
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
 */
 import React from 'react';
-import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
+import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker, DirectionsRenderer } from 'react-google-maps'
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import mapStyles from "./mapStyles/retromapStyles";
@@ -15,7 +15,9 @@ const eventService=new EventsService();
 class MapPreview extends React.Component {
   state = {
     progress: [],
-
+    directions: [],
+    error: "",
+    labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
   }
 
   path = []
@@ -75,6 +77,7 @@ class MapPreview extends React.Component {
     progress = progress.concat(position)
     this.setState({ progress })
   }
+
 renderData = () => {
 let t = this;
 let es = []
@@ -108,14 +111,52 @@ let es = []
     })
 
     console.log(this.path)
+  const waypoints = this.path.map(p => ({
+        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+        stopover: true
+        }));
 
+   const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
+
+        const directionsService = new window.google.maps.DirectionsService();
+
+        directionsService.route(
+        {
+            origin: origin,
+            destination: origin,
+            travelMode: window.google.maps.TravelMode.DRIVING,
+            waypoints: waypoints,
+
+        },
+        (result, status) => {
+            //console.log("RESULT:"+result)
+            if (status === window.google.maps.DirectionsStatus.OK) {
+                this.setState({directions: result});
+            } else {
+                this.setState({error: result});
+            }
+        });
         })
 }
   componentWillMount = () => {
   this.renderData();
+
   }
 
   render = () => {
+  let originMarker = null;
+    let i=0;
+    originMarker = (
+        <Marker
+          defaultLabel="HOME"
+          defaultIcon={null}
+          position={{
+            lat: 33.377210,
+            lng: -111.908560
+          }}
+        />
+      );
     return (
       <GoogleMap
         defaultZoom={10}
@@ -128,6 +169,43 @@ let es = []
               <Marker position={this.state.progress[this.state.progress.length - 1]} />
             </>
           )}
+          {originMarker}
+            {
+                this.state.directions && (
+                <DirectionsRenderer
+                 directions={this.state.directions}
+                 options={{
+                 /*
+                    polylineOptions: {
+                    storkeColor: "#2249a3",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 4
+                    },
+                    preserveViewport: true,
+                    */
+                    suppressMarkers: true,
+
+                  }}
+
+                 />
+                )
+
+            }
+
+            {
+            this.path.map((park,i) => (
+                <Marker
+                    key={park.id}
+                    defaultLabel={this.state.labels[i]}
+                    //defaultIcon={park.id.toString()}
+                    position={{
+                        lat: parseFloat(park.lat),
+                        lng: parseFloat(park.long)
+                    }}
+
+                />
+            )
+            )}
       </GoogleMap>
     )
   }
