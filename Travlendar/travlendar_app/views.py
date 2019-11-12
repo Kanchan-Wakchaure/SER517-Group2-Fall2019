@@ -199,7 +199,7 @@ def EventList(request):
         print("Today:",today)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
-
+        
         if serializer.data==[]:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
@@ -261,27 +261,26 @@ def reachable(A_lat,A_long,B_lat,B_long):
 @api_view(['GET'])
 def Email(request):
     if request.method == 'GET':
+
+        today = DATE
         print("EMAIL")
 
         modela = apps.get_model('users', 'CustomUser')
+
         
         b = modela.objects.get(email=request.user)
         print(request.user)
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id'))
-        paginator = Paginator(event_list, 25)
-        page = request.GET.get('page')
-        events = paginator.get_page(page)
-        serializer = EventSerializer(events, context={'request': request}, many=True)
 
-        #tz = pytz.timezone('US/Arizona')
-        #d = str(datetime.today()).split(" ")[0]
-        
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        serializer = EventSerializer(event_list, context={'request': request}, many=True)
        
 
         od = serializer.data
+        print(od)
         
-        #for i in od[-1]:
         i = od[-1]
+        print(i)
+
             
         if i['date'] == DATE:
 
@@ -310,7 +309,7 @@ def Email(request):
 
             dt_time = DATE + " " + i['time']
         
-            send_email(receiver, subject, content , email_list, dt_time)
+            #send_email(receiver, subject, content , email_list, dt_time)
             
 
         #return Response({'data': serializer.data},status=status.HTTP_200_OK)
@@ -332,6 +331,8 @@ def Text(request):
 
     if request.method == 'GET':
 
+        today = DATE
+
         print("TEXT")
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
@@ -340,14 +341,17 @@ def Text(request):
         print(phone)
         paginator = Paginator(event_list, 25)
         page = request.GET.get('page')
-        events = paginator.get_page(page)
-        serializer = EventSerializer(events, context={'request': request}, many=True)
+        
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        serializer = EventSerializer(event_list, context={'request': request}, many=True)
         
         #tz = pytz.timezone('US/Arizona')
         #d = str(datetime.today()).split(" ")[0]
         
 
         od = serializer.data
+
+        print(od)
         i = od[-1]
         #for i in od:
             
@@ -358,7 +362,7 @@ def Text(request):
 
             users_dict_raw = i['notifyUsers']
 
-            if users_dict_raw != '[]':
+            if users_dict_raw != []:
 
                 for e in eval(users_dict_raw):
 
