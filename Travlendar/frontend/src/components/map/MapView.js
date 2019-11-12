@@ -21,7 +21,6 @@ function Map() {
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
-    const [no_event_text, setNo_event_text]=useState("");
     const [show, setShow]=useState(false);
     const google=window.google;
     let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -95,9 +94,8 @@ function Map() {
     return <h1 class="error">one of the location unreachable</h1>;
     }
 
-    if(show==true){
+    if(show===true){
     let originMarker = null;
-    let i=0;
     originMarker = (
         <Marker
           defaultLabel="HOME"
