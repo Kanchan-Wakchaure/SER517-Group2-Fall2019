@@ -5,6 +5,8 @@
     References: https://dev.to/zerquix18/
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-2-295e
+    https://images.vexels.com/media/users/3/154573/isolated/preview/
+    bd08e000a449288c914d851cb9dae110-hatchback-car-top-view-silhouette-by-vexels.png
 */
 import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
