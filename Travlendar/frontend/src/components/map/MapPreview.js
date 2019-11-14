@@ -40,6 +40,7 @@ class MapPreview extends React.Component {
   }
 
   moveObject = () => {
+
     const distance = this.getDistance()
     if (! distance) {
       return
@@ -64,18 +65,40 @@ class MapPreview extends React.Component {
       nextLine.lng
     )
 
+
+    let directionsService = new window.google.maps.DirectionsService();
+let totalDistance, percentage, prevLineLatLng, routeLineLatLng, position
+        directionsService.route(
+        {
+            origin: lastLine,
+            destination: nextLine,
+            travelMode: window.google.maps.TravelMode.DRIVING
+
+        },
+        (result, status) => {
+            let distance = this.getDistance()
+            if (! distance) {
+              return
+            }
+            if (status === window.google.maps.DirectionsStatus.OK) {
+                let prev = lastLine;
+                result.routes[0].overview_path.map((route, i) =>  (
+                        totalDistance = prev.distance - route.distance;
+                        percentage = (distance - prev.distance) / totalDistance;
+                        position = window.google.maps.geometry.spherical.interpolate(
+                          new window.google.maps.LatLng(prev.lat, prev.lng),
+                          new window.google.maps.LatLng(route.lat,route.lng),
+                          percentage
+                        )
+
+                        progress = progress.concat(position)
+                        this.setState({ progress })
+                        prev = route;
+                )
+            }
+        });
     // distance of this line
-    const totalDistance = nextLine.distance - lastLine.distance
-    const percentage = (distance - lastLine.distance) / totalDistance
 
-    const position = window.google.maps.geometry.spherical.interpolate(
-      lastLineLatLng,
-      nextLineLatLng,
-      percentage
-    )
-
-    progress = progress.concat(position)
-    this.setState({ progress })
   }
 
 renderData = () => {
