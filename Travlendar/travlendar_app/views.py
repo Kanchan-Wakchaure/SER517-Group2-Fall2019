@@ -213,6 +213,7 @@ def EventList(request):
 def findLongLat(serializer):
 
     event_location = serializer.validated_data.get("destination")
+    print("event location: ",event_location)
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, get_api_key()))
     api_response_dict = api_response.json()
@@ -262,10 +263,8 @@ def reachable(A_lat,A_long,B_lat,B_long):
 @permission_classes([IsAuthenticated])
 @api_view(['PUT', 'DELETE'])
 def update_event(request, pk):
-    print("Inside----------------")
     try:
         event = Event.objects.get(id=pk)
-        print("++++++++++event+++++++++++++: ",event)
     except Event.DoesNotExist:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':

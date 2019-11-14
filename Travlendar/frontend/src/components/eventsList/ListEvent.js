@@ -16,11 +16,23 @@ class ListEvent extends Component{
         super(props);
         this.state  = {
             events: [],
-            show:false
+            show:false,
+            showPopup: false,
+            event_id:0
 
         };
         this.handleDelete  =  this.handleDelete.bind(this);
 
+    }
+
+    togglePopup() {
+        this.setState({
+          showPopup: !this.state.showPopup
+        });
+      }
+    setEventId(id){
+        this.setState({event_id:id});
+        this.togglePopup();
     }
     componentDidMount() {
     //
@@ -42,19 +54,20 @@ class ListEvent extends Component{
 
     }
 
-    handleDelete(e,pk){
+    handleDelete(pk){
         var  self  =  this;
+        console.log("event id ",pk);
         deleteService.deleteEvents(pk).then(()=>{
             var  newArr  =  self.state.events.filter(ev=>ev.id!==pk);
-            if(newArr.length<1)
+            console.log("new arr: ",newArr);
+            self.setState({events:  newArr});
+             if(newArr.length<1)
             {
                 window.location.reload();
             }
-            console.log("new arr: ",newArr);
-            self.setState({events:  newArr})
-
             //window.location.reload();
         });
+        this.togglePopup();
     }
 
     render(){
@@ -84,16 +97,26 @@ class ListEvent extends Component{
                                 <div>{ev.duration}</div>
                                 <div>{ev.destination}</div>
                                 <div className="delete-event">
-                                    <IconButton aria-label="delete" color="secondary" onClick={(e)=>  this.handleDelete(e,ev.id) }>
+                                <IconButton aria-label="delete" color="secondary" onClick={this.setEventId.bind(this,ev.id)}>
                                         <DeleteIcon />
-                                    </IconButton>
+                                </IconButton>
+
                                 </div>
+                                 {this.state.showPopup ?
+                                  <Popup
+                                    text='Do you want to delete this event?'
+                                    deleteEvent={this.handleDelete.bind(this,this.state.event_id) }
+                                    closePopup={this.togglePopup.bind(this)}
+                                  />
+                                  : null
+                                }
 
                             </li>
 
 
                         )}
                     </ul>
+
                 </div>
                 );
 
@@ -111,5 +134,17 @@ class ListEvent extends Component{
         }   
     }
 }
-
+class Popup extends React.Component {
+  render() {
+    return (
+      <div className='popup'>
+        <div className='popup_inner'>
+          <h2 className='popup_header'>{this.props.text}</h2><br/><br/>
+        <button onClick={this.props.deleteEvent}>Yes</button>
+        <button onClick={this.props.closePopup}>No</button>
+        </div>
+      </div>
+    );
+  }
+}
 export default ListEvent;
