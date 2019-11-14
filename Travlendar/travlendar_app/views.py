@@ -195,7 +195,7 @@ def EventList(request):
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
         
-        today = DATE
+        today = date.today()
 
         
         print("Today:",today)
