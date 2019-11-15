@@ -6,12 +6,12 @@ import Homepage from './components/home/Homepage';
 import Footer from './components/footer/Footer';
 import Signup from './components/register/Signup';
 import Login from './components/login/Login';
-import CreateEvent from './components/createEvent/CreateEvent';
+import MapContainer from './components/map/MapContainer';
 import ListEvent from './components/eventsList/ListEvent';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/auth';
 import Map from './components/map/MapView';
-import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE } from './Routes.js';
+import { HOMEPAGE, SIGNUP, LOGIN, MAPCONTAINER, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE } from './Routes.js';
 import Email from './components/email/Email';
 import Text from './components/text/Text';
 import About from './components/about/About';
@@ -42,7 +42,7 @@ class App extends Component{
                         <Route exact path={HOMEPAGE} component={Homepage} />
                         <Route path={SIGNUP} component={Signup} />
                         <Route path={LOGIN} component={Login} />
-                        <Route path={CREATE_EVENT} component={CreateEvent} />
+                        <Route path={MAPCONTAINER} component={MapContainer} />
                         <Route path={EVENTS_LIST} component={ListEvent}/>
                         <Route path={EVENTS_MAP} component={Map}/>
                       <Route path={EMAIL} component={Email}/>

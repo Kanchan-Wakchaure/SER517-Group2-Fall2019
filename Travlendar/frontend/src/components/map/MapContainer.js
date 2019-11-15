@@ -1,98 +1,133 @@
-import React, {Component} from 'react';
-import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import React from 'react';
+import { compose, withStateHandlers } from "recompose";
+import { withGoogleMap, withScriptjs, GoogleMap, Marker } from 'react-google-maps';
 
-/*
-    Author: Kanchan Wakchaure
-    Date: 11-05-2019
-    Description: Google Map to schedule events
-    References: https://www.digitalocean.com; 
-                https://github.com/imranhsayed/google-maps-in-react
+import { Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import './MapContainer.css';
 
-*/
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-const mapStyles = {
-  width: '100%',
-  height: '100%'
-};
+const Map = compose(
+             withStateHandlers(() => ({ isMarkerShown: false, markerPosition: null, openForm: false}), 
+                                     { onMapClick: 
+                                        ({ isMarkerShown }) => (e) => ({ markerPosition: e.latLng, isMarkerShown:true})
+                                     },
+                                     {
+                                      onMarkerClick: () => (marker) => {console.log("Get marker position here")},
+                                     }
+                              ),
+             withScriptjs,
+             withGoogleMap
+            )
+    (props =>
+        <GoogleMap
+            defaultZoom={14}
+            defaultCenter={{ lat: 33.424564, lng: -111.928001 }}
+            onClick={props.onMapClick}>
+            {props.isMarkerShown && 
+            <Marker position={props.markerPosition} 
+            onClick={props.onMarkerClick} 
+            {...props}/>}
+        </GoogleMap>
+    )
 
-class MapContainer extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        showingInfoWindow: true,  //Hides or the shows the infoWindow
-        activeMarker: {},          //Shows the active marker upon click
-        selectedPlace: {},          //Shows the infoWindow to the selected place upon a marker
-        userLocation: { lat: 32, lng: 32 },
-        loading: true 
-      };    
-    } //end of constructor
-
-    //get the browser's current location
-    componentDidMount(props) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const { latitude, longitude } = position.coords;
-                this.setState({
-                    userLocation: { lat: latitude, lng: longitude },
-                    loading: false
-                });
-            },
-            
-            () => {this.setState({ loading: false });}
-        );
+export default class MapContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          eventDetails: {
+            title: '',
+            date: '',
+            time:'',
+            duration: '',
+          },
+          address: '',
+          notifyUsers: [],
+          email: '',
+          phone: '',
+          open: false,
+          markerPosition: ''
+        };
+        this.togglePopUp = this.togglePopUp.bind(this);
     }
 
-    //Shows the information window on click of a marker
-    onMarkerClick = (props, marker, e) =>
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
-    });
-    
-    //closes the information window on a marker
-    onClose = props => {
-        if (this.state.showingInfoWindow) {
-            this.setState({
-                showingInfoWindow: false,
-                activeMarker: null
-            });
-        }
-    };
-    
-    render()
-    {
-        const { loading, userLocation } = this.state;
-        const { google } = this.props;
-    
-        if (loading) {
-          return null;
-        }
-    
+    togglePopUp = () => {
+      const { open } = this.state;
+      this.setState({ open : !open});
+    }
+
+
+    render() {
         return (
-            <Map google={google}
-                 zoom={14}
-                 style={mapStyles}
-                 initialCenter={userLocation}>
-                <Marker name={'You are here'}
-                        onClick={this.onMarkerClick}
-                        animation={ google.maps.Animation.BOUNCE }
+            <div style={{ height: '100%', marginTop: '-60px' }}>
+                <Map
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUopytfPOU40AvS9RkEk0SSg1awyNxNqA"
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `1000px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
                 />
-                <InfoWindow marker={this.state.activeMarker}
-                            visible={this.state.showingInfoWindow}
-                            onClose={this.onClose}>
-                    <div>
-                        <h4>{this.state.selectedPlace.name}</h4>
-                    </div>
-                </InfoWindow>
-
-            </Map>
-        );
-    } //end of render method
-
-
-} //end of class MapContainer
-
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyBUopytfPOU40AvS9RkEk0SSg1awyNxNqA'
-  })(MapContainer);
+                <div className="add-btn">
+                    <Fab color="primary" aria-label="add" onClick={this.togglePopUp}>
+                        <AddIcon />
+                    </Fab>
+                </div>
+                <Dialog open = {this.state.open} onClose={this.togglePopUp} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Add Event</DialogTitle>
+                  <DialogContent>
+                    <TextField autoFocus
+                               margin="dense"
+                               id="title"
+                               label="Description"
+                               type="title"   
+                               fullWidth />
+                    <TextField autoFocus
+                               margin="dense"
+                               id="date"
+                               label="Date"
+                               type="date"
+                               InputLabelProps={{ shrink: true }}
+                               fullWidth />
+                    <TextField autoFocus
+                               margin="dense"
+                               id="time"
+                               label="Time"
+                               type="time"
+                               InputLabelProps={{ shrink: true }}
+                               fullWidth />
+                    <TextField autoFocus
+                               margin="dense"
+                               id="duration"
+                               label="Duration"
+                               type="duration"
+                               InputLabelProps={{ shrink: true }}
+                               fullWidth />
+                    <TextField autoFocus
+                               margin="dense"
+                               id="location"
+                               label="Location"
+                               type="location"
+                               InputLabelProps={{ shrink: true }}
+                               InputProps={{readOnly: true}}
+                               defaultValue="ASU Tempe"
+                               disabled
+                               fullWidth />          
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.togglePopUp} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={this.togglePopUp} color="primary">
+                      Create Event
+                    </Button>
+                  </DialogActions>
+                </Dialog>             
+            </div>
+        )
+    }
+}

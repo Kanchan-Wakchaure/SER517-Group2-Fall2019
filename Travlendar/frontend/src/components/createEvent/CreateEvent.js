@@ -11,8 +11,8 @@ import MapContainer from '../map/MapContainer.js';
 class CreateEvent extends React.Component {
     render(){
         return(
-            <div>
-                <MapContainer/>
+            <div style={{textAlign: 'center'}}>
+                <h3>This is create event form</h3>
             </div>
         )
     }
