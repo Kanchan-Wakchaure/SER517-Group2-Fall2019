@@ -12,6 +12,7 @@ import './MapView.css';
 import mapStyles from "./mapStyles/retromapStyles";
 
 const eventService=new EventsService();
+
 class MapPreview extends React.Component {
   state = {
     progress: [],
@@ -40,7 +41,6 @@ class MapPreview extends React.Component {
   }
 
   moveObject = () => {
-
     const distance = this.getDistance()
     if (! distance) {
       return
@@ -65,42 +65,96 @@ class MapPreview extends React.Component {
       nextLine.lng
     )
 
-
-    let directionsService = new window.google.maps.DirectionsService();
-let totalDistance, percentage, prevLineLatLng, routeLineLatLng, position
-        directionsService.route(
-        {
-            origin: lastLine,
-            destination: nextLine,
-            travelMode: window.google.maps.TravelMode.DRIVING
-
-        },
-        (result, status) => {
-            let distance = this.getDistance()
-            if (! distance) {
-              return
-            }
-            if (status === window.google.maps.DirectionsStatus.OK) {
-                let prev = lastLine;
-                result.routes[0].overview_path.map((route, i) =>  (
-                        totalDistance = prev.distance - route.distance;
-                        percentage = (distance - prev.distance) / totalDistance;
-                        position = window.google.maps.geometry.spherical.interpolate(
-                          new window.google.maps.LatLng(prev.lat, prev.lng),
-                          new window.google.maps.LatLng(route.lat,route.lng),
-                          percentage
-                        )
-
-                        progress = progress.concat(position)
-                        this.setState({ progress })
-                        prev = route;
-                )
-            }
-        });
     // distance of this line
+    const totalDistance = nextLine.distance - lastLine.distance
+    const percentage = (distance - lastLine.distance) / totalDistance
 
+    const position = window.google.maps.geometry.spherical.interpolate(
+      lastLineLatLng,
+      nextLineLatLng,
+      percentage
+    )
+
+    progress = progress.concat(position)
+    this.setState({ progress })
   }
+callME = () => {
+               const waypoints = this.events.map(p => ({
+                location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+                stopover: true
+                }));
 
+                const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+                //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
+
+                const directionsService = new window.google.maps.DirectionsService();
+
+                directionsService.route(
+                {
+                    origin: origin,
+                    destination: origin,
+                    travelMode: window.google.maps.TravelMode.DRIVING,
+                    waypoints: waypoints,
+
+                },
+                (result, status) => {
+                    //console.log("RESULT:"+result)
+                    if (status === window.google.maps.DirectionsStatus.OK) {
+                        this.setState({directions: result})
+                    } else {
+                        this.setState({error: result});
+                    }
+                });
+                console.log(this.path)
+                this.path = this.path.map((coordinates, i, array) => {
+              if (i === 0) {
+                return { ...coordinates, distance: 0 } // it begins here!
+              }
+              const { lat: lat1, lng: lng1 } = coordinates
+              const latLong1 = new window.google.maps.LatLng(lat1, lng1)
+
+              const { lat: lat2, lng: lng2 } = array[0]
+              const latLong2 = new window.google.maps.LatLng(lat2, lng2)
+
+              // in meters:
+              const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
+                latLong1,
+                latLong2
+              )
+
+              return { ...coordinates, distance }
+            })
+}
+callMEFirst=(items) => {
+let t = this;
+
+  let directionsService = new window.google.maps.DirectionsService();
+      for(var i = 0; i<items.length-1; i++) {
+
+        //t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
+        directionsService.route(
+            {
+                origin: {lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])},
+                destination: {lat: Number(items[i+1]["lat"]), lng: Number(items[i+1]["long"])},
+                travelMode: window.google.maps.TravelMode.DRIVING
+
+            },
+            (res, status) => {
+                if (status === window.google.maps.DirectionsStatus.OK) {
+                    //t.path.push(res.routes[0].overview_path)
+                    res.routes[0].overview_path.map((route, i) =>  {
+                        t.path.push({lat: Number(route.toJSON()["lat"]), lng: Number(route.toJSON()["lng"])})
+                        console.log(t.path)
+                    });
+                }
+            })
+            t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
+            t.events.push(items[i])
+            }
+            t.events.push(items[items.length-1])
+            t.path.push({lat: Number(items[items.length-1]["lat"]), lng: Number(items[items.length-1]["long"])})
+
+}
 renderData = () => {
 let t = this;
 let es = []
@@ -108,65 +162,19 @@ let es = []
             lat: 33.377210,
             lng: -111.908560
           })
+let items
   eventService.getEvents().then(function (result) {
-  var items = result.data
-  for(var i = 0; i<items.length; i++) {
+        items = result.data
+        }).catch((e)=>{
+            console.log(e);
+          //alert('Create your events for today.');
+        }).finally(() => {
 
-    t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
-    t.events.push(items[i])
-  }
-  console.log(t.path)
-}).catch(()=>{
-          alert('Create your events for today.');
-        }).finally(()=>{
-        this.path = this.path.map((coordinates, i, array) => {
-      if (i === 0) {
-        return { ...coordinates, distance: 0 } // it begins here!
-      }
-      const { lat: lat1, lng: lng1 } = coordinates
-      const latLong1 = new window.google.maps.LatLng(lat1, lng1)
-
-      const { lat: lat2, lng: lng2 } = array[0]
-      const latLong2 = new window.google.maps.LatLng(lat2, lng2)
-
-      // in meters:
-      const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-        latLong1,
-        latLong2
-      )
-
-      return { ...coordinates, distance }
-    })
-
-    console.log(this.path)
-  const waypoints = this.events.map(p => ({
-        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-        stopover: true
-        }));
-
-   const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
-
-        const directionsService = new window.google.maps.DirectionsService();
-
-        directionsService.route(
-        {
-            origin: origin,
-            destination: origin,
-            travelMode: window.google.maps.TravelMode.DRIVING,
-            waypoints: waypoints,
-
-        },
-        (result, status) => {
-            //console.log("RESULT:"+result)
-            if (status === window.google.maps.DirectionsStatus.OK) {
-                this.setState({directions: result})
-            } else {
-                this.setState({error: result});
-            }
-        });
+            this.callMEFirst(items)
+            this.callME()
         })
 }
+
   componentWillMount = () => {
   this.renderData();
 
