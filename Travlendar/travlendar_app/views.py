@@ -107,6 +107,8 @@ def EventList(request):
             if p==1 and n==0:
                 print("prev event: ", prev_event.time)
                 prev_event_time = datetime.combine(date.min, prev_event.time) - datetime.min
+                print("prev event lat: ", prev_event.lat)
+                print("prev event long: ", prev_event.long)
                 travel_time = reachable(prev_event.lat, prev_event.long,serializer.validated_data.get("lat"), serializer.validated_data.get("long"))
 
                 if travel_time==-1:
@@ -193,7 +195,7 @@ def EventList(request):
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
         
-        today = DATE
+        today = date.today()
 
         
         print("Today:",today)
@@ -211,6 +213,7 @@ def EventList(request):
 def findLongLat(serializer):
 
     event_location = serializer.validated_data.get("destination")
+    print("event location: ",event_location)
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, get_api_key()))
     api_response_dict = api_response.json()
@@ -253,6 +256,21 @@ def reachable(A_lat,A_long,B_lat,B_long):
     return -1
 
 #sort ordered dict by 'created_at'
+
+# API for delete event
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['PUT', 'DELETE'])
+def update_event(request, pk):
+    try:
+        event = Event.objects.get(id=pk)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # API for Sending email alert
 
