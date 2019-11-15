@@ -7,6 +7,7 @@ import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
 
 const eventService=new EventsService();
 const deleteService=new DeleteService();
@@ -18,7 +19,8 @@ class ListEvent extends Component{
             events: [],
             show:false,
             showPopup: false,
-            event_id:0
+            event_id:0,
+            date:''
 
         };
         this.handleDelete  =  this.handleDelete.bind(this);
@@ -34,6 +36,11 @@ class ListEvent extends Component{
         this.setState({event_id:id});
         this.togglePopup();
     }
+
+    dateChange(event){
+        this.setState({date:event.target.value});
+    }
+
     componentDidMount() {
     //
         var  self  =  this;
@@ -76,6 +83,26 @@ class ListEvent extends Component{
         }
         else
         {
+            return(
+            <div>
+                <form>
+                <FormGroup>
+                <TextField variant="outlined"
+                           required
+                           type="date"
+                           id="date"
+                           label="Date"
+                           name="date"
+                           value={this.state.date}
+                           style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
+                           InputLabelProps={{ shrink: true }}
+                           onChange = { e => this.dateChange(e) }
+                  />
+              </FormGroup><br/><br/>
+
+                </form>
+            </div>
+            )
 
             if(this.state.show){
 
