@@ -378,3 +378,24 @@ def Text(request):
         return HttpResponse("Got Text Alert Activation")
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+# Api for create(POST) event and get(GET) all events
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def preview_events(request):
+    if request.method == 'GET':
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+
+        today = DATE
+
+        print("Today:", today)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        serializer = EventSerializer(event_list, context={'request': request}, many=True)
+
+        if serializer.data == []:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
