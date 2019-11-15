@@ -43,6 +43,7 @@ SITE_ID = 1
 AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 REST_FRAMEWORK = {
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'Travlendar.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ os.path.join(BASE_DIR, 'frontend', 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,11 +109,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # Allowing react for cors
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
 
-    "http://localhost:3000",
+    
 
 ]
 
@@ -132,3 +133,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'build/static'),
+]
+
+
