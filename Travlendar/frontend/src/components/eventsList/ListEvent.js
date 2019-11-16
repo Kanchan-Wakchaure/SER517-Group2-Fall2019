@@ -11,35 +11,45 @@ import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
 
 const eventService=new EventsService();
 const deleteService=new DeleteService();
+
 class ListEvent extends Component{
 
     constructor(props) {
         super(props);
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+
+        if(dd<10)
+        {
+            dd='0'+dd;
+        }
+        if(mm<10)
+        {
+            mm='0'+mm;
+        }
         this.state  = {
             events: [],
             show:false,
             showPopup: false,
             event_id:0,
-            date:''
+            date:yyyy+'-'+mm+'-'+dd
 
         };
         this.handleDelete  =  this.handleDelete.bind(this);
-        //this.getEventsBasedOnDate =this.getEventsBasedOnDate.bind(this);
-
     }
 
-
-
+    /* Lifecycle method for this component*/
     componentDidMount() {
-
         var  self  =  this;
         eventService.getEvents(this.state.date).then(function (result) {
-            //console.log("status:",result.status)
             self.setState({ events:  result.data})
             self.setState({show:true})
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
+                    self.setState({show:false})
                     var text="You have no events on selected date to display.";
                     NotificationManager.info(text);
                 }
@@ -48,34 +58,14 @@ class ListEvent extends Component{
 
         });
 
-
     }
 
-
-    /*
-    getEventsBasedOnDate(){
-        console.log("date",this.state.date);
-        eventService1.getEvents(this.state.date).then(function (result) {
-            console.log("new events:",result.data)
-            this.setState({ events:  result.data})
-            //this.setState({show:true})
-        }).catch(function (error){
-            if (error.response){
-                if(error.response.status===404){
-
-                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.");
-                }
-
-            }
-
-        });
-
-    }
-    */
+    /* Setting state of date variable for showing events from diff date */
     dateChange(event){
         this.setState({date:event.target.value});
     }
 
+    /* Making axios call for deleting an event*/
     handleDelete(pk){
         var  self  =  this;
         console.log("event id ",pk);
@@ -87,21 +77,25 @@ class ListEvent extends Component{
             {
                 window.location.reload();
             }
-            //window.location.reload();
+
         });
         this.togglePopup();
     }
 
+    /* Responsible for toggling confirmation popup on delete event*/
     togglePopup() {
         this.setState({
         showPopup: !this.state.showPopup
         });
     }
+
+    /* Setting state of event_id to delete*/
     setEventId(id){
         this.setState({event_id:id});
         this.togglePopup();
     }
 
+    /* Lifecycle method*/
     render(){
         if(localStorage.getItem('token')==null){
             return <Homepage/>
@@ -147,7 +141,6 @@ class ListEvent extends Component{
                                     <IconButton aria-label="delete" color="secondary" onClick={this.setEventId.bind(this,ev.id)}>
                                             <DeleteIcon />
                                     </IconButton>
-
                                     </div>
                                      {this.state.showPopup ?
                                       <Popup
@@ -159,7 +152,6 @@ class ListEvent extends Component{
                                     }
 
                                 </li>
-
 
                             )}
                         </ul>
@@ -185,11 +177,8 @@ class ListEvent extends Component{
                                    className="input-date-picker"
                                    onChange = { e => this.dateChange(e) }/></
                                    FormGroup>
-                                   <button className="btn-date-picker" onClick={this.componentDidMount.bind(this)}>Submit</button>
-                    </div>
-
-
-
+                            <button className="btn-date-picker" onClick={this.componentDidMount.bind(this)}>Submit</button>
+                     </div>
 
                 )
 
@@ -199,29 +188,7 @@ class ListEvent extends Component{
     }
 }
 
-/*
-class SelectDate extends React.Component{
-  render(){
-   return(
-      <div className="container-date-picker">
-        <div className="label-date-picker">Select date:</div>
-            <FormGroup className="form-date-picker">
-                <TextField variant="outlined"
-                    required
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={this.props.dateField}
-                    InputLabelProps={{ shrink: true }}
-                    className="input-date-picker"
-                    onChange = {e=>{this.props.dateChangeMethod}}/></
-            FormGroup>
-        <button className="btn-date-picker" onClick={this.props.getEventsBasedOnDate}>Submit</button>
-       </div>
-   )
-  }
-}
-*/
+
 class Popup extends React.Component {
   render() {
     return (
