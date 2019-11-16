@@ -40,8 +40,8 @@ class ListEvent extends Component{
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-
-                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.");
+                    var text="You have no events on selected date to display.";
+                    NotificationManager.info(text);
                 }
 
             }
@@ -112,24 +112,20 @@ class ListEvent extends Component{
             if(this.state.show){
                 return (
                 <div>
-                    <div>
-                        <form>
-                        <FormGroup>
-                        <TextField variant="outlined"
+                     <div className="container-date-picker">
+                        <div className="label-date-picker">Select date:</div>
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
                                    required
                                    type="date"
                                    id="date"
-                                   label="Date"
                                    name="date"
                                    value={this.state.date}
-                                   //style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
                                    InputLabelProps={{ shrink: true }}
-                                   onChange = { e => this.dateChange(e) }
-                          />
-                        </FormGroup><br/><br/>
-
-                        </form>
-                        <button onClick={this.componentDidMount.bind(this)}>submit</button>
+                                   className="input-date-picker"
+                                   onChange = { e => this.dateChange(e) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={this.componentDidMount.bind(this)}>Submit</button>
                     </div>
                     <div className="event_list">
                         <ul>
@@ -176,25 +172,24 @@ class ListEvent extends Component{
             else{
                 console.log("ELSE");
                 return(
-
-                    <div>
-                        <form>
-                        <FormGroup>
-                        <TextField variant="outlined"
+                     <div className="container-date-picker">
+                        <div className="label-date-picker">Select date:</div>
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
                                    required
                                    type="date"
                                    id="date"
-                                   label="Date"
                                    name="date"
                                    value={this.state.date}
-                                   style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
                                    InputLabelProps={{ shrink: true }}
-                                   onChange = { e => this.dateChange(e) }
-                          />
-                        </FormGroup><br/><br/>
-                        </form>
-                        <button onClick={this.componentDidMount.bind(this)}>Submit</button>
+                                   className="input-date-picker"
+                                   onChange = { e => this.dateChange(e) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={this.componentDidMount.bind(this)}>Submit</button>
                     </div>
+
+
+
 
                 )
 
@@ -203,6 +198,30 @@ class ListEvent extends Component{
         }   
     }
 }
+
+/*
+class SelectDate extends React.Component{
+  render(){
+   return(
+      <div className="container-date-picker">
+        <div className="label-date-picker">Select date:</div>
+            <FormGroup className="form-date-picker">
+                <TextField variant="outlined"
+                    required
+                    type="date"
+                    id="date"
+                    name="date"
+                    value={this.props.dateField}
+                    InputLabelProps={{ shrink: true }}
+                    className="input-date-picker"
+                    onChange = {e=>{this.props.dateChangeMethod}}/></
+            FormGroup>
+        <button className="btn-date-picker" onClick={this.props.getEventsBasedOnDate}>Submit</button>
+       </div>
+   )
+  }
+}
+*/
 class Popup extends React.Component {
   render() {
     return (
