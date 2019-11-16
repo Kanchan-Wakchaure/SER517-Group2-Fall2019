@@ -24,34 +24,23 @@ class ListEvent extends Component{
 
         };
         this.handleDelete  =  this.handleDelete.bind(this);
+        //this.getEventsBasedOnDate =this.getEventsBasedOnDate.bind(this);
 
     }
 
-    togglePopup() {
-        this.setState({
-          showPopup: !this.state.showPopup
-        });
-      }
-    setEventId(id){
-        this.setState({event_id:id});
-        this.togglePopup();
-    }
 
-    dateChange(event){
-        this.setState({date:event.target.value});
-    }
 
     componentDidMount() {
-    //
+
         var  self  =  this;
-        eventService.getEvents().then(function (result) {
+        eventService.getEvents(this.state.date).then(function (result) {
             //console.log("status:",result.status)
             self.setState({ events:  result.data})
             self.setState({show:true})
         }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    self.setState({show:false})
+
                     NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.");
                 }
 
@@ -59,6 +48,32 @@ class ListEvent extends Component{
 
         });
 
+
+    }
+
+
+    /*
+    getEventsBasedOnDate(){
+        console.log("date",this.state.date);
+        eventService1.getEvents(this.state.date).then(function (result) {
+            console.log("new events:",result.data)
+            this.setState({ events:  result.data})
+            //this.setState({show:true})
+        }).catch(function (error){
+            if (error.response){
+                if(error.response.status===404){
+
+                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.");
+                }
+
+            }
+
+        });
+
+    }
+    */
+    dateChange(event){
+        this.setState({date:event.target.value});
     }
 
     handleDelete(pk){
@@ -77,81 +92,108 @@ class ListEvent extends Component{
         this.togglePopup();
     }
 
+    togglePopup() {
+        this.setState({
+        showPopup: !this.state.showPopup
+        });
+    }
+    setEventId(id){
+        this.setState({event_id:id});
+        this.togglePopup();
+    }
+
     render(){
         if(localStorage.getItem('token')==null){
             return <Homepage/>
         }
         else
         {
-            return(
-            <div>
-                <form>
-                <FormGroup>
-                <TextField variant="outlined"
-                           required
-                           type="date"
-                           id="date"
-                           label="Date"
-                           name="date"
-                           value={this.state.date}
-                           style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
-                           InputLabelProps={{ shrink: true }}
-                           onChange = { e => this.dateChange(e) }
-                  />
-              </FormGroup><br/><br/>
-
-                </form>
-            </div>
-            )
 
             if(this.state.show){
-
                 return (
-                <div className="event_list">
-                    <ul>
-                        <li>
-                            <div>Description</div>
-                            <div>Time</div>
-                            <div>Duration</div>
-                            <div>Location</div>
-                            <div></div>
-                        </li>
-                        {this.state.events.map(ev=>
+                <div>
+                    <div>
+                        <form>
+                        <FormGroup>
+                        <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   label="Date"
+                                   name="date"
+                                   value={this.state.date}
+                                   //style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
+                                   InputLabelProps={{ shrink: true }}
+                                   onChange = { e => this.dateChange(e) }
+                          />
+                        </FormGroup><br/><br/>
 
-                            <li key={ev.id} >
-                                <div>{ev.title}</div>
-                                <div className="event_list_date">{ev.time}</div>
-                                <div>{ev.duration}</div>
-                                <div>{ev.destination}</div>
-                                <div className="delete-event">
-                                <IconButton aria-label="delete" color="secondary" onClick={this.setEventId.bind(this,ev.id)}>
-                                        <DeleteIcon />
-                                </IconButton>
-
-                                </div>
-                                 {this.state.showPopup ?
-                                  <Popup
-                                    text='Do you want to delete this event?'
-                                    deleteEvent={this.handleDelete.bind(this,this.state.event_id) }
-                                    closePopup={this.togglePopup.bind(this)}
-                                  />
-                                  : null
-                                }
-
+                        </form>
+                        <button onClick={this.componentDidMount.bind(this)}>submit</button>
+                    </div>
+                    <div className="event_list">
+                        <ul>
+                            <li>
+                                <div>Description</div>
+                                <div>Time</div>
+                                <div>Duration</div>
+                                <div>Location</div>
+                                <div></div>
                             </li>
+                            {this.state.events.map(ev=>
+
+                                <li key={ev.id} >
+                                    <div>{ev.title}</div>
+                                    <div className="event_list_date">{ev.time}</div>
+                                    <div>{ev.duration}</div>
+                                    <div>{ev.destination}</div>
+                                    <div className="delete-event">
+                                    <IconButton aria-label="delete" color="secondary" onClick={this.setEventId.bind(this,ev.id)}>
+                                            <DeleteIcon />
+                                    </IconButton>
+
+                                    </div>
+                                     {this.state.showPopup ?
+                                      <Popup
+                                        text='Do you want to delete this event?'
+                                        deleteEvent={this.handleDelete.bind(this,this.state.event_id) }
+                                        closePopup={this.togglePopup.bind(this)}
+                                      />
+                                      : null
+                                    }
+
+                                </li>
 
 
-                        )}
-                    </ul>
+                            )}
+                        </ul>
 
+                    </div>
                 </div>
                 );
 
             }
             else{
-
+                console.log("ELSE");
                 return(
+
                     <div>
+                        <form>
+                        <FormGroup>
+                        <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   label="Date"
+                                   name="date"
+                                   value={this.state.date}
+                                   style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
+                                   InputLabelProps={{ shrink: true }}
+                                   onChange = { e => this.dateChange(e) }
+                          />
+                        </FormGroup><br/><br/>
+                        </form>
+                        <button onClick={this.componentDidMount.bind(this)}>Submit</button>
                     </div>
 
                 )
