@@ -7,7 +7,7 @@ import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import {FormGroup, Button, TextField, InputAdornment } from '@material-ui/core';
+import {FormGroup, TextField } from '@material-ui/core';
 
 const eventService=new EventsService();
 const deleteService=new DeleteService();
