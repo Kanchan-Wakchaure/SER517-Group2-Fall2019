@@ -23,7 +23,7 @@ class MapPreview extends React.Component {
 
   path = []
     events = []
-  velocity = 2000
+  velocity = 800
   initialDate = new Date()
 
   getDistance = () => {
@@ -78,99 +78,14 @@ class MapPreview extends React.Component {
     progress = progress.concat(position)
     this.setState({ progress })
   }
-callME = () => {
-               const waypoints = this.events.map(p => ({
-                location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-                stopover: true
-                }));
-
-                const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-                //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
-
-                const directionsService = new window.google.maps.DirectionsService();
-
-                directionsService.route(
-                {
-                    origin: origin,
-                    destination: origin,
-                    travelMode: window.google.maps.TravelMode.DRIVING,
-                    waypoints: waypoints,
-
-                },
-                (result, status) => {
-                    //console.log("RESULT:"+result)
-                    if (status === window.google.maps.DirectionsStatus.OK) {
-                        this.setState({directions: result})
-                    } else {
-                        this.setState({error: result});
-                    }
-                });
-                console.log(this.path)
-                this.path = this.path.map((coordinates, i, array) => {
-              if (i === 0) {
-                return { ...coordinates, distance: 0 } // it begins here!
-              }
-              const { lat: lat1, lng: lng1 } = coordinates
-              const latLong1 = new window.google.maps.LatLng(lat1, lng1)
-
-              const { lat: lat2, lng: lng2 } = array[0]
-              const latLong2 = new window.google.maps.LatLng(lat2, lng2)
-
-              // in meters:
-              const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-                latLong1,
-                latLong2
-              )
-                console.log(distance)
-              return { ...coordinates, distance }
-            })
-}
-callMEFirst=(items) => {
-let t = this;
-
-  let directionsService = new window.google.maps.DirectionsService();
-      for(var i = 0; i<items.length-1; i++) {
-
-        //t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
-        directionsService.route(
-            {
-                origin: {lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])},
-                destination: {lat: Number(items[i+1]["lat"]), lng: Number(items[i+1]["long"])},
-                travelMode: window.google.maps.TravelMode.DRIVING
-
-            },
-            (res, status) => {
-                if (status === window.google.maps.DirectionsStatus.OK) {
-                    //t.path.push(res.routes[0].overview_path)
-                    res.routes[0].overview_path.map((route, i) =>  {
-                        t.path.push({lat: Number(route.toJSON()["lat"]), lng: Number(route.toJSON()["lng"])})
-                        console.log(t.path)
-                    });
-                }
-            })
-            t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
-            t.events.push(items[i])
-            }
-            t.events.push(items[items.length-1])
-            t.path.push({lat: Number(items[items.length-1]["lat"]), lng: Number(items[items.length-1]["long"])})
-
-}
 renderData = () => {
 let t = this;
 let es = []
-    //t.path.push({lat: 33.377210,lng: -111.908560})
-let items
-  eventService.getPreviewEvents().then(function (result) {
-        for(var i = 0; i < result.data.length; i++) {
-            t.path.push({lat: result.data[i]["lat"], lng: result.data[i]["long"] })
-        }
 
-        }).catch((e)=>{
-            console.log(e);
-          //alert('Create your events for today.');
-        }).finally(() => {
-            this.callME()
-        })
+t.path = eventService.getPreviewEvents()
+eventService.getEvents().then(function(result) {
+    t.events = result.data
+})
 }
 
   componentWillMount = () => {

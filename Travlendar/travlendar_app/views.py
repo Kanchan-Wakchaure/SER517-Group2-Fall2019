@@ -395,6 +395,7 @@ def preview_events(request):
     # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
     if api_response_dict['status'] == 'OK':
         prev = api_response_dict['results'][0]['formatted_address']
+        output.append({"lat": 33.377210, "long": -111.908560})
         output.append({"lat": float(data[0]["lat"]), "long": float(data[0]["long"])})
         print(data[0]["lat"] + " " + data[0]["long"])
         for i in range(1, len(data)):
@@ -410,7 +411,6 @@ def preview_events(request):
                 output.append({"lat": d['end_location']["lat"], "long": d['end_location']["lng"]})
                 output.append({"lat": d['start_location']["lat"], "long": d['start_location']["lng"]})
             prev = cur
-        print(output)
         return Response({'data': output}, status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
