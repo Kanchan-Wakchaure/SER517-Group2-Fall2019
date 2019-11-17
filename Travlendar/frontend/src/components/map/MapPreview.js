@@ -105,6 +105,7 @@ callME = () => {
                         this.setState({error: result});
                     }
                 });
+                console.log(this.path)
                 this.path = this.path.map((coordinates, i, array) => {
               if (i === 0) {
                 return { ...coordinates, distance: 0 } // it begins here!
@@ -120,41 +121,60 @@ callME = () => {
                 latLong1,
                 latLong2
               )
-
+                console.log(distance)
               return { ...coordinates, distance }
             })
 }
 callMEFirst=(items) => {
 let t = this;
 
-      for(var i = 0; i<items.length; i++) {
+  let directionsService = new window.google.maps.DirectionsService();
+      for(var i = 0; i<items.length-1; i++) {
+
+        //t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
+        directionsService.route(
+            {
+                origin: {lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])},
+                destination: {lat: Number(items[i+1]["lat"]), lng: Number(items[i+1]["long"])},
+                travelMode: window.google.maps.TravelMode.DRIVING
+
+            },
+            (res, status) => {
+                if (status === window.google.maps.DirectionsStatus.OK) {
+                    //t.path.push(res.routes[0].overview_path)
+                    res.routes[0].overview_path.map((route, i) =>  {
+                        t.path.push({lat: Number(route.toJSON()["lat"]), lng: Number(route.toJSON()["lng"])})
+                        console.log(t.path)
+                    });
+                }
+            })
+            t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
             t.events.push(items[i])
-       }
+            }
+            t.events.push(items[items.length-1])
+            t.path.push({lat: Number(items[items.length-1]["lat"]), lng: Number(items[items.length-1]["long"])})
+
 }
 renderData = () => {
-
-  this.callMEFirst(this.path)
-  }
-
-  componentWillMount = () => {
-  let t = this;
+let t = this;
 let es = []
-    t.path.push({
-            lat: 33.377210,
-            lng: -111.908560
-          })
+    //t.path.push({lat: 33.377210,lng: -111.908560})
+let items
   eventService.getPreviewEvents().then(function (result) {
-        t.path.push(result)
+        for(var i = 0; i < result.data.length; i++) {
+            t.path.push({lat: result.data[i]["lat"], lng: result.data[i]["long"] })
+        }
 
-        t.callME()
         }).catch((e)=>{
             console.log(e);
           //alert('Create your events for today.');
-        }).finally(()=>{
-
-            this.renderData();
+        }).finally(() => {
+            this.callME()
         })
+}
 
+  componentWillMount = () => {
+  this.renderData();
 
   }
 

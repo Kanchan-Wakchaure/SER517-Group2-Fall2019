@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from .models import Event
 from .serializers import EventSerializer
@@ -6,22 +5,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes
 from rest_framework import status
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from datetime import datetime, date, time
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from django.core.paginator import Paginator
+from datetime import datetime, date
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 import requests, json
 import os
 from .alerts import send_email, send_text
 from django.apps import apps
-from .getdate import DATE, TIME
-from django.utils import timezone
-
-
-
-
-
+from .getdate import DATE
+import urllib
 
 # Api for create(POST) event and get(GET) all events
 @authentication_classes([TokenAuthentication])
@@ -386,16 +380,38 @@ def preview_events(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-
         today = DATE
-
-        print("Today:", today)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
 
         if serializer.data == []:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+        output=[]
+        data = serializer.data
+        print(data)
+        api_response = requests.get(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng={0}&key={1}'.format(data[0]["lat"]+","+data[0]["long"], get_api_key()))
+    api_response_dict = api_response.json()
+    # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
+    if api_response_dict['status'] == 'OK':
+        prev = api_response_dict['results'][0]['formatted_address']
+        output.append({"lat": float(data[0]["lat"]), "long": float(data[0]["long"])})
+        print(data[0]["lat"] + " " + data[0]["long"])
+        for i in range(1, len(data)):
+            api_response = requests.get(
+                'https://maps.googleapis.com/maps/api/geocode/json?latlng={0}&key={1}'.format(data[i]["lat"]+","+data[i]["long"], get_api_key()))
+            api_response_dict = api_response.json()
+            if api_response_dict['status'] == 'OK':
+                cur = api_response_dict['results'][0]['formatted_address']
+            url_response = requests.get('https://maps.googleapis.com/maps/api/directions/json?origin={0}&destination={1}&key={2}'.format(prev, cur, get_api_key()))
+            result = url_response.json()
+            output.append({"lat": float(data[i]["lat"]), "long": float(data[i]["long"])})
+            for d in result['routes'][0]['legs']:
+                output.append({"lat": d['end_location']["lat"], "long": d['end_location']["lng"]})
+                output.append({"lat": d['start_location']["lat"], "long": d['start_location']["lng"]})
+            prev = cur
+        print(output)
+        return Response({'data': output}, status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
