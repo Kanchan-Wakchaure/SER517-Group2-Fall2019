@@ -95,8 +95,7 @@ export default class MapContainer extends React.Component {
       this.setState({ open : !open});
     }
 
-    handleCancel= ()=>{
-        this.togglePopUp();
+    handleCancel = () => {
         this.setState(initialState);
     }
 
@@ -277,7 +276,7 @@ export default class MapContainer extends React.Component {
                                defaultValue={this.state.address}
                                disabled
                                fullWidth 
-                               value={this.state.eventDetails.address}
+                               value={this.state.address}
                                onChange = { event => this.handleInputChange(event, 'address') }/> 
                     <br/><br/>
                     <div onClick={this.handleInputs}>
