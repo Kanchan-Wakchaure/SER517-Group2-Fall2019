@@ -15,6 +15,12 @@ import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import {FormGroup, TextField } from '@material-ui/core';
+
+
+const eventService=new EventsService();
+
+
 
 function Map() {
     const [events, setEvents]=useState([]);
@@ -22,13 +28,14 @@ function Map() {
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
     const [show, setShow]=useState(false);
+    const setShowFalse = () => setShow(false);
+    const [date, setDate]=useState('');
     const google=window.google;
     let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 
     useEffect(() => {
-    const eventService=new EventsService();
-    eventService.getEvents().then(function (result) {
+    eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
     console.log(result);
     setShow(true);
@@ -88,8 +95,6 @@ function Map() {
 
     },[events])
 
-
-
     if (error) {
     return <h1 class="error">one of the location unreachable</h1>;
     }
@@ -108,14 +113,47 @@ function Map() {
       );
 
         return (
+          <div>
+
             <GoogleMap
                 defaultZoom={10}
                 defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
                 defaultOptions={{ styles: mapStyles }}
+
             >
+            <div className="container-date-picker">
+                        <div className="label-date-picker">Select date:</div>
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   name="date"
+                                   value={date}
+                                   InputLabelProps={{ shrink: true }}
+                                   className="input-date-picker"
+                                   onChange = { e =>  setDate(e.target.value) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
+                                        setEvents(result.data);
+                                        console.log(result);
+                                        setShow(true);
+                                        //events=result.data;
+                                        }).catch(function (error){
+                                                if (error.response){
+                                                    if(error.response.status===404){
+                                                        setShowFalse();
+                                                        NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+
+                                                    }
+                                                }
+                                        })
+                                        }}>Submit
+                                    </button>
+             </div>
             <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
-     <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
-    </MapControl>
+            <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+            </MapControl>
             {originMarker}
             {
                 directions && (
@@ -177,12 +215,43 @@ function Map() {
                 </InfoWindow>
             )}
                 </GoogleMap>
+           </div>
             );
 
     }
     else{
         return(
                 <div>
+                    <div className="container-date-picker">
+                        <div className="label-date-picker">Select date:</div>
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   name="date"
+                                   value={date}
+                                   InputLabelProps={{ shrink: true }}
+                                   className="input-date-picker"
+                                   onChange = { e =>  setDate(e.target.value) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
+                                        setEvents(result.data);
+                                        console.log(result);
+                                        setShow(true);
+                                        //events=result.data;
+                                        }).catch(function (error){
+                                                if (error.response){
+                                                    if(error.response.status===404){
+                                                        setShowFalse();
+                                                        NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+
+                                                    }
+                                                }
+                                        })
+                                        }}>Submit
+                                    </button>
+             </div>
                     <GoogleMap
                     defaultZoom={10}
                     defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
@@ -207,7 +276,7 @@ export default function MAP() {
   else
   {
         return (
-        <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+        <div className="map">
           <MapWrapped
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
               process.env.REACT_APP_GOOGLE_KEY
