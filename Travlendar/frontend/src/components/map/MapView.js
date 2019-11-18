@@ -27,9 +27,20 @@ function Map() {
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
-    const [show, setShow]=useState(false);
-    const setShowFalse = () => setShow(false);
-    const [date, setDate]=useState('');
+    var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+
+        if(dd<10)
+        {
+            dd='0'+dd;
+        }
+        if(mm<10)
+        {
+            mm='0'+mm;
+        }
+    const [date, setDate]=useState(yyyy+'-'+mm+'-'+dd);
     const google=window.google;
     let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -38,13 +49,11 @@ function Map() {
     eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
     console.log(result);
-    setShow(true);
-    //events=result.data;
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
-                    setShow(false);
+                    NotificationManager.info("You have no events on today's date to display.")
+
                 }
             }
     });
@@ -84,7 +93,7 @@ function Map() {
 
         },
         (result, status) => {
-            //console.log("RESULT:"+result)
+
             if (status === google.maps.DirectionsStatus.OK) {
                 setDirections(result);
                 console.log("Directions",result)
@@ -95,11 +104,12 @@ function Map() {
 
     },[events])
 
-    if (error) {
-    return <h1 class="error">one of the location unreachable</h1>;
+    if (error){
+
+        NotificationManager.error("Could not find directions for the events.")
     }
 
-    if(show===true){
+
     let originMarker = null;
     originMarker = (
         <Marker
@@ -114,13 +124,6 @@ function Map() {
 
         return (
           <div>
-
-            <GoogleMap
-                defaultZoom={10}
-                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-                defaultOptions={{ styles: mapStyles }}
-
-            >
             <div className="container-date-picker">
                         <div className="label-date-picker">Select date:</div>
                         <FormGroup className="form-date-picker">
@@ -137,13 +140,13 @@ function Map() {
                                    <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
                                         setEvents(result.data);
                                         console.log(result);
-                                        setShow(true);
-                                        //events=result.data;
+
                                         }).catch(function (error){
                                                 if (error.response){
                                                     if(error.response.status===404){
-                                                        setShowFalse();
-                                                        NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+
+                                                        setEvents([]);
+                                                        NotificationManager.info("You have no events on selected date to display.")
 
                                                     }
                                                 }
@@ -151,6 +154,14 @@ function Map() {
                                         }}>Submit
                                     </button>
              </div>
+             <div id="google-map">
+            <GoogleMap
+                defaultZoom={10}
+                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                defaultOptions={{ styles: mapStyles }}
+
+            >
+
             <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
             <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
             </MapControl>
@@ -158,6 +169,7 @@ function Map() {
             {
                 directions && (
                 <DirectionsRenderer
+
                  directions={directions}
                  options={{
                  /*
@@ -169,6 +181,7 @@ function Map() {
                     preserveViewport: true,
                     */
                     suppressMarkers: true,
+
 
                   }}
 
@@ -215,53 +228,12 @@ function Map() {
                 </InfoWindow>
             )}
                 </GoogleMap>
+            </div>
            </div>
             );
 
-    }
-    else{
-        return(
-                <div>
-                    <div className="container-date-picker">
-                        <div className="label-date-picker">Select date:</div>
-                        <FormGroup className="form-date-picker">
-                            <TextField variant="outlined"
-                                   required
-                                   type="date"
-                                   id="date"
-                                   name="date"
-                                   value={date}
-                                   InputLabelProps={{ shrink: true }}
-                                   className="input-date-picker"
-                                   onChange = { e =>  setDate(e.target.value) }/></
-                                   FormGroup>
-                                   <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
-                                        setEvents(result.data);
-                                        console.log(result);
-                                        setShow(true);
-                                        //events=result.data;
-                                        }).catch(function (error){
-                                                if (error.response){
-                                                    if(error.response.status===404){
-                                                        setShowFalse();
-                                                        NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
 
-                                                    }
-                                                }
-                                        })
-                                        }}>Submit
-                                    </button>
-             </div>
-                    <GoogleMap
-                    defaultZoom={10}
-                    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-                    defaultOptions={{ styles: mapStyles }}
-                    >
-                    </GoogleMap>
-                 </div>
-        )
 
-    }
 
 }
 
@@ -276,16 +248,18 @@ export default function MAP() {
   else
   {
         return (
+
         <div className="map">
           <MapWrapped
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
               process.env.REACT_APP_GOOGLE_KEY
             }`}
             loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%`}} />}
+            mapElement={<div className="map-div" style={{ height: `100%`, position:'relative'}} />}
           />
         </div>
+
         );
 
 
