@@ -24,9 +24,12 @@ const eventService=new EventsService();
 
 function Map() {
     const [events, setEvents]=useState([]);
+    const [wayPoints, setWayPoints]=useState([]);
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
+    const [latitude, setLat]=useState(33.327800);
+    const [longitude, setLong]=useState(-111.823040);
     var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1;
@@ -46,9 +49,34 @@ function Map() {
 
 
     useEffect(() => {
+    if ("geolocation" in navigator) {
+
+      navigator.geolocation.getCurrentPosition(
+       function success(position) {
+         setLat(position.coords.latitude);
+         setLong(position.coords.longitude);
+         console.log('latitude', position.coords.latitude,
+                     'longitude', position.coords.longitude);
+       },
+      function error(error_message) {
+
+        console.log('An error has occurred while retrieving location', error_message)
+      }
+    );
+    }
+    else {
+
+      console.log('geolocation is not enabled on this browser')
+    }
     eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
     console.log(result);
+    var Points=result.data.map(p => ({
+        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+        stopover: true
+        }));
+        console.log("Points:",Points);
+    setWayPoints(Points);
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
@@ -73,15 +101,11 @@ function Map() {
 
     useEffect(()=>{
 
-        const waypoints = events.map(p => ({
-        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-        stopover: true
-        }));
+
         console.log("Events",events);
-
-        const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+        //console.log("first lat:",events.shift());
+        const origin = { lat:latitude, lng:longitude}//waypoints.shift().location;
         //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
-
         const directionsService = new google.maps.DirectionsService();
 
         directionsService.route(
@@ -89,7 +113,7 @@ function Map() {
             origin: origin,
             destination: origin,
             travelMode: google.maps.TravelMode.DRIVING,
-            waypoints: waypoints,
+            waypoints: wayPoints,
 
         },
         (result, status) => {
@@ -102,11 +126,11 @@ function Map() {
             }
         });
 
-    },[events])
+    },[events, latitude, longitude, wayPoints])
 
     if (error){
 
-        NotificationManager.error("Could not find directions for the events.")
+        NotificationManager.error("Could not find routes for the events.")
     }
 
 
@@ -121,10 +145,31 @@ function Map() {
           }}
         />
       );
-
+    let currentPos=null;
+    currentPos=(
+        <Marker
+          defaultLabel="My Location"
+          defaultIcon={null}
+          position={{
+            lat: latitude,
+            lng: longitude
+          }}
+        />
+    );
         return (
           <div>
-            <div className="container-date-picker">
+
+            <div id="google-map">
+            <GoogleMap
+                defaultZoom={10}
+                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
+                defaultOptions={{ styles: mapStyles }}
+
+            >
+
+            <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
+            <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+             <div className="container-date-picker">
                         <div className="label-date-picker">Select date:</div>
                         <FormGroup className="form-date-picker">
                             <TextField variant="outlined"
@@ -154,18 +199,9 @@ function Map() {
                                         }}>Submit
                                     </button>
              </div>
-             <div id="google-map">
-            <GoogleMap
-                defaultZoom={10}
-                defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-                defaultOptions={{ styles: mapStyles }}
-
-            >
-
-            <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
-            <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
             </MapControl>
             {originMarker}
+            {currentPos}
             {
                 directions && (
                 <DirectionsRenderer
