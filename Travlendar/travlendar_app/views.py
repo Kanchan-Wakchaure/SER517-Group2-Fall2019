@@ -80,7 +80,9 @@ def EventList(request):
                 print(" ")
 
             # assiging longitude and latitude to the event that being created.
-            findLongLat(serializer)
+            f=findLongLat(serializer)
+            if f==-1:
+                return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR);
 
             # Checking if there is any conflict while creating new event with next event
             if p==0 and n==1:
@@ -224,7 +226,9 @@ def findLongLat(serializer):
     if api_response_dict['status'] == 'OK':
         serializer.validated_data["lat"] = api_response_dict['results'][0]['geometry']['location']['lat']
         serializer.validated_data["long"] = api_response_dict['results'][0]['geometry']['location']['lng']
-
+        return 1
+    else:
+        return -1
 
 
 # Getting api key from txt file.

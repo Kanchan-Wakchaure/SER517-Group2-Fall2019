@@ -104,14 +104,23 @@ function Map() {
 
         console.log("Events",events);
         //console.log("first lat:",events.shift());
+        /*events.map(p =>
+            if(p.lat==latitude && p.long==longitude){
+                events.filter(function(){
+                    events.map(p =>
+                    if(p.lat!=latitude && p.long!=longitude)
+                })
+            }
+        );
+        */
         const origin = { lat:latitude, lng:longitude}//waypoints.shift().location;
-        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
+        const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
 
         directionsService.route(
         {
             origin: origin,
-            destination: origin,
+            destination: destination,
             travelMode: google.maps.TravelMode.DRIVING,
             waypoints: wayPoints,
 
