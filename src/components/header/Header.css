@@ -1,0 +1,21 @@
+/*
+    Author: Kanchan Wakchaure
+    Date: 10-04-2019
+    Description: Styling for header component
+    References: https://material-ui.com
+*/
+
+  .root {
+    flexGrow: 1;
+  }
+
+  .menuButton {
+    marginLeft:"auto";
+    marginRight: "auto";
+  }
+
+  .title {
+    flexGrow: 1;
+    fontSize: 30;
+    marginLeft:"auto";
+  }

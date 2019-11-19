@@ -1,0 +1,1 @@
+web: gunicorn Travlendar.wsgi --log-file -

@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.31c2596f.chunk.css",
+    "main.js": "/static/js/main.c4c87fe8.chunk.js",
+    "main.js.map": "/static/js/main.c4c87fe8.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.bfcaa823.js",
+    "runtime~main.js.map": "/static/js/runtime~main.bfcaa823.js.map",
+    "static/css/2.0f801562.chunk.css": "/static/css/2.0f801562.chunk.css",
+    "static/js/2.8d43a17c.chunk.js": "/static/js/2.8d43a17c.chunk.js",
+    "static/js/2.8d43a17c.chunk.js.map": "/static/js/2.8d43a17c.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.af64d1af39b892b7a5b772397ce52d5a.js": "/precache-manifest.af64d1af39b892b7a5b772397ce52d5a.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.0f801562.chunk.css.map": "/static/css/2.0f801562.chunk.css.map",
+    "static/css/main.31c2596f.chunk.css.map": "/static/css/main.31c2596f.chunk.css.map",
+    "static/media/Homepage.css": "/static/media/background.197ffc80.jpg",
+    "static/media/kanchan.jpg": "/static/media/kanchan.16ccc7a6.jpg",
+    "static/media/kaustuv.jpg": "/static/media/kaustuv.8980d0e2.jpg",
+    "static/media/mounika.jpg": "/static/media/mounika.0fa97970.jpg",
+    "static/media/namratha.png": "/static/media/namratha.dcaf158a.png",
+    "static/media/notifications.css": "/static/media/notification.c0d3c94c.eot",
+    "static/media/raisa.jpg": "/static/media/raisa.4269d6a0.jpg"
+  }
+}
