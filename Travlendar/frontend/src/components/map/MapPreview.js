@@ -5,8 +5,7 @@
     References: https://dev.to/zerquix18/
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-2-295e
-    https://images.vexels.com/media/users/3/154573/isolated/preview/
-    bd08e000a449288c914d851cb9dae110-hatchback-car-top-view-silhouette-by-vexels.png
+    "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg"
 */
 import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
@@ -82,7 +81,7 @@ class MapPreview extends React.Component {
     const angle = window.google.maps.geometry.spherical.computeHeading(lastLineLatLng, nextLineLatLng)
     const actualAngle = angle - 90
 
-    const markerUrl = 'https://images.vexels.com/media/users/3/154573/isolated/preview/bd08e000a449288c914d851cb9dae110-hatchback-car-top-view-silhouette-by-vexels.png'
+    const markerUrl = 'http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg'
     const marker = document.querySelector(`[src="${markerUrl}"]`)
 
     if (marker) { // when it hasn't loaded, it's null
@@ -131,8 +130,8 @@ let es = []
   render = () => {
     const icon = {
       url:
-        "https://images.vexels.com/media/users/3/154573/isolated/preview/bd08e000a449288c914d851cb9dae110-hatchback-car-top-view-silhouette-by-vexels.png",
-      scaledSize: new window.google.maps.Size(32, 32),
+        "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg",
+      scaledSize: new window.google.maps.Size(37, 37),
       anchor: { x: 10, y: 15 }
     };
 
