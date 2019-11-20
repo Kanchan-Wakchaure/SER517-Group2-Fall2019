@@ -194,12 +194,15 @@ def EventList(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        
-        today = date.today()
+        day=request.query_params.get('date')
+        print("Date:", day)
+        if not day:
+            print("Inside if")
+            day = date.today()
 
-        
-        print("Today:",today)
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        #day = date.today()
+        print("Today:",day)
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=day).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         
         if serializer.data==[]:
