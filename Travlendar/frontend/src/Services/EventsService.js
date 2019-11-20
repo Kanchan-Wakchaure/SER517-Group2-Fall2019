@@ -19,7 +19,7 @@ export default class EventsService{
     getPreviewEvents() {
         const url = API_URL+'/api/previewevents/';
         let path = []
-        let a = axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
+        axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
             .then((response) => {
             var items = response.data;
             const waypoints = items["data"].map(p => ({
@@ -39,7 +39,7 @@ export default class EventsService{
                 if (status === window.google.maps.DirectionsStatus.OK) {
                     let temp = res.routes[0].overview_path[0].toJSON()
                     let distance = 0
-                    res.routes[0].overview_path.map((route, i) =>  {
+                    res.routes[0].overview_path.forEach((route, i) =>  {
                         let lat1 = Number(route.toJSON()["lat"])
                         let lng1 = Number(route.toJSON()["lng"])
                         let latLong1 = new window.google.maps.LatLng(lat1, lng1)

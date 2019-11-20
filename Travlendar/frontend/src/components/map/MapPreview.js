@@ -12,6 +12,7 @@ import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker, DirectionsRen
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import mapStyles from "./mapStyles/retromapStyles";
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
 
@@ -24,7 +25,7 @@ class MapPreview extends React.Component {
   }
 
   path = []
-    events = []
+  events = []
   velocity = 800
   initialDate = new Date()
 
@@ -93,15 +94,20 @@ class MapPreview extends React.Component {
   }
 renderData = () => {
 let t = this;
-let es = []
 
 t.path = eventService.getPreviewEvents()
 eventService.getEvents().then(function(result) {
     t.events = result.data
+}).catch(function(error) {
+    if (error.response){
+            if(error.response.status===404){
+                NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+            }
+    }
 })
 }
 
-  componentWillMount = () => {
+  UNSAFE_componentWillMount = () => {
   this.renderData();
 
   }
@@ -114,7 +120,6 @@ eventService.getEvents().then(function(result) {
     };
 
   let originMarker = null, markers = null, pinDirections = null;
-    let i=0;
     originMarker = (
         <Marker
           defaultLabel="HOME"
@@ -161,7 +166,7 @@ eventService.getEvents().then(function(result) {
     );
     return (
       <GoogleMap
-        defaultZoom={15}
+        defaultZoom={12}
         defaultCenter={{ lat: 33.4255, lng: -111.9400}}
         defaultOptions={{ styles: mapStyles }}
         >
