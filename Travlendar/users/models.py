@@ -6,5 +6,6 @@ from django.db import models
 class CustomUser(AbstractUser):
     pass
     phone_number=models.CharField(max_length=300)
+    address=models.CharField(max_length=500, default="1255 E University Dr")
     def __str__(self):
         return self.email
