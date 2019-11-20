@@ -30,9 +30,9 @@ class Signup extends React.Component{
                 first_name: '',
                 last_name: '',
                 phone_number: '',
+                address: '',
                 email: '',
-                password: '',
-                address: ''
+                password: ''
             }
         };
 
@@ -46,11 +46,11 @@ class Signup extends React.Component{
                 "first_name": this.state.userDetails.first_name,
                 "last_name": this.state.userDetails.last_name,
                 "phone_number": this.state.userDetails.phone_number,
+                "address": this.state.userDetails.address,
                 "email": this.state.userDetails.email,
                 "password1": this.state.userDetails.password,
                 "password2": this.state.userDetails.password,
                 "username": this.state.userDetails.email,
-                "address": this.state.userDetails.address
             }
         ).then((result)=>{
           NotificationManager.success("You are registered successfully!", "Successful");
@@ -134,6 +134,17 @@ class Signup extends React.Component{
                                     <TextField variant="outlined"
                                                required
                                                fullWidth
+                                               name="address"
+                                               label="Address"
+                                               id="address"
+                                               autoComplete="address"
+                                               value={this.state.userDetails.address}
+                                               onChange = { user => this.handlechange(user, 'address') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
                                                id="email"
                                                label="Email Address"
                                                name="email"
@@ -150,17 +161,6 @@ class Signup extends React.Component{
                                                type="password"
                                                id="password"
                                                autoComplete="current-password"
-                                               value={this.state.userDetails.password1}
-                                               onChange = { user => this.handlechange(user, 'password') }/>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField variant="outlined"
-                                               required
-                                               fullWidth
-                                               name="address"
-                                               label="Address"
-                                               id="address"
-                                               autoComplete="address"
                                                value={this.state.userDetails.password1}
                                                onChange = { user => this.handlechange(user, 'password') }/>
                                 </Grid>
