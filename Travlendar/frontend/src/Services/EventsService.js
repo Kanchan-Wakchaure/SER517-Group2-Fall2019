@@ -9,9 +9,10 @@ export default class EventsService{
             .then(response => response.data);
     }
 
-    getEvents() {
+    getEvents(dt) {
         const url = API_URL+'/api/events/';
-        return axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
+        return axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token},
+                params: {date: dt}})
             .then(response => response.data);
     }
 
