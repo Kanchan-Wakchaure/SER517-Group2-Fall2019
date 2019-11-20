@@ -4,6 +4,8 @@
     Description: Preview events for Map
     References: https://dev.to/zerquix18/
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
+    let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-2-295e
+    "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg"
 */
 import React from 'react';
 import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
@@ -20,7 +22,7 @@ class MapPreview extends React.Component {
 
   path = []
 
-  velocity = 2000
+  velocity = 900
   initialDate = new Date()
 
   getDistance = () => {
@@ -46,6 +48,7 @@ class MapPreview extends React.Component {
     let progress = this.path.filter(coordinates => coordinates.distance < distance)
 
     const nextLine = this.path.find(coordinates => coordinates.distance > distance)
+
     if (! nextLine) {
       this.setState({ progress })
       return // it's the end!
@@ -74,6 +77,16 @@ class MapPreview extends React.Component {
 
     progress = progress.concat(position)
     this.setState({ progress })
+
+    const angle = window.google.maps.geometry.spherical.computeHeading(lastLineLatLng, nextLineLatLng)
+    const actualAngle = angle - 90
+
+    const markerUrl = 'http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg'
+    const marker = document.querySelector(`[src="${markerUrl}"]`)
+
+    if (marker) { // when it hasn't loaded, it's null
+      marker.style.transform = `rotate(${actualAngle}deg)`
+    }
   }
 renderData = () => {
 let t = this;
@@ -114,8 +127,14 @@ let es = []
   componentWillMount = () => {
   this.renderData();
   }
-
   render = () => {
+    const icon = {
+      url:
+        "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg",
+      scaledSize: new window.google.maps.Size(37, 37),
+      anchor: { x: 10, y: 15 }
+    };
+
     return (
       <GoogleMap
         defaultZoom={10}
@@ -125,7 +144,8 @@ let es = []
           { this.state.progress && (
             <>
               <Polyline path={this.state.progress} options={{ strokeColor: "#FF0000 "}} />
-              <Marker position={this.state.progress[this.state.progress.length - 1]} />
+              <Marker icon = {icon}
+              position={this.state.progress[this.state.progress.length - 1]} />
             </>
           )}
       </GoogleMap>
