@@ -30,6 +30,7 @@ class Signup extends React.Component{
                 first_name: '',
                 last_name: '',
                 phone_number: '',
+                address: '',
                 email: '',
                 password: ''
             }
@@ -45,6 +46,7 @@ class Signup extends React.Component{
                 "first_name": this.state.userDetails.first_name,
                 "last_name": this.state.userDetails.last_name,
                 "phone_number": this.state.userDetails.phone_number,
+                "address": this.state.userDetails.address,
                 "email": this.state.userDetails.email,
                 "password1": this.state.userDetails.password,
                 "password2": this.state.userDetails.password,
@@ -127,6 +129,17 @@ class Signup extends React.Component{
                                                autoComplete="phone"
                                                value={this.state.userDetails.phone_number}
                                                onChange = { user => this.handlechange(user, 'phone_number') }/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField variant="outlined"
+                                               required
+                                               fullWidth
+                                               name="address"
+                                               label="Address"
+                                               id="address"
+                                               autoComplete="address"
+                                               value={this.state.userDetails.address}
+                                               onChange = { user => this.handlechange(user, 'address') }/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField variant="outlined"
