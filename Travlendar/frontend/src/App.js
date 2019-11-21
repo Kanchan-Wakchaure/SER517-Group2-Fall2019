@@ -39,12 +39,12 @@ class App extends Component{
             <BrowserRouter>
                 <div>
                     <Switch>
-                        <Route exact path={HOMEPAGE} component={Homepage} />
-                        <Route path={SIGNUP} component={Signup} />
-                        <Route path={LOGIN} component={Login} />
-                        <Route path={CREATE_EVENT} component={CreateEvent} />
-                        <Route path={EVENTS_LIST} component={ListEvent}/>
-                        <Route path={EVENTS_MAP} component={Map}/>
+                      <Route exact path={HOMEPAGE} component={Homepage} />
+                      <Route path={SIGNUP} component={Signup} />
+                      <Route path={LOGIN} component={Login} />
+                      <Route path={CREATE_EVENT} component={CreateEvent} />
+                      <Route path={EVENTS_LIST} component={ListEvent}/>
+                      <Route path={EVENTS_MAP} component={Map}/>
                       <Route path={EMAIL} component={Email}/>
                       <Route path={TEXT} component={Text}/>
                       <Route path={ABOUT} component={About}/>
