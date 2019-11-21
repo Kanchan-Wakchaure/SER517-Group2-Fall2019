@@ -33,10 +33,11 @@ class Signup extends React.Component{
                 address: '',
                 email: '',
                 password: '',
-                signupErrors: {first_name: '', last_name: '', phone_number: '', email: '', password: ''},
+                signupErrors: {first_name: '', last_name: '', phone_number: '', address: '', email: '', password: ''},
                 emailValid: false,
                 passwordValid: false,
                 phone_numberValid: false,
+                addressValid: false,
                 first_nameValid: false,
                 last_nameValid: false,
                 signupValid: false
@@ -82,6 +83,7 @@ class Signup extends React.Component{
     let first_nameValid = this.first_nameValid;
     let last_nameValid = this.last_nameValid;
     let phone_numberValid = this.state.phone_numberValid;
+    let addressValid = this.state.addressValid;
     let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
 
@@ -98,9 +100,13 @@ class Signup extends React.Component{
         phone_numberValid = value.length >= 8;
         fieldValidationErrors.phone_number = phone_numberValid ? '': ' is invalid';
         break;
+      case 'address':
+        addressValid = value.match(/\b(\d{2,5}\s+)(?![a|p]m\b)(NW|NE|SW|SE|north|south|west|east|n|e|s|w)?([\s|\,|.]+)?(([a-zA-Z|\s+]{1,30}){1,4})(court|ct|street|st|drive|dr|lane|ln|road|rd|blvd)/i);
+        fieldValidationErrors.address = addressValid ? '': ' is invalid.Enter the street address.State name and Zip code are not mandatory.';
+        break;
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid.';
         break;
       case 'password':
         passwordValid = value.length >= 8;
@@ -113,13 +119,14 @@ class Signup extends React.Component{
                     first_nameValid: first_nameValid,
                     last_nameValid: last_nameValid,
                     phone_numberValid: phone_numberValid,
+                    addressValid: addressValid,
                     emailValid: emailValid,
                     passwordValid: passwordValid,
                   }, this.validateForm);
   }
 
   validateForm() {
-    this.setState({signupValid: this.state.first_nameValid && this.state.last_nameValid && this.state.phone_numberValid && this.state.emailValid && this.state.passwordValid});
+    this.setState({signupValid: this.state.first_nameValid && this.state.last_nameValid && this.state.phone_numberValid && this.addressValid && this.state.emailValid && this.state.passwordValid});
   }
 
   errorClass(error) {
