@@ -16,6 +16,8 @@ import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {FormGroup, TextField } from '@material-ui/core';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+
 
 
 const eventService=new EventsService();
@@ -147,10 +149,18 @@ function Map() {
 
 
     let originMarker = null;
+
+    let homeIcon=new window.google.maps.MarkerImage(
+                'https://image.flaticon.com/icons/svg/25/25694.svg',
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(32, 32)
+            );
     originMarker = (
         <Marker
-          defaultLabel="HOME"
-          defaultIcon={null}
+          //defaultLabel="HOME"
+          defaultIcon={homeIcon}
           position={{
             lat: 33.377210,
             lng: -111.908560
@@ -159,11 +169,11 @@ function Map() {
       );
     let currentPos=null;
     let iconMarker = new window.google.maps.MarkerImage(
-                "https://lh3.googleusercontent.com/bECXZ2YW3j0yIEBVo92ECVqlnlbX9ldYNGrCe0Kr4VGPq-vJ9Xncwvl16uvosukVXPfV=w300",
+                'https://image.flaticon.com/icons/svg/1004/1004305.svg',
                 null, /* size is determined at runtime */
                 null, /* origin is 0,0 */
                 null, /* anchor is bottom center of the scaled image */
-                new window.google.maps.Size(50, 50)
+                new window.google.maps.Size(32, 32)
             );
     currentPos=(
         <Marker
@@ -232,7 +242,9 @@ function Map() {
 
             </MapControl>
             {originMarker}
+
             {currentPos}
+
             {
                 directions && (
                 <DirectionsRenderer
