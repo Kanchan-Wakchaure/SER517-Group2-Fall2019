@@ -72,13 +72,11 @@ function Map() {
     }
     eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
-    console.log(result);
-
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
                     setEvents([]);
-                    //setWayPoints([]);
+
                     NotificationManager.info("You have no events on today's date to display.")
 
                 }
@@ -106,18 +104,6 @@ function Map() {
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
-        console.log("Points:",Points);
-        //setWayPoints(Points);
-        //console.log("first lat:",events.shift());
-        /*events.map(p =>
-            if(p.lat==latitude && p.long==longitude){
-                events.filter(function(){
-                    events.map(p =>
-                    if(p.lat!=latitude && p.long!=longitude)
-                })
-            }
-        );
-        */
         const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
         const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
@@ -215,21 +201,12 @@ function Map() {
                                    <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
                                         setEvents(result.data);
                                         console.log(result);
-                                        /*
-                                        var Points=result.data.map(p => ({
-                                        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-                                        stopover: true
-                                        }));
-                                        console.log("Points:",Points);
-                                        setWayPoints(Points);
-                                        */
 
                                         }).catch(function (error){
                                                 if (error.response){
                                                     if(error.response.status===404){
 
                                                         setEvents([]);
-                                                        //setWayPoints([]);
                                                         NotificationManager.info("You have no events on selected date to display.")
 
                                                     }
@@ -274,7 +251,6 @@ function Map() {
                 <Marker
                     key={park.id}
                     defaultLabel={labels[i]}
-                    //defaultIcon={park.id.toString()}
                     position={{
                         lat: parseFloat(park.lat),
                         lng: parseFloat(park.long)

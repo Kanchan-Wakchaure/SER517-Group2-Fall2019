@@ -13,10 +13,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
 import React from 'react';
 
 import './About.css';
@@ -131,10 +129,10 @@ export default function About() {
                 />
                 <CardContent>
                   <div className={classes.cardPricing}>
-                      <img src={tier.img} style={{
+                      <img src={tier.img} alt="not found" style={{
      width: '300px',
      height: '200px',
-  }}/>
+  }} />
                   </div>
                 </CardContent>
                 <CardActions>
