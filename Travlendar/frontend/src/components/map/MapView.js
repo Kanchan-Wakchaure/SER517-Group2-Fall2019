@@ -113,7 +113,7 @@ function Map() {
             }
         );
         */
-        const origin = { lat:latitude, lng:longitude}//waypoints.shift().location;
+        const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
         const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
 
@@ -163,10 +163,13 @@ function Map() {
             lat: latitude,
             lng: longitude
           }}
+           onClick={() => {
+
+            }}
         />
     );
         return (
-          <div>
+
 
             <div id="google-map">
             <GoogleMap
@@ -177,9 +180,7 @@ function Map() {
             >
 
             <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
-            <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
-             <div className="container-date-picker">
-                        <div className="label-date-picker">Select date:</div>
+            <div className="container-date-picker map-events">
                         <FormGroup className="form-date-picker">
                             <TextField variant="outlined"
                                    required
@@ -194,12 +195,19 @@ function Map() {
                                    <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
                                         setEvents(result.data);
                                         console.log(result);
+                                        var Points=result.data.map(p => ({
+                                        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+                                        stopover: true
+                                        }));
+                                        console.log("Points:",Points);
+                                        setWayPoints(Points);
 
                                         }).catch(function (error){
                                                 if (error.response){
                                                     if(error.response.status===404){
 
                                                         setEvents([]);
+                                                        setWayPoints([]);
                                                         NotificationManager.info("You have no events on selected date to display.")
 
                                                     }
@@ -208,6 +216,8 @@ function Map() {
                                         }}>Submit
                                     </button>
              </div>
+            <Button id="btn-preview" color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+
             </MapControl>
             {originMarker}
             {currentPos}
@@ -274,7 +284,7 @@ function Map() {
             )}
                 </GoogleMap>
             </div>
-           </div>
+
             );
 
 
@@ -301,7 +311,7 @@ export default function MAP() {
             }`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%`}} />}
-            mapElement={<div className="map-div" style={{ height: `100%`, position:'relative'}} />}
+            mapElement={<div style={{ height: `100%`}} />}
           />
         </div>
 
