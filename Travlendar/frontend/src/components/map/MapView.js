@@ -71,15 +71,12 @@ function Map() {
     eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
     console.log(result);
-    var Points=result.data.map(p => ({
-        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
-        stopover: true
-        }));
-        console.log("Points:",Points);
-    setWayPoints(Points);
+
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
+                    setEvents([]);
+                    //setWayPoints([]);
                     NotificationManager.info("You have no events on today's date to display.")
 
                 }
@@ -103,6 +100,12 @@ function Map() {
 
 
         console.log("Events",events);
+        var Points=events.map(p => ({
+        location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
+        stopover: true
+        }));
+        console.log("Points:",Points);
+        //setWayPoints(Points);
         //console.log("first lat:",events.shift());
         /*events.map(p =>
             if(p.lat==latitude && p.long==longitude){
@@ -122,7 +125,7 @@ function Map() {
             origin: origin,
             destination: destination,
             travelMode: google.maps.TravelMode.DRIVING,
-            waypoints: wayPoints,
+            waypoints: Points,
 
         },
         (result, status) => {
@@ -135,7 +138,7 @@ function Map() {
             }
         });
 
-    },[events, latitude, longitude, wayPoints])
+    },[events])
 
     if (error){
 
@@ -155,10 +158,17 @@ function Map() {
         />
       );
     let currentPos=null;
+    let iconMarker = new window.google.maps.MarkerImage(
+                "https://lh3.googleusercontent.com/bECXZ2YW3j0yIEBVo92ECVqlnlbX9ldYNGrCe0Kr4VGPq-vJ9Xncwvl16uvosukVXPfV=w300",
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(50, 50)
+            );
     currentPos=(
         <Marker
-          defaultLabel="My Location"
-          defaultIcon={null}
+          //defaultLabel="My Location"
+          defaultIcon={iconMarker}
           position={{
             lat: latitude,
             lng: longitude
@@ -195,19 +205,21 @@ function Map() {
                                    <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
                                         setEvents(result.data);
                                         console.log(result);
+                                        /*
                                         var Points=result.data.map(p => ({
                                         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
                                         stopover: true
                                         }));
                                         console.log("Points:",Points);
                                         setWayPoints(Points);
+                                        */
 
                                         }).catch(function (error){
                                                 if (error.response){
                                                     if(error.response.status===404){
 
                                                         setEvents([]);
-                                                        setWayPoints([]);
+                                                        //setWayPoints([]);
                                                         NotificationManager.info("You have no events on selected date to display.")
 
                                                     }
