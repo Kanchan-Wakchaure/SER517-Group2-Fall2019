@@ -16,7 +16,7 @@ with open(os.path.join(BASE_DIR, "secretkey.txt")) as f:
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['asutravlendar.herokuapp.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['travalendar.herokuapp.com', '127.0.0.1:8000']
 
 
 # Application definition
@@ -110,11 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # Allowing react for cors
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True    
 
 CORS_ORIGIN_WHITELIST = [
 
-    "http://localhost:3000",
+    'travalendar.herokuapp.com',
 
 ]
 

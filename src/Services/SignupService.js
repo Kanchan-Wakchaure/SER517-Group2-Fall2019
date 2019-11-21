@@ -7,7 +7,7 @@ import axios from 'axios';
     References: https://material-ui.com
 */
 
-const API_URL = 'https://asutravlendar.herokuapp.com/';
+const API_URL = 'https://travalendar.herokuapp.com/';
 
 export default class SignupService{
 
