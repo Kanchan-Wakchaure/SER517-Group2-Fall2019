@@ -63,7 +63,7 @@ class Header extends React.Component{
                 this.props.isAuthenticated ?
                 (
                   <div style={{marginLeft: 'auto'}}>
-                    <Button color="inherit" href="/MapContainer" style={{textTransform: "none", fontSize: '16px'}}>Add Event</Button>
+                    <Button color="inherit" href="/CreateEvent" style={{textTransform: "none", fontSize: '16px'}}>Add Event</Button>
                     <Button color="inherit" href="/listevent" style={{textTransform: "none", fontSize: '16px'}}>Agenda</Button>
                     <Button color="inherit" href="/map" style={{textTransform: "none", fontSize: '16px'}}>View Events</Button>
                     <Button color="inherit" href="/previewroute" style={{textTransform: "none", fontSize: '16px'}}>Preview Route</Button>
