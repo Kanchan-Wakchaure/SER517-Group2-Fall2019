@@ -30,7 +30,6 @@ function Map() {
     const eventService=new EventsService();
     eventService.getEvents().then(function (result) {
     setEvents(result.data);
-    console.log(result);
     setShow(true);
     //events=result.data;
     }).catch(function (error){
@@ -61,7 +60,6 @@ function Map() {
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
-        console.log("Events",events);
 
         const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
         //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
