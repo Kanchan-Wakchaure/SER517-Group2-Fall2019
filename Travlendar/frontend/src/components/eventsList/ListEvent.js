@@ -107,7 +107,6 @@ class ListEvent extends Component{
                 return (
                 <div>
                      <div className="container-date-picker">
-                        <div className="label-date-picker">Select date:</div>
                         <FormGroup className="form-date-picker">
                             <TextField variant="outlined"
                                    required
@@ -165,7 +164,6 @@ class ListEvent extends Component{
                 console.log("ELSE");
                 return(
                      <div className="container-date-picker">
-                        <div className="label-date-picker">Select date:</div>
                         <FormGroup className="form-date-picker">
                             <TextField variant="outlined"
                                    required

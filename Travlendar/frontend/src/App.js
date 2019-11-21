@@ -18,7 +18,7 @@ import About from './components/about/About';
 import MapPreview from './components/map/MapPreview';
 
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 
 import 'react-notifications/lib/notifications.css';
 

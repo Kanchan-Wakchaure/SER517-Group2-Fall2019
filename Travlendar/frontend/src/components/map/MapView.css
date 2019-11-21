@@ -4,7 +4,10 @@
     margin-top: -50px;
     margin-bottom: -100px;
 }
+.Hi{
+color:red;
 
+}
 .error{
 background-color: red;
 
@@ -17,3 +20,8 @@ overflow: hidden;
 .no_event{
     text-align:center;
 }
+
+.container-date-picker.map-events   {margin:0;}
+.container-date-picker input        {width: 233px;}
+
+#btn-preview    {float:right;}
