@@ -97,7 +97,7 @@ class Signup extends React.Component{
         fieldValidationErrors.last_name = last_nameValid ? '': ' is not entered correctly';
         break;
       case 'phone_number':
-        phone_numberValid = value.length >= 8;
+        phone_numberValid = value.match("1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?");
         fieldValidationErrors.phone_number = phone_numberValid ? '': ' is invalid';
         break;
       case 'address':
@@ -109,7 +109,7 @@ class Signup extends React.Component{
         fieldValidationErrors.email = emailValid ? '' : ' is invalid.';
         break;
       case 'password':
-        passwordValid = value.length >= 8;
+        passwordValid = value.match("^(?=.*[!@#\$%\^&\*])(?=.{8,})");
         fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long and should have one special character.';
         break;
       default:
