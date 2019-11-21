@@ -13,6 +13,10 @@ import * as actions from '../../store/actions/auth';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoginErrors } from './LoginErrors';
+import LoginService from '../../Services/LoginService';
+import { NotificationManager } from 'react-notifications';
+
+const loginService = new LoginService();
 
 class Login extends React.Component{
     constructor(props) {
@@ -28,11 +32,27 @@ class Login extends React.Component{
         };
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
-
+    handleLogin(){
+        loginService.login(
+            {
+               "email": this.state.email,
+                "password": this.state.password,
+                "password2": this.state.password,
+                "username": this.state.email,
+            }
+        ).then((result)=>{
+          NotificationManager.success("You have logged in successfully!", "Successful");
+          this.props.history.push('/homepage');
+        }).catch(()=>{
+          NotificationManager.error('There was an error! Either the email address or password is invalid');
+          this.props.history.push('/login');
+        });
+    }
    handleSubmit(user){
         user.preventDefault();
         this.props.onAuth(this.state.email, this.state.password);
-        this.props.history.push('/Homepage');
+        this.handleLogin();
+        this.props.history.push('/homepage');
     }
 
    handleUserInput = (e) => {

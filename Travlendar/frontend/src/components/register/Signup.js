@@ -61,7 +61,7 @@ class Signup extends React.Component{
         ).then((result)=>{
           NotificationManager.success("You are registered successfully!", "Successful");
         }).catch(()=>{
-          NotificationManager.error('There was an error! Please provide valid email, phone and password.');
+          NotificationManager.error('There was an error! Please provide a valid email, address, phone number and password.');
         });
     }
 
