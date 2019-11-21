@@ -54,7 +54,7 @@ class Login extends React.Component{
         break;
       case 'password':
         passwordValid = value.length >= 8;
-        fieldValidationErrors.password = passwordValid ? '': ' is invalid.It should be atleast 8 characters long.';
+        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long.';
         break;
       default:
         break;
@@ -101,9 +101,6 @@ class Login extends React.Component{
                                         Login
                                     </Typography>
                                 </Grid>
-                                <div className="panel panel-default">
-                                <LoginErrors loginErrors={this.state.loginErrors} />
-                                </div>
                                 <Grid item xs={12}>
                                     <TextField variant="outlined"
                                                required
@@ -149,6 +146,9 @@ class Login extends React.Component{
                 </Container>
 
                 }
+                <div className="panel panel-default" style={{ fontSize: 15, color: "red" } } align="center">
+                                <LoginErrors loginErrors={this.state.loginErrors} />
+                </div>
             </div>
         );
     }
