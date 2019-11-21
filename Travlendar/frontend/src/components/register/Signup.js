@@ -110,7 +110,7 @@ class Signup extends React.Component{
         break;
       case 'password':
         passwordValid = value.length >= 8;
-        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long.';
+        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long and should have one special character.';
         break;
       default:
         break;
