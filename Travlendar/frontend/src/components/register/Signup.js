@@ -101,8 +101,8 @@ class Signup extends React.Component{
         fieldValidationErrors.phone_number = phone_numberValid ? '': ' is invalid';
         break;
       case 'address':
-        addressValid = value.match(/\b(\d{2,5}\s+)(?![a|p]m\b)(NW|NE|SW|SE|north|south|west|east|n|e|s|w)?([\s|\,|.]+)?(([a-zA-Z|\s+]{1,30}){1,4})(court|ct|street|st|drive|dr|lane|ln|road|rd|blvd)/i);
-        fieldValidationErrors.address = addressValid ? '': ' is invalid.Enter the street address.State name and Zip code are not mandatory.';
+	addressValid = value.match(/\b(\d{2,5}\s+)(?![a|p]m\b)(NW|NE|SW|SE|north|south|west|east|n|e|s|w)?([\s|\,|.]+)?(([a-zA-Z|\s+]{1,30}){1,4})/i);
+        fieldValidationErrors.address = addressValid ? '': ' should be of format <StreetNumber Direction StreetName, City, State>';
         break;
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
