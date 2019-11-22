@@ -224,7 +224,7 @@ export default class CreateEvent extends React.Component {
         }
         else{
             return (
-            <div style={{ height: '100%', marginTop: '-60px' }}>
+            <div style={{ height: '100%', marginTop: '-60px', marginBottom: '-100px' }}>
                 <Map
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUopytfPOU40AvS9RkEk0SSg1awyNxNqA"
                     loadingElement={<div style={{ height: `100%` }} />}
