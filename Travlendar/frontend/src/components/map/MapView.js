@@ -15,30 +15,70 @@ import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import {FormGroup, TextField } from '@material-ui/core';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+
+
+
+const eventService=new EventsService();
+
+
 
 function Map() {
     const [events, setEvents]=useState([]);
+    const [wayPoints, setWayPoints]=useState([]);
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
-    const [no_event_text, setNo_event_text]=useState("");
-    const [show, setShow]=useState(false);
+    const [latitude, setLat]=useState(33.327800);
+    const [longitude, setLong]=useState(-111.823040);
+    var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+
+        if(dd<10)
+        {
+            dd='0'+dd;
+        }
+        if(mm<10)
+        {
+            mm='0'+mm;
+        }
+    const [date, setDate]=useState(yyyy+'-'+mm+'-'+dd);
     const google=window.google;
     let labels='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 
     useEffect(() => {
-    const eventService=new EventsService();
-    eventService.getEvents().then(function (result) {
+    if ("geolocation" in navigator) {
+
+      navigator.geolocation.getCurrentPosition(
+       function success(position) {
+         setLat(position.coords.latitude);
+         setLong(position.coords.longitude);
+         console.log('latitude', position.coords.latitude,
+                     'longitude', position.coords.longitude);
+       },
+      function error(error_message) {
+
+        console.log('An error has occurred while retrieving location', error_message)
+      }
+    );
+    }
+    else {
+
+      console.log('geolocation is not enabled on this browser')
+    }
+    eventService.getEvents(date).then(function (result) {
     setEvents(result.data);
-    console.log(result);
-    setShow(true);
-    //events=result.data;
     }).catch(function (error){
             if (error.response){
                 if(error.response.status===404){
-                    NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
-                    setShow(false);
+                    setEvents([]);
+
+                    NotificationManager.info("You have no events on today's date to display.")
+
                 }
             }
     });
@@ -58,27 +98,26 @@ function Map() {
 
     useEffect(()=>{
 
-        const waypoints = events.map(p => ({
+
+        console.log("Events",events);
+        var Points=events.map(p => ({
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
-        console.log("Events",events);
-
         const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-        //const destination = { lat:33.572400, lng:-112.118540} //waypoints.pop().location;//
-
+        const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
 
         directionsService.route(
         {
             origin: origin,
-            destination: origin,
+            destination: destination,
             travelMode: google.maps.TravelMode.DRIVING,
-            waypoints: waypoints,
+            waypoints: Points,
 
         },
         (result, status) => {
-            //console.log("RESULT:"+result)
+
             if (status === google.maps.DirectionsStatus.OK) {
                 setDirections(result);
                 console.log("Directions",result)
@@ -89,39 +128,104 @@ function Map() {
 
     },[events])
 
+    if (error){
 
-
-    if (error) {
-    return <h1 class="error">one of the location unreachable</h1>;
+        NotificationManager.error("Could not find routes for the events.")
     }
 
-    if(show==true){
+
     let originMarker = null;
-    let i=0;
+
+    let homeIcon=new window.google.maps.MarkerImage(
+                'https://image.flaticon.com/icons/svg/25/25694.svg',
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(32, 32)
+            );
     originMarker = (
         <Marker
-          defaultLabel="HOME"
-          defaultIcon={null}
+          //defaultLabel="HOME"
+          defaultIcon={homeIcon}
           position={{
             lat: 33.377210,
             lng: -111.908560
           }}
         />
       );
+    let currentPos=null;
+    let iconMarker = new window.google.maps.MarkerImage(
+                'https://image.flaticon.com/icons/svg/1004/1004305.svg',
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(32, 32)
+            );
+    currentPos=(
+        <Marker
+          //defaultLabel="My Location"
+          defaultIcon={iconMarker}
+          position={{
+            lat: latitude,
+            lng: longitude
+          }}
+           onClick={() => {
 
+            }}
+        />
+    );
         return (
+
+
+            <div id="google-map">
             <GoogleMap
                 defaultZoom={10}
                 defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
                 defaultOptions={{ styles: mapStyles }}
+
             >
+
             <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
-     <Button color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
-    </MapControl>
+            <div className="container-date-picker map-events">
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   name="date"
+                                   value={date}
+                                   InputLabelProps={{ shrink: true }}
+                                   className="input-date-picker"
+                                   onChange = { e =>  setDate(e.target.value) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
+                                        setEvents(result.data);
+                                        console.log(result);
+
+                                        }).catch(function (error){
+                                                if (error.response){
+                                                    if(error.response.status===404){
+
+                                                        setEvents([]);
+                                                        NotificationManager.info("You have no events on selected date to display.")
+
+                                                    }
+                                                }
+                                        })
+                                        }}>Submit
+                                    </button>
+             </div>
+            <Button id="btn-preview" color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
+
+            </MapControl>
             {originMarker}
+
+            {currentPos}
+
             {
                 directions && (
                 <DirectionsRenderer
+
                  directions={directions}
                  options={{
                  /*
@@ -133,6 +237,7 @@ function Map() {
                     preserveViewport: true,
                     */
                     suppressMarkers: true,
+
 
                   }}
 
@@ -146,7 +251,6 @@ function Map() {
                 <Marker
                     key={park.id}
                     defaultLabel={labels[i]}
-                    //defaultIcon={park.id.toString()}
                     position={{
                         lat: parseFloat(park.lat),
                         lng: parseFloat(park.long)
@@ -179,22 +283,12 @@ function Map() {
                 </InfoWindow>
             )}
                 </GoogleMap>
+            </div>
+
             );
 
-    }
-    else{
-        return(
-                <div>
-                    <GoogleMap
-                    defaultZoom={10}
-                    defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
-                    defaultOptions={{ styles: mapStyles }}
-                    >
-                    </GoogleMap>
-                 </div>
-        )
 
-    }
+
 
 }
 
@@ -209,16 +303,18 @@ export default function MAP() {
   else
   {
         return (
-        <div className="map" /*style={{ width: "45vw", height: "90vh" }}*/>
+
+        <div className="map">
           <MapWrapped
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
               process.env.REACT_APP_GOOGLE_KEY
             }`}
             loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `100%` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%`}} />}
+            mapElement={<div style={{ height: `100%`}} />}
           />
         </div>
+
         );
 
 

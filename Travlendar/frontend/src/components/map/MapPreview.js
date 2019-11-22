@@ -4,23 +4,29 @@
     Description: Preview events for Map
     References: https://dev.to/zerquix18/
     let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-1-4eo0
+    let-s-play-with-google-maps-and-react-making-a-car-move-through-the-road-like-on-uber-part-2-295e
+    "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg"
 */
 import React from 'react';
-import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker } from 'react-google-maps'
+import { withGoogleMap, withScriptjs, GoogleMap, Polyline, Marker, DirectionsRenderer } from 'react-google-maps'
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import mapStyles from "./mapStyles/retromapStyles";
+import { NotificationManager } from 'react-notifications';
 
 const eventService=new EventsService();
+
 class MapPreview extends React.Component {
   state = {
     progress: [],
-
+    directions: [],
+    error: "",
+    labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
   }
 
   path = []
-
-  velocity = 2000
+  events = []
+  velocity = 800
   initialDate = new Date()
 
   getDistance = () => {
@@ -46,6 +52,7 @@ class MapPreview extends React.Component {
     let progress = this.path.filter(coordinates => coordinates.distance < distance)
 
     const nextLine = this.path.find(coordinates => coordinates.distance > distance)
+
     if (! nextLine) {
       this.setState({ progress })
       return // it's the end!
@@ -74,60 +81,107 @@ class MapPreview extends React.Component {
 
     progress = progress.concat(position)
     this.setState({ progress })
+
+    const angle = window.google.maps.geometry.spherical.computeHeading(lastLineLatLng, nextLineLatLng)
+    const actualAngle = angle - 90
+
+    const markerUrl = 'http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg'
+    const marker = document.querySelector(`[src="${markerUrl}"]`)
+
+    if (marker) { // when it hasn't loaded, it's null
+      marker.style.transform = `rotate(${actualAngle}deg)`
+    }
   }
 renderData = () => {
 let t = this;
-let es = []
-  eventService.getEvents().then(function (result) {
-  var items = result.data
-  for(var i = 0; i<items.length; i++) {
 
-    t.path.push({lat: Number(items[i]["lat"]), lng: Number(items[i]["long"])})
-  }
-  console.log(t.path)
-}).catch(()=>{
-          alert('Create your events for today.');
-        }).finally(()=>{
-        this.path = this.path.map((coordinates, i, array) => {
-      if (i === 0) {
-        return { ...coordinates, distance: 0 } // it begins here!
-      }
-      const { lat: lat1, lng: lng1 } = coordinates
-      const latLong1 = new window.google.maps.LatLng(lat1, lng1)
-
-      const { lat: lat2, lng: lng2 } = array[0]
-      const latLong2 = new window.google.maps.LatLng(lat2, lng2)
-
-      // in meters:
-      const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-        latLong1,
-        latLong2
-      )
-
-      return { ...coordinates, distance }
-    })
-
-    console.log(this.path)
-
-        })
+t.path = eventService.getPreviewEvents()
+eventService.getEvents().then(function(result) {
+    t.events = result.data
+}).catch(function(error) {
+    if (error.response){
+            if(error.response.status===404){
+                NotificationManager.info("You have no events on today's date to display. Please add some events on today's date.")
+            }
+    }
+})
 }
-  componentWillMount = () => {
-  this.renderData();
-  }
 
+  UNSAFE_componentWillMount = () => {
+  this.renderData();
+
+  }
   render = () => {
+    const icon = {
+      url:
+        "http://cliparts.co/cliparts/kiK/nqo/kiKnqoaRT.svg",
+      scaledSize: new window.google.maps.Size(37, 37),
+      anchor: { x: 10, y: 15 }
+    };
+
+  let originMarker = null, markers = null, pinDirections = null;
+    originMarker = (
+        <Marker
+          defaultLabel="HOME"
+          defaultIcon={null}
+          position={{
+            lat: 33.377210,
+            lng: -111.908560
+          }}
+        />
+      );
+     markers = (
+            this.events.map((park,i) => (
+                <Marker
+                    key={park.id}
+                    defaultLabel={this.state.labels[i]}
+                    defaultIcon={null}
+                    position={{
+                        lat: parseFloat(park.lat),
+                        lng: parseFloat(park.long)
+                    }}
+
+                />
+            )
+            ));
+    pinDirections = (
+                this.state.directions && (
+                <DirectionsRenderer
+                 directions={this.state.directions}
+                 options={{
+                 /*
+                    polylineOptions: {
+                    storkeColor: "#2249a3",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 4
+                    },
+                    preserveViewport: true,
+                    */
+                    suppressMarkers: true,
+
+                  }}
+
+                 />
+                )
+    );
     return (
       <GoogleMap
-        defaultZoom={10}
-        defaultCenter={{ lat: 33.168040, lng: -111.635400 }}
+        defaultZoom={12}
+        defaultCenter={{ lat: 33.4255, lng: -111.9400}}
         defaultOptions={{ styles: mapStyles }}
         >
+
+
           { this.state.progress && (
             <>
               <Polyline path={this.state.progress} options={{ strokeColor: "#FF0000 "}} />
-              <Marker position={this.state.progress[this.state.progress.length - 1]} />
+              <Marker icon = {icon}
+              position={this.state.progress[this.state.progress.length - 1]} />
             </>
           )}
+          {originMarker}
+          {markers}
+          {pinDirections}
       </GoogleMap>
     )
   }

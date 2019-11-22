@@ -1,25 +1,86 @@
 .cover {padding-top: 100px;}
 
-.event_list ul { padding: 0 120px;}
+.event_list ul { padding: 0 120px; font-family: "Roboto", "Helvetica", "Arial", sans-serif; }
 
-.event_list li{
+
+.event_list li:hover { background-color: #030615;}
+.event_list li {
     list-style: none;
     background: #333;
     margin: 10px 0;
-    padding: 20px 15px;
+    padding: 30px 15px;
     color: #fff;
     min-width: 500px;
     border-radius: 10px;
-    font-size: 20px;
-    min-height: 35px;
+    font-size: 16px;
+    min-height: 18px;
 }
+
 .event_list ul li div {
     float: left;
 }
-.event_list div{
-width: 24%;
-}
+.event_list div:nth-of-type(1)  {width: 36%; padding-right:20px;}
+.event_list div:nth-of-type(2)  {width: 10%; padding-right:20px;}
+.event_list div:nth-of-type(3)  {width: 10%; padding-right:20px;}
+.event_list div:nth-of-type(4)  {width: 30%; padding-right:20px;}
+.event_list div:nth-of-type(5)  {width: 6%; text-align: right; margin-top: -15px;}
 
 .no_event{
 text-align:center;
 }
+
+.delete-event button:hover   {background-color: #999;}
+.delete-event button {
+    padding: 0; margin:0;
+    border: none;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+}
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: rgba(0,0,0, 0.5);
+}
+.popup_inner {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 25%;
+  bottom: 25%;
+  margin: auto;
+  background: white;
+  padding:20px;
+  height: fit-content;
+}
+
+.popup .popup_inner .popup_header   {color:#000; font-family: "Roboto", "Helvetica", "Arial", sans-serif;}
+.popup .popup_inner button:hover    {background-color: #111; color: #fff;}
+.popup .popup_inner button          {padding:10px 20px; cursor: pointer; border:solid 1px #ccc;}
+.popup .popup_inner button:nth-of-type(1)   {margin-right: 10px;}
+.popup .popup_inner button:nth-of-type(2)   {margin-left:10px;}
+
+
+.container-date-picker                                  {margin: 0 120px; padding:11px 0; padding-right:10px }
+.container-date-picker input                            {background-color: #fff; width: 140px; height: 0;}
+.container-date-picker .MuiOutlinedInput-notchedOutline {border: none;}
+.container-date-picker .form-date-picker                {float:left; margin-right: 5px;}
+.container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
+.container-date-picker .btn-date-picker {padding: 11px 10px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
+
+/*
+
+.container-date-picker                                  {margin: 0 120px; padding:10px 20px 20px 20px; background-color: #3f51b5; width: 420px;}
+.container-date-picker .label-date-picker               {font-size: 20px; color: #fff;  width: 100px; margin: 10px 0;}
+.container-date-picker input                            {background-color: #fff; width: 234px;  }
+.container-date-picker .MuiOutlinedInput-notchedOutline {border: none;}
+.container-date-picker .form-date-picker                {float:left; margin-right: 20px;}
+.container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
+.container-date-picker .btn-date-picker {padding: 20px 45px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
+*/

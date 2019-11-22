@@ -12,47 +12,90 @@ import './Login.css';
 import * as actions from '../../store/actions/auth';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { LoginErrors } from './LoginErrors';
+import LoginService from '../../Services/LoginService';
+import { NotificationManager } from 'react-notifications';
 
+const loginService = new LoginService();
 
 class Login extends React.Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            userDetails: {
-                email: '',
-                password: ''
-            }
+            email: '',
+            password: '',
+            loginErrors: {email: '', password: ''},
+            emailValid: false,
+            passwordValid: false,
+            loginValid: false
         };
-
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handlechange = this.handlechange.bind(this);
 	}
-
+    handleLogin(){
+        loginService.login(
+            {
+               "email": this.state.email,
+                "password": this.state.password,
+                "password2": this.state.password,
+                "username": this.state.email,
+            }
+        ).then((result)=>{
+          NotificationManager.success("You have logged in successfully!", "Successful");
+          this.props.history.push('/homepage');
+        }).catch(()=>{
+          NotificationManager.error('There was an error! Either the email address or password is invalid');
+          this.props.history.push('/login');
+        });
+    }
    handleSubmit(user){
         user.preventDefault();
-        this.props.onAuth(this.state.userDetails.email, this.state.userDetails.password);
-        this.props.history.push('/Homepage');
-    } 
-
-    handlechange(user, inputPropName)
-    {
-        const newState = Object.assign({}, this.state);
-        newState.userDetails[inputPropName] = user.target.value;
-        this.setState(newState);
+        this.props.onAuth(this.state.email, this.state.password);
+        this.handleLogin();
+        this.props.history.push('/homepage');
     }
 
-    render(){
-        let errorMessage = null;
-        if (this.props.error) {
-            errorMessage = (
-                <p>{this.props.error.message}</p>
-            );
-        }
+   handleUserInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({[name]: value},
+                  () => { this.validateField(name, value) });
+  }
 
+   validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.loginErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+
+    switch(fieldName) {
+      case 'email':
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        break;
+      case 'password':
+        passwordValid = value.length >= 8;
+        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long and should have one special character.';
+        break;
+      default:
+        break;
+    }
+    this.setState({loginErrors: fieldValidationErrors,
+                    emailValid: emailValid,
+                    passwordValid: passwordValid
+                  }, this.validateForm);
+  }
+
+  validateForm() {
+    this.setState({loginValid: this.state.emailValid && this.state.passwordValid});
+  }
+
+  errorClass(error) {
+    return(error.length === 0 ? '' : 'has-error');
+  }
+
+    render(){
         return(
             <div>
-                {errorMessage}
                 {
                     this.props.loading ?
 
@@ -86,8 +129,8 @@ class Login extends React.Component{
                                                label="Email Address"
                                                name="email"
                                                autoComplete="email"
-                                               value={this.state.userDetails.email}
-                                               onChange = { user => this.handlechange(user, 'email') }/>
+                                               value={this.state.email}
+                                               onChange = { this.handleUserInput }/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField variant="outlined"
@@ -98,8 +141,8 @@ class Login extends React.Component{
                                                type="password"
                                                id="password"
                                                autoComplete="current-password"
-                                               value={this.state.userDetails.password1}
-                                               onChange = { user => this.handlechange(user, 'password') }/>
+                                               value={this.state.password1}
+                                               onChange = { this.handleUserInput }/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button type="submit"
@@ -123,6 +166,9 @@ class Login extends React.Component{
                 </Container>
 
                 }
+                <div className="panel panel-default" style={{ fontSize: 15, color: "red" } } align="center">
+                                <LoginErrors loginErrors={this.state.loginErrors} />
+                </div>
             </div>
         );
     }
