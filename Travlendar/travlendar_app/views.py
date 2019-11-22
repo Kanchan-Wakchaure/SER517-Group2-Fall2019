@@ -201,6 +201,15 @@ def EventList(request):
         
         if serializer.data==[]:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        homelat = 0
+        homelong = 0
+        location_response = requests.get(
+            'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(getattr(b, 'address'),
+                                                                                           get_api_key()))
+        api_response_dict = location_response.json()
+        if api_response_dict['status'] == 'OK':
+            homelat = api_response_dict['results'][0]['geometry']['location']['lat']
+            homelong = api_response_dict['results'][0]['geometry']['location']['lng']
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -401,6 +410,15 @@ def preview_events(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
+        location_response = requests.get(
+            'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(getattr(b, 'address'),
+                                                                                           get_api_key()))
+        homelat = 0
+        homelong = 0
+        api_response_dict = location_response.json()
+        if api_response_dict['status'] == 'OK':
+            homelat = api_response_dict['results'][0]['geometry']['location']['lat']
+            homelong = api_response_dict['results'][0]['geometry']['location']['lng']
         today = DATE
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
@@ -412,25 +430,29 @@ def preview_events(request):
         print(data)
         api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng={0}&key={1}'.format(data[0]["lat"]+","+data[0]["long"], get_api_key()))
-    api_response_dict = api_response.json()
-    if api_response_dict['status'] == 'OK':
-        prev = api_response_dict['results'][0]['formatted_address']
-        output.append({"lat": 33.377210, "long": -111.908560})
-        output.append({"lat": float(data[0]["lat"]), "long": float(data[0]["long"])})
-        for i in range(1, len(data)):
-            api_response = requests.get(
-                'https://maps.googleapis.com/maps/api/geocode/json?latlng={0}&key={1}'.format(data[i]["lat"]+","+data[i]["long"], get_api_key()))
-            api_response_dict = api_response.json()
-            if api_response_dict['status'] == 'OK':
-                cur = api_response_dict['results'][0]['formatted_address']
-            url_response = requests.get('https://maps.googleapis.com/maps/api/directions/json?origin={0}&destination={1}&key={2}'.format(prev, cur, get_api_key()))
-            result = url_response.json()
-            output.append({"lat": float(data[i]["lat"]), "long": float(data[i]["long"])})
-            for d in result['routes'][0]['legs']:
-                output.append({"lat": d['end_location']["lat"], "long": d['end_location']["lng"]})
-            prev = cur
-        output.append({"lat": 33.377210, "long": -111.908560})
-        return Response({'data': output}, status=status.HTTP_200_OK)
+        api_response_dict = api_response.json()
+        if api_response_dict['status'] == 'OK':
+            prev = api_response_dict['results'][0]['formatted_address']
+            #output.append({"lat": 33.377210, "long": -111.908560})
+            output.append({"lat": homelat, "long": homelong})
+            output.append({"lat": float(data[0]["lat"]), "long": float(data[0]["long"])})
+            for i in range(1, len(data)):
+                api_response = requests.get(
+                    'https://maps.googleapis.com/maps/api/geocode/json?latlng={0}&key={1}'.format(data[i]["lat"]+","+data[i]["long"], get_api_key()))
+                api_response_dict = api_response.json()
+                if api_response_dict['status'] == 'OK':
+                    cur = api_response_dict['results'][0]['formatted_address']
+                url_response = requests.get('https://maps.googleapis.com/maps/api/directions/json?origin={0}&destination={1}&key={2}'.format(prev, cur, get_api_key()))
+                result = url_response.json()
+                output.append({"lat": float(data[i]["lat"]), "long": float(data[i]["long"])})
+                for d in result['routes'][0]['legs']:
+                    output.append({"lat": d['end_location']["lat"], "long": d['end_location']["lng"]})
+                prev = cur
+            #output.append({"lat": 33.377210, "long": -111.908560})
+            output.append({"lat": homelat, "long": homelong})
+            return Response({'data': output}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': "Error processing request"}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

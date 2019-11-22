@@ -120,16 +120,6 @@ eventService.getEvents().then(function(result) {
     };
 
   let originMarker = null, markers = null, pinDirections = null;
-    originMarker = (
-        <Marker
-          defaultLabel="HOME"
-          defaultIcon={null}
-          position={{
-            lat: 33.377210,
-            lng: -111.908560
-          }}
-        />
-      );
      markers = (
             this.events.map((park,i) => (
                 <Marker
@@ -179,7 +169,6 @@ eventService.getEvents().then(function(result) {
               position={this.state.progress[this.state.progress.length - 1]} />
             </>
           )}
-          {originMarker}
           {markers}
           {pinDirections}
       </GoogleMap>
