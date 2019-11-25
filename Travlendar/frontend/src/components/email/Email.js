@@ -12,13 +12,9 @@ class Email extends Component{
         super(props);
         this.state  = {
             events: []
-            //nextPageURL:  ''
         };
-        //this.nextPage  =  this.nextPage.bind(this);
-        //this.handleDelete  =  this.handleDelete.bind(this);
     }
     componentDidMount() {
-    //
         var  self  =  this;
         alertService.getEmail().then(function (result) {
             console.log(result);

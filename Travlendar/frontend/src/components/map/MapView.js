@@ -16,9 +16,6 @@ import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {FormGroup, TextField } from '@material-ui/core';
-import MyLocationIcon from '@material-ui/icons/MyLocation';
-
-
 
 const eventService=new EventsService();
 
@@ -26,7 +23,6 @@ const eventService=new EventsService();
 
 function Map() {
     const [events, setEvents]=useState([]);
-    const [wayPoints, setWayPoints]=useState([]);
     const [directions, setDirections] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
     const [error, setError] = useState(null);
@@ -91,14 +87,10 @@ function Map() {
     window.addEventListener("keydown", listener);
     return () => {
     window.removeEventListener("keydown", listener);
-    };
-
-
-    }, []);
+    }; 
+},[]);
 
     useEffect(()=>{
-
-
         console.log("Events",events);
         var Points=events.map(p => ({
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
