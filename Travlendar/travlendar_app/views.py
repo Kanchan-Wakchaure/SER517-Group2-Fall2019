@@ -405,8 +405,7 @@ def preview_events(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        today = DATE
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=date.today()).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
 
         if serializer.data == []:
