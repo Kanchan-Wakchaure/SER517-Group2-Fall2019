@@ -279,6 +279,7 @@ function Map() {
                 <p>{selectedPark.destination}</p>
                 <p>{selectedPark.title}</p>
                 <p>{selectedPark.time}</p>
+                <p>No. of attendees: {selectedPark.notifyUsers.split("email").length-1}</p>
             </div>
                 </InfoWindow>
             )}
