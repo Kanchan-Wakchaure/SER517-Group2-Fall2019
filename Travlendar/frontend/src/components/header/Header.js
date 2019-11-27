@@ -90,7 +90,7 @@ class Header extends React.Component{
                     </MenuItem>
                     </Menu>
                     <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
-                    <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
+                    <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout {localStorage.getItem('name')}</Button>
                     </div>)
                     :
                     (
