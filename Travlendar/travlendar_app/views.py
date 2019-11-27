@@ -40,6 +40,11 @@ def EventList(request):
             p=0
             n=0
             travel_time=0
+            event_location = serializer.validated_data.get("destination")
+            f = findLongLat(serializer, event_location)
+            if f==-1:
+                return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR);
+
 
             # Finding the nearest previous event and next event from the event that will be created.
             for item in Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=curr_date):
@@ -74,9 +79,7 @@ def EventList(request):
                 print(" ")
 
             # assiging longitude and latitude to the event that being created.
-            f=findLongLat(serializer)
-            if f==-1:
-                return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR);
+
 
             # Checking if there is any conflict while creating new event with next event
             if p==0 and n==1:
@@ -94,7 +97,7 @@ def EventList(request):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
                 if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time) >= abs(float((next_event_time).total_seconds())):
                     return Response('next',status=status.HTTP_412_PRECONDITION_FAILED)
-                #findLongLat(serializer)
+
                 serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -119,7 +122,7 @@ def EventList(request):
                 if abs(float((prev_event_time + prev_event.duration).total_seconds())+travel_time) >= abs(float(curr_time_delta.total_seconds())):
                     return Response('prev',status=status.HTTP_412_PRECONDITION_FAILED)
 
-                #findLongLat(serializer)
+
                 serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -175,7 +178,7 @@ def EventList(request):
 
             # If there is no events in db on that day
             if p==0 and n==0:
-                #findLongLat(serializer)
+
                 serializer.save()
                 print("Event created")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -191,7 +194,7 @@ def EventList(request):
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
         day=request.query_params.get('date')
-        print("Date:", day)
+
         if not day:
             print("Inside if")
             day = date.today()
@@ -209,9 +212,8 @@ def EventList(request):
 
 
 # Getting longitude and latitude from event address
-def findLongLat(serializer):
+def findLongLat(serializer, event_location):
 
-    event_location = serializer.validated_data.get("destination")
     print("event location: ",event_location)
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, get_api_key()))
@@ -256,10 +258,28 @@ def reachable(A_lat,A_long,B_lat,B_long):
         return duration
     return -1
 
-#sort ordered dict by 'created_at'
+# Api for getting home address
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def home_address(request):
+    modela = apps.get_model('users', 'CustomUser')
+    b = modela.objects.get(email=request.user)
+    address=getattr(b, 'address')
+    print("address", address)
+    api_response = requests.get(
+        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(home_address, get_api_key()))
+    api_response_dict = api_response.json()
+    # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
+    if api_response_dict['status'] == 'OK':
+        lat = api_response_dict['results'][0]['geometry']['location']['lat']
+        long = api_response_dict['results'][0]['geometry']['location']['lng']
+    else:
+        return Response('API', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response([lat, long], status=status.HTTP_200_OK)
+
 
 # API for delete event
-
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['PUT', 'DELETE'])
