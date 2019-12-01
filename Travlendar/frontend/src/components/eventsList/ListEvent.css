@@ -73,14 +73,3 @@ text-align:center;
 .container-date-picker .form-date-picker                {float:left; margin-right: 5px;}
 .container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
 .container-date-picker .btn-date-picker {padding: 11px 10px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
-
-/*
-
-.container-date-picker                                  {margin: 0 120px; padding:10px 20px 20px 20px; background-color: #3f51b5; width: 420px;}
-.container-date-picker .label-date-picker               {font-size: 20px; color: #fff;  width: 100px; margin: 10px 0;}
-.container-date-picker input                            {background-color: #fff; width: 234px;  }
-.container-date-picker .MuiOutlinedInput-notchedOutline {border: none;}
-.container-date-picker .form-date-picker                {float:left; margin-right: 20px;}
-.container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
-.container-date-picker .btn-date-picker {padding: 20px 45px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
-*/
