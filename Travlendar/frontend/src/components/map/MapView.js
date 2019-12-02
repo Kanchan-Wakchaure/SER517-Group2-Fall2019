@@ -88,7 +88,7 @@ function Map() {
     return () => {
     window.removeEventListener("keydown", listener);
     }; 
-},[]);
+},[]); //eslint-disable-line
 
     useEffect(()=>{
         console.log("Events",events);
@@ -118,7 +118,7 @@ function Map() {
             }
         });
 
-    },[events])
+    },[events]) //eslint-disable-line
 
     if (error){
 
