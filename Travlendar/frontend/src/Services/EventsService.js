@@ -67,7 +67,7 @@ export default class EventsService{
         axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
             .then((response) => {
         //return {"lat": 33.377210, "long":  -111.908560};
-        response.data;
+        return response.data;
     });
     }
 }
