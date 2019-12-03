@@ -35,7 +35,7 @@ class CustomUserTests(TestCase):
                 }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        ''' 
+
         data1 = {
                 "password1": "Y@K12345",
                 "password2": "Y@K12345",
@@ -47,22 +47,10 @@ class CustomUserTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
  
         
-        '''
 
 
-    '''
-    
-    # This test is giving some error on line 33 of users/views, on this line < input = (json.loads(request.body)) >
-    
-    def testLogin(self):
-        url = 'http://127.0.0.1:8000/api/users/login/'
-        data = {"username": "noletyve@asu.edu",
-                "password": "travel123",
-                }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-    
-    '''
+
+
 
 
     
