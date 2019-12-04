@@ -154,16 +154,7 @@ let homeIcon=new window.google.maps.MarkerImage(
                 <DirectionsRenderer
                  directions={this.state.directions}
                  options={{
-                 /*
-                    polylineOptions: {
-                    storkeColor: "#2249a3",
-                    strokeOpacity: 0.4,
-                    strokeWeight: 4
-                    },
-                    preserveViewport: true,
-                    */
                     suppressMarkers: true,
-
                   }}
 
                  />
