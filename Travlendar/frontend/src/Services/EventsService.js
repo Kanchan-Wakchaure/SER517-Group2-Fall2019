@@ -68,5 +68,9 @@ export default class EventsService{
         const url = API_URL;
         return axios.get(url);
     }
-
+    getUserDetails(){
+       const url = API_URL+'/api/users/userdetails/';
+        return axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
+            .then(response => response.data);
+    }
 }

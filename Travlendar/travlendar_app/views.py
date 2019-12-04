@@ -200,7 +200,7 @@ def EventList(request):
             day = date.today()
 
         #day = date.today()
-        print("Today:",day)
+        print("user:",request.user)
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=day).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         
@@ -298,6 +298,7 @@ def update_event(request, pk):
     if request.method == 'DELETE':
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 # API for Sending email alert
