@@ -23,7 +23,7 @@ class MapPreview extends React.Component {
     error: "",
     labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
   }
-
+  home = []
   path = []
   events = []
   velocity = 800
@@ -48,7 +48,6 @@ class MapPreview extends React.Component {
     if (! distance) {
       return
     }
-
     let progress = this.path.filter(coordinates => coordinates.distance < distance)
 
     const nextLine = this.path.find(coordinates => coordinates.distance > distance)
@@ -92,12 +91,19 @@ class MapPreview extends React.Component {
       marker.style.transform = `rotate(${actualAngle}deg)`
     }
   }
+
 renderData = () => {
 let t = this;
-
 t.path = eventService.getPreviewEvents()
+eventService.getUserAddress().then(function(result) {
+  t.home = result
+  }).catch(function(error) {
+  NotificationManager.error("Error displaying home address")
+  })
+
 eventService.getEvents().then(function(result) {
     t.events = result.data
+
 }).catch(function(error) {
     if (error.response){
             if(error.response.status===404){
@@ -118,16 +124,20 @@ eventService.getEvents().then(function(result) {
       scaledSize: new window.google.maps.Size(37, 37),
       anchor: { x: 10, y: 15 }
     };
-
+let homeIcon=new window.google.maps.MarkerImage(
+                'https://image.flaticon.com/icons/svg/25/25694.svg',
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(32, 32)
+            );
   let originMarker = null, markers = null, pinDirections = null;
     originMarker = (
         <Marker
-          defaultLabel="HOME"
-          defaultIcon={null}
+          defaultIcon={homeIcon}
           position={{
-            lat: 33.377210,
-            lng: -111.908560
-          }}
+          lat: this.home.lat,
+          lng: this.home.long}}
         />
       );
      markers = (
@@ -165,7 +175,7 @@ eventService.getEvents().then(function(result) {
 
           { this.state.progress && (
             <>
-              <Polyline path={this.state.progress} options={{ strokeColor: "#FF0000 "}} />
+              <Polyline path={this.state.progress} options={{ strokeColor: "#1a1aff "}} />
               <Marker icon = {icon}
               position={this.state.progress[this.state.progress.length - 1]} />
             </>

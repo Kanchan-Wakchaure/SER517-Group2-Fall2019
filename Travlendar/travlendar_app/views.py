@@ -285,6 +285,31 @@ def home_address(request):
 
     return Response({'data':home_add_lat_long}, status=status.HTTP_200_OK)
 
+# Api for getting home address
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def userhome_address(request):
+    return Response(get_user_home(request.user), status=status.HTTP_200_OK)
+
+def get_user_home(req):
+    modela = apps.get_model('users', 'CustomUser')
+    b = modela.objects.get(email=req)
+    address=getattr(b, 'address')
+    print("address", address)
+    home_add_lat_long=[]
+    api_response = requests.get(
+        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, get_api_key()))
+    api_response_dict = api_response.json()
+    # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
+    if api_response_dict['status'] == 'OK':
+        lat = api_response_dict['results'][0]['geometry']['location']['lat']
+        long= api_response_dict['results'][0]['geometry']['location']['lng']
+        home_add_lat_long.append(lat)
+        home_add_lat_long.append(long)
+        print("Home address lat", home_add_lat_long[0])
+        print("Home address long", home_add_lat_long[1])
+    return {'lat':home_add_lat_long[0], 'long':home_add_lat_long[1]}
 
 # API for delete event
 @authentication_classes([TokenAuthentication])
@@ -432,8 +457,7 @@ def preview_events(request):
     if request.method == 'GET':
         modela = apps.get_model('users', 'CustomUser')
         b = modela.objects.get(email=request.user)
-        today = DATE
-        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=today).order_by('time')
+        event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=date.today()).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
 
         if serializer.data == []:
@@ -446,7 +470,7 @@ def preview_events(request):
     api_response_dict = api_response.json()
     if api_response_dict['status'] == 'OK':
         prev = api_response_dict['results'][0]['formatted_address']
-        output.append({"lat": 33.377210, "long": -111.908560})
+        output.append(get_user_home(request.user))
         output.append({"lat": float(data[0]["lat"]), "long": float(data[0]["long"])})
         for i in range(1, len(data)):
             api_response = requests.get(
@@ -460,7 +484,7 @@ def preview_events(request):
             for d in result['routes'][0]['legs']:
                 output.append({"lat": d['end_location']["lat"], "long": d['end_location']["lng"]})
             prev = cur
-        output.append({"lat": 33.377210, "long": -111.908560})
+        output.append(get_user_home(request.user))
         return Response({'data': output}, status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
