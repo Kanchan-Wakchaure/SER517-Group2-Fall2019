@@ -26,7 +26,7 @@ class MapPreview extends React.Component {
 
   path = []
   events = []
-  velocity = 800
+  velocity = 200
   initialDate = new Date()
 
   getDistance = () => {
@@ -157,8 +157,10 @@ eventService.getEvents().then(function(result) {
     );
     return (
       <GoogleMap
-        defaultZoom={12}
-        defaultCenter={{ lat: 33.4255, lng: -111.9400}}
+        defaultZoom={14}
+        //center={{ lat: this.home.lat, lng: this.home.long}}
+        center={this.state.progress[this.state.progress.length - 1]}
+        defaultCenter={{lat: this.home.lat, lng: this.home.long}}
         defaultOptions={{ styles: mapStyles }}
         >
 
