@@ -172,8 +172,6 @@ def EventList(request):
         day=request.query_params.get('date')
         if not day:
             day = date.today()
-
-        #day = date.today()
         event_list = Event.objects.filter(creator_id=getattr(b, 'id')).filter(date=day).order_by('time')
         serializer = EventSerializer(event_list, context={'request': request}, many=True)
         
@@ -186,7 +184,6 @@ def EventList(request):
 
 # Getting longitude and latitude from event address
 def findLongLat(serializer, event_location):
-    print("event location: ",event_location)
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(event_location, get_api_key()))
     api_response_dict = api_response.json()
