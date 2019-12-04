@@ -28,6 +28,7 @@ function Map() {
     const [error, setError] = useState(null);
     const [latitude, setLat]=useState(33.327800);
     const [longitude, setLong]=useState(-111.823040);
+    const [origin, setOrigin]=useState({ lat:33.377210, lng:-111.908560});
     var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1;
@@ -79,6 +80,21 @@ function Map() {
             }
     });
 
+    eventService.getHomeAddress().then(function (result) {
+    setOrigin({lat:result.data[0], lng: result.data[1]});
+    }).catch(function (error){
+            if (error.response){
+                if(error.response.status===500){
+                    //setEvents([]);
+
+                    NotificationManager.info("Some error occurred while retrieving home address.")
+
+                }
+            }
+    });
+
+
+
     const listener = e => {
         if (e.key === "Escape") {
         setSelectedPark(null);
@@ -96,14 +112,14 @@ function Map() {
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
-        const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
-        const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
+        //const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+        //const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
 
         directionsService.route(
         {
             origin: origin,
-            destination: destination,
+            destination: origin,
             travelMode: google.maps.TravelMode.DRIVING,
             waypoints: Points,
 
@@ -118,7 +134,7 @@ function Map() {
             }
         });
 
-    },[events]) //eslint-disable-line
+    },[events, origin]) //eslint-disable-line
 
     if (error){
 
@@ -140,8 +156,8 @@ function Map() {
           //defaultLabel="HOME"
           defaultIcon={homeIcon}
           position={{
-            lat: 33.377210,
-            lng: -111.908560
+            lat: origin.lat,
+            lng: origin.lng
           }}
         />
       );
@@ -271,6 +287,7 @@ function Map() {
                 <p>{selectedPark.destination}</p>
                 <p>{selectedPark.title}</p>
                 <p>{selectedPark.time}</p>
+                <p>No. of attendees: {selectedPark.notifyUsers.split("email").length-1}</p>
             </div>
                 </InfoWindow>
             )}
