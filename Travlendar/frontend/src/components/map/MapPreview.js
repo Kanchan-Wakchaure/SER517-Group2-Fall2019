@@ -21,7 +21,9 @@ class MapPreview extends React.Component {
     progress: [],
     directions: [],
     error: "",
-    labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+    labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+    latitude: 33.327800,
+    longitude: -111.823040
   }
   home = []
   path = []
@@ -100,7 +102,25 @@ eventService.getUserAddress().then(function(result) {
   }).catch(function(error) {
   NotificationManager.error("Error displaying home address")
   })
+if ("geolocation" in navigator) {
 
+      navigator.geolocation.getCurrentPosition(
+       function success(position) {
+         t.setState({"latitude":position.coords.latitude});
+         t.setState({"longitude": position.coords.longitude});
+         console.log('latitude', position.coords.latitude,
+                     'longitude', position.coords.longitude);
+       },
+      function error(error_message) {
+
+        console.log('An error has occurred while retrieving location', error_message)
+      }
+    );
+    }
+    else {
+
+      console.log('geolocation is not enabled on this browser')
+    }
 eventService.getEvents().then(function(result) {
     t.events = result.data
 
@@ -165,6 +185,26 @@ let homeIcon=new window.google.maps.MarkerImage(
                  />
                 )
     );
+    let iconMarker = new window.google.maps.MarkerImage(
+                'https://image.flaticon.com/icons/svg/1004/1004305.svg',
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new window.google.maps.Size(32, 32)
+            );
+    let currentPos=(
+        <Marker
+          //defaultLabel="My Location"
+          defaultIcon={iconMarker}
+          position={{
+            lat: this.state.latitude,
+            lng: this.state.longitude
+          }}
+           onClick={() => {
+
+            }}
+        />
+    );
     return (
       <GoogleMap
         defaultZoom={14}
@@ -185,6 +225,7 @@ let homeIcon=new window.google.maps.MarkerImage(
           {originMarker}
           {markers}
           {pinDirections}
+          {currentPos}
       </GoogleMap>
     )
   }
