@@ -53,7 +53,6 @@ class Header extends React.Component{
         })
       };
 
-
    render() {
       return (
         <div className="root">
@@ -106,7 +105,6 @@ class Header extends React.Component{
                     </MenuItem>
                     </Menu>
                     <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
-
                     <Button color="inherit" 
                             style={{textTransform: "none", fontSize: '16px'}}
                             className="menu_button" 
@@ -126,7 +124,6 @@ class Header extends React.Component{
                       <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
                     </MenuItem>
                     </Menu>
-
                     </div>)
                     :
                     (
