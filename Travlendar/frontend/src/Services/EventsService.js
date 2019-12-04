@@ -22,6 +22,12 @@ export default class EventsService{
             .then(response => response.data);
     }
 
+    getUserAddress() {
+        const url = API_URL+'/api/events/homeaddress/';
+        return axios.get(url,{headers :{"Authorization":"Token "+localStorage.token}})
+            .then(response => response.data)
+    }
+
     getPreviewEvents() {
         const url = API_URL+'/api/previewevents/';
         let path = []
@@ -67,13 +73,5 @@ export default class EventsService{
     showHomepage(){
         const url = API_URL;
         return axios.get(url);
-    }
-    getUserHome() {
-         const url = API_URL+'/api/userhome/';
-        axios.get(url,{ headers :{"Authorization":"Token "+localStorage.token}})
-            .then((response) => {
-        //return {"lat": 33.377210, "long":  -111.908560};
-        return response.data;
-    });
     }
 }

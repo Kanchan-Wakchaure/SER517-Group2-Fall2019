@@ -23,7 +23,7 @@ class MapPreview extends React.Component {
     error: "",
     labels:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
   }
-    home = null
+  home = []
   path = []
   events = []
   velocity = 800
@@ -48,7 +48,6 @@ class MapPreview extends React.Component {
     if (! distance) {
       return
     }
-
     let progress = this.path.filter(coordinates => coordinates.distance < distance)
 
     const nextLine = this.path.find(coordinates => coordinates.distance > distance)
@@ -92,12 +91,19 @@ class MapPreview extends React.Component {
       marker.style.transform = `rotate(${actualAngle}deg)`
     }
   }
+
 renderData = () => {
 let t = this;
-t.home = eventService.getUserHome()
 t.path = eventService.getPreviewEvents()
+eventService.getUserAddress().then(function(result) {
+  t.home = result
+  }).catch(function(error) {
+  NotificationManager.error("Error displaying home address")
+  })
+
 eventService.getEvents().then(function(result) {
     t.events = result.data
+
 }).catch(function(error) {
     if (error.response){
             if(error.response.status===404){
@@ -130,9 +136,8 @@ let homeIcon=new window.google.maps.MarkerImage(
         <Marker
           defaultIcon={homeIcon}
           position={{
-            lat: this.home.lat,
-            lng: this.home.long
-          }}
+          lat: this.home.lat,
+          lng: this.home.long}}
         />
       );
      markers = (
