@@ -290,27 +290,7 @@ def home_address(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def userhome_address(request):
-    modela = apps.get_model('users', 'CustomUser')
-    b = modela.objects.get(email=request.user)
-    address=getattr(b, 'address')
-    print("address", address)
-    home_add_lat_long=[]
-    api_response = requests.get(
-        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, get_api_key()))
-    api_response_dict = api_response.json()
-    # this if part is taken from http://www.indjango.com/google-api-to-get-lat-long-data/
-    if api_response_dict['status'] == 'OK':
-        lat = api_response_dict['results'][0]['geometry']['location']['lat']
-        long= api_response_dict['results'][0]['geometry']['location']['lng']
-        home_add_lat_long.append(lat)
-        home_add_lat_long.append(long)
-        print("Home address lat", home_add_lat_long[0])
-        print("Home address long", home_add_lat_long[1])
-
-    else:
-        return Response('API', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    return Response({'lat':home_add_lat_long[0], 'long':home_add_lat_long[1]}, status=status.HTTP_200_OK)
+    return Response(get_user_home(request.user), status=status.HTTP_200_OK)
 
 def get_user_home(req):
     modela = apps.get_model('users', 'CustomUser')
