@@ -11,7 +11,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Homepage from '../home/Homepage';
 import Geocode from "react-geocode";
 import EventsService from '../../Services/EventsService';
-import '../createEvent/CreateEvent.css';
+import '../createEvent/CreateEvent.css'
 import { NotificationManager } from 'react-notifications';
 
 /*

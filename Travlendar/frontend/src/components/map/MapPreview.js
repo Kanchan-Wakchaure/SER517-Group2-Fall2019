@@ -149,16 +149,7 @@ eventService.getEvents().then(function(result) {
                 <DirectionsRenderer
                  directions={this.state.directions}
                  options={{
-                 /*
-                    polylineOptions: {
-                    storkeColor: "#2249a3",
-                    strokeOpacity: 0.4,
-                    strokeWeight: 4
-                    },
-                    preserveViewport: true,
-                    */
                     suppressMarkers: true,
-
                   }}
 
                  />

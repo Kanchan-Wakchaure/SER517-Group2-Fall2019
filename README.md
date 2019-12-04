@@ -56,15 +56,7 @@ Go to the directory Travlendar/frontend:
 
 ```npm install```
 
-```npm i --save react-redux```
-
-```npm i --save redux redux-thunk```
-
-```npm install --save react-notifications```
-
-```npm install --save react-geocode```
-
-```npm install --save react-google-autocomplete```
+```npm i --save react-redux redux redux-thunk react-notifications react-geocode react-google-autocomplete```
 
 ```npm start```
 

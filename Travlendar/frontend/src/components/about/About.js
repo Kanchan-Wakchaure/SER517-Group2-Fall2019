@@ -16,8 +16,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import React from 'react';
-
-import './About.css';
 import namratha from './images/namratha.png';
 import kanchan from './images/kanchan.jpg';
 import mounika from './images/mounika.jpg';
