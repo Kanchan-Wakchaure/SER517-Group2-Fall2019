@@ -8,4 +8,5 @@ export const EMAIL = '/emailalert';
 export const TEXT = '/textalert';
 export const ABOUT = '/about';
 export const PREVIEW_ROUTE = '/previewroute';
+export const PROFILE = '/Profile';
 

@@ -123,6 +123,9 @@ class Header extends React.Component{
                     <MenuItem>
                       <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
                     </MenuItem>
+                    <MenuItem>
+                      <Button color="inherit" href="Profile" style={{textTransform: "none", fontSize: '16px'}}>View Profile</Button>
+                    </MenuItem>
                     </Menu>
                     </div>)
                     :
