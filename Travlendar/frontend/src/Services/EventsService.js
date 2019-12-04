@@ -22,6 +22,12 @@ export default class EventsService{
             .then(response => response.data);
     }
 
+    getUserAddress() {
+        const url = API_URL+'/api/events/homeaddress/';
+        return axios.get(url,{headers :{"Authorization":"Token "+localStorage.token}})
+            .then(response => response.data)
+    }
+
     getPreviewEvents() {
         const url = API_URL+'/api/previewevents/';
         let path = []
@@ -68,5 +74,4 @@ export default class EventsService{
         const url = API_URL;
         return axios.get(url);
     }
-
 }
