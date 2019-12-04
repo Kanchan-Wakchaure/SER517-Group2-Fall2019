@@ -15,6 +15,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoginErrors } from './LoginErrors';
 import LoginService from '../../Services/LoginService';
 import { NotificationManager } from 'react-notifications';
+import {
+  FormText
+} from 'reactstrap';
 
 /*
     Author: Vijaya Mounika Gadde
@@ -75,11 +78,11 @@ class Login extends React.Component{
     switch(fieldName) {
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+        fieldValidationErrors.email = emailValid ? '' : ' Email is invalid';
         break;
       case 'password':
         passwordValid = value.length >= 8;
-        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long and should have one special character.';
+        fieldValidationErrors.password = passwordValid ? '': '';
         break;
       default:
         break;
@@ -137,6 +140,9 @@ class Login extends React.Component{
                                                value={this.state.email}
                                                onChange = { this.handleUserInput }/>
                                 </Grid>
+                                <div className="panel panel-default" style={{ fontSize: 15, color: "red" } } align="center">
+                                <LoginErrors loginErrors={this.state.loginErrors.email} />
+                                </div>
                                 <Grid item xs={12}>
                                     <TextField variant="outlined"
                                                required
@@ -149,6 +155,11 @@ class Login extends React.Component{
                                                value={this.state.password1}
                                                onChange = { this.handleUserInput }/>
                                 </Grid>
+                                <div className="panel panel-default" style={{ fontSize: 15, color: "red" } } align="center">
+                                <LoginErrors loginErrors={this.state.loginErrors.password} />
+                                </div>
+                                <FormText style={{ fontSize: 10, color: "green" } } align="left"> Password should be atleast 8 characters long and should have one special character </FormText>
+
                                 <Grid item xs={12}>
                                     <Button type="submit"
                                             fullWidth
@@ -171,9 +182,7 @@ class Login extends React.Component{
                 </Container>
 
                 }
-                <div className="panel panel-default" style={{ fontSize: 15, color: "red" } } align="center">
-                                <LoginErrors loginErrors={this.state.loginErrors} />
-                </div>
+
             </div>
         );
     }
