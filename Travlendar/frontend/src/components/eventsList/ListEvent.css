@@ -19,19 +19,23 @@
 .event_list ul li div {
     float: left;
 }
-.event_list div:nth-of-type(1)  {width: 36%; padding-right:20px;}
+.event_list div:nth-of-type(1)  {width: 25%; padding-right:20px;}
 .event_list div:nth-of-type(2)  {width: 10%; padding-right:20px;}
 .event_list div:nth-of-type(3)  {width: 10%; padding-right:20px;}
-.event_list div:nth-of-type(4)  {width: 30%; padding-right:20px;}
-.event_list div:nth-of-type(5)  {width: 6%; text-align: right; margin-top: -15px;}
+.event_list div:nth-of-type(4)  {width: 20%; padding-right:30px;}
+.event_list div:nth-of-type(5)  {width: 15%; padding-right:10px;}
+.event_list div:nth-of-type(6)  {width: 6%; text-align: right; margin-top: -15px;}
 
 .no_event{
 text-align:center;
 }
+.attendees {
+    margin: 0;
 
+}
 .delete-event button:hover   {background-color: #999;}
 .delete-event button {
-    padding: 0; margin:0;
+    padding: 0; margin: 0;
     border: none;
     cursor: pointer;
     height: 40px;

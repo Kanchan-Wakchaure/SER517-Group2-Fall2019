@@ -45,15 +45,23 @@ export const authLogin = (username, password) => {
             password: password
         })
         .then(res => {
+        console.log(res.data)
             const token = res.data.key;
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
+
+
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
         })
         .catch(err => {
             dispatch(authFail(err))
+        }).finally(res => {
+        axios.get('http://127.0.0.1:8000/api/userdetails/',{ headers :{"Authorization":"Token "+localStorage.getItem('token')}}).then(res1=>{
+                console.log(res1)
+                localStorage.setItem('name', res1.data.data);
+            }).catch(err=>{console.log(err)})
         })
     }
 }

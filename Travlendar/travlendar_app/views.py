@@ -465,3 +465,14 @@ def preview_events(request):
 
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_first_name(request):
+    if request.method == 'GET':
+        modela = apps.get_model('users', 'CustomUser')
+        b = modela.objects.get(email=request.user)
+        name = getattr(b, 'first_name')
+        return Response({'data': str(name)}, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -12,5 +12,6 @@ urlpatterns = [
     path('api/alert_text/', views.Text),
     path('api/previewevents/', views.preview_events),
     path('api/events/address/', views.home_address),
+    path('api/userdetails/', views.get_first_name),
 ]
 
