@@ -3,33 +3,16 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import UserSerializer
 from django.contrib.auth import authenticate
+
 from django.contrib.auth import login as auth_login
+
 from .forms import CustomUserCreationForm
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import authentication_classes
-from .models import CustomUser
-from .serializers import UserSerializer
-from django.apps import apps
-
-
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-@api_view(['GET'])
-def userDetails(request, *args, **kwargs):
-    if request.method == 'GET':
-        ser = UserSerializer(request.user)
-        #return Response(ser.data)
-        #modela = apps.get_model('users', 'CustomUser')
-        #b = modela.objects.get(email=request.user)
-        print("user name",request.user)
-
-        return Response(ser.data, status=status.HTTP_200_OK)
-
-
-    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(['GET','POST'])
@@ -57,6 +40,7 @@ def login(request):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 
 

@@ -65,7 +65,6 @@ class Header extends React.Component{
                   <div style={{marginLeft: 'auto'}}>
                     <Button color="inherit" href="/CreateEvent" style={{textTransform: "none", fontSize: '16px'}}>Add Event</Button>
                     <Button color="inherit" href="/listevent" style={{textTransform: "none", fontSize: '16px'}}>Agenda</Button>
-                    <Button color="inherit" href="/userdetails" style={{textTransform: "none", fontSize: '16px'}}>UserDeatials</Button>
                     <Button color="inherit" href="/map" style={{textTransform: "none", fontSize: '16px'}}>View Events</Button>
                     <Button color="inherit" href="/previewroute" style={{textTransform: "none", fontSize: '16px'}}>Preview Route</Button>
                     <Button color="inherit" 

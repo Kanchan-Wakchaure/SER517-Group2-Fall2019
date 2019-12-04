@@ -8,11 +8,10 @@ import Signup from './components/register/Signup';
 import Login from './components/login/Login';
 import CreateEvent from './components/createEvent/CreateEvent';
 import ListEvent from './components/eventsList/ListEvent';
-import UserDetails from './components/eventsList/userdetails';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/auth';
 import Map from './components/map/MapView';
-import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE, USER_DETAILS } from './Routes.js';
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE } from './Routes.js';
 import Email from './components/email/Email';
 import Text from './components/text/Text';
 import About from './components/about/About';
@@ -50,7 +49,6 @@ class App extends Component{
                       <Route path={TEXT} component={Text}/>
                       <Route path={ABOUT} component={About}/>
                       <Route path={PREVIEW_ROUTE} component={MapPreview}/>
-                      <Route path={USER_DETAILS} component={UserDetails}/>
                     </Switch>
                 </div>
             </BrowserRouter>
