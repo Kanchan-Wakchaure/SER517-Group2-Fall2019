@@ -223,7 +223,6 @@ function Map() {
                                         }}>Submit
                                     </button>
              </div>
-            <Button id="btn-preview" color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
 
             </MapControl>
             {originMarker}
