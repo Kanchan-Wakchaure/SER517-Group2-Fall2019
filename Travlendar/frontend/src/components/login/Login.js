@@ -16,6 +16,11 @@ import { LoginErrors } from './LoginErrors';
 import LoginService from '../../Services/LoginService';
 import { NotificationManager } from 'react-notifications';
 
+/*
+    Author: Vijaya Mounika Gadde
+    Description: Login page for registered users to login
+    References: https://reactstrap.github.io/
+*/
 const loginService = new LoginService();
 
 class Login extends React.Component{

@@ -12,9 +12,12 @@ import './Signup.css';
 import SignupService from '../../Services/SignupService';
 import { NotificationManager } from 'react-notifications';
 import { SignupErrors } from './SignupErrors';
+import {
+  FormText
+} from 'reactstrap';
 
 /*
-    Author: Kanchan Wakchaure
+    Author: Kanchan Wakchaure, Vijaya Mounika Gadde
     Date: 10-01-2019
     Description: Sign up page for new users to register
     References: https://reactstrap.github.io/
@@ -90,27 +93,27 @@ class Signup extends React.Component{
     switch(fieldName) {
       case 'first_name':
         first_nameValid = value.match(/^[a-zA-Z '.-]*$/);
-        fieldValidationErrors.first_name = first_nameValid ? '': ' is not entered correctly';
+        fieldValidationErrors.first_name = first_nameValid ? '': ' is invalid';
         break;
       case 'last_name':
         last_nameValid = value.match(/^[a-zA-Z '.-]*$/);
-        fieldValidationErrors.last_name = last_nameValid ? '': ' is not entered correctly';
+        fieldValidationErrors.last_name = last_nameValid ? '': ' is invalid';
         break;
       case 'phone_number':
-        phone_numberValid = value.match("1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?");
+        phone_numberValid = value.match("1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?"); //eslint-disable-line
         fieldValidationErrors.phone_number = phone_numberValid ? '': ' is invalid';
         break;
       case 'address':
-	addressValid = value.match(/\b(\d{2,5}\s+)(?![a|p]m\b)(NW|NE|SW|SE|north|south|west|east|n|e|s|w)?([\s|\,|.]+)?(([a-zA-Z|\s+]{1,30}){1,4})/i);
-        fieldValidationErrors.address = addressValid ? '': ' should be of format <StreetNumber Direction StreetName, City, State>';
+	addressValid = value.match(/\b(\d{2,5}\s+)(?![a|p]m\b)(NW|NE|SW|SE|north|south|west|east|n|e|s|w)?([\s|\,|.]+)?(([a-zA-Z|\s+]{1,30}){1,4})/i); //eslint-disable-line
+        fieldValidationErrors.address = addressValid ? '': ' is invalid';
         break;
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        fieldValidationErrors.email = emailValid ? '' : ' is invalid.';
+        fieldValidationErrors.email = emailValid ? '' : ' is invalid';
         break;
       case 'password':
-        passwordValid = value.match("^(?=.*[!@#\$%\^&\*])(?=.{8,})");
-        fieldValidationErrors.password = passwordValid ? '': ' should be atleast 8 characters long and should have one special character.';
+        passwordValid = value.match("^(?=.*[!@#\$%\^&\*])(?=.{8,})"); //eslint-disable-line
+        fieldValidationErrors.password = passwordValid ? '': ' is invalid';
         break;
       default:
         break;
@@ -202,6 +205,7 @@ class Signup extends React.Component{
                                                value={this.state.address}
                                                onChange = { this.handleUserInput }/>
                                 </Grid>
+                                <FormText style={{ fontSize: 10, color: "green" } } align="left">Address Format is StreetNumber Direction StreetName, City, State </FormText>
                                 <Grid item xs={12}>
                                     <TextField variant="outlined"
                                                required
@@ -225,6 +229,7 @@ class Signup extends React.Component{
                                                value={this.state.password1}
                                                onChange = { this.handleUserInput }/>
                                 </Grid>
+                                <FormText style={{ fontSize: 10, color: "green" } } align="left"> Password should be atleast 8 characters long and should have one special character </FormText>
                                 <Grid item xs={12}>
                                     <Button type="submit"
                                             fullWidth
