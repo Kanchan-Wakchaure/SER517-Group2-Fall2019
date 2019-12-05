@@ -38,7 +38,6 @@ def signUp(request):
             form.save()
             return Response(status=status.HTTP_201_CREATED)
         else:
-            print(form.errors)
             return Response(form.errors,status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
