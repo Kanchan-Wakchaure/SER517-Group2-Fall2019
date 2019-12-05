@@ -121,7 +121,7 @@ class Header extends React.Component{
                       onClose={this.handleLogoutClose}
                     >
                     <MenuItem>
-                      <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
+                      <Button color="inherit" href="/Homepage" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
                     </MenuItem>
                     </Menu>
                     </div>)
