@@ -104,7 +104,7 @@ function Map() {
     return () => {
     window.removeEventListener("keydown", listener);
     }; 
-},[]);
+},[]); //eslint-disable-line
 
     useEffect(()=>{
         console.log("Events",events);
@@ -134,7 +134,7 @@ function Map() {
             }
         });
 
-    },[events, origin])
+    },[events, origin]) //eslint-disable-line
 
     if (error){
 
@@ -223,7 +223,6 @@ function Map() {
                                         }}>Submit
                                     </button>
              </div>
-            <Button id="btn-preview" color="inherit" href="/previewroute"><VisibilityIcon/> &nbsp;PREVIEW</Button>
 
             </MapControl>
             {originMarker}
