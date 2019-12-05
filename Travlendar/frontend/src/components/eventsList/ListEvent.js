@@ -127,6 +127,7 @@ class ListEvent extends Component{
                                 <div>Time</div>
                                 <div>Duration</div>
                                 <div>Location</div>
+                                <div>No. of Attendees</div>
                                 <div></div>
                             </li>
                             {this.state.events.map(ev=>
@@ -136,6 +137,7 @@ class ListEvent extends Component{
                                     <div className="event_list_date">{ev.time}</div>
                                     <div>{ev.duration}</div>
                                     <div>{ev.destination}</div>
+                                    <div className="attendees">{ev.notifyUsers.split("email").length-1}</div>
                                     <div className="delete-event">
                                     <IconButton aria-label="delete" color="secondary" onClick={this.setEventId.bind(this,ev.id)}>
                                             <DeleteIcon />
