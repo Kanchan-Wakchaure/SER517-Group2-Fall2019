@@ -56,6 +56,8 @@ Go to the directory Travlendar/frontend:
 
 ```npm install```
 
+```npm install --save reactstrap react react-dom```
+
 ```npm i --save react-redux redux redux-thunk react-notifications react-geocode react-google-autocomplete```
 
 ```npm start```
