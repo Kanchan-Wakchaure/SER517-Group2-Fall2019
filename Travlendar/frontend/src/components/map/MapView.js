@@ -7,19 +7,15 @@ import {
   InfoWindow,
   DirectionsRenderer,
 } from "react-google-maps";
-import Button from '@material-ui/core/Button';
 import mapStyles from "./mapStyles/retromapStyles";
 import EventsService from '../../Services/EventsService';
 import './MapView.css';
 import Homepage from '../home/Homepage';
 import { NotificationManager } from 'react-notifications';
 import MapControl from './MapControl';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import {FormGroup, TextField } from '@material-ui/core';
 
 const eventService=new EventsService();
-
-
 
 function Map() {
     const [events, setEvents]=useState([]);
