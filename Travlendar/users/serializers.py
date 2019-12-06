@@ -2,8 +2,6 @@
 from rest_framework import serializers
 from . import models
 #concept taken from https://wsvincent.com
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CustomUser

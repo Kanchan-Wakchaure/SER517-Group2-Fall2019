@@ -89,6 +89,8 @@ function Map() {
             }
     });
 
+
+
     const listener = e => {
         if (e.key === "Escape") {
         setSelectedPark(null);
@@ -106,6 +108,8 @@ function Map() {
         location: { lat: parseFloat(p.lat), lng: parseFloat(p.long)},
         stopover: true
         }));
+        //const origin = { lat:33.377210, lng:-111.908560}//waypoints.shift().location;
+        //const destination = { lat:33.377210, lng:-111.908560} //waypoints.pop().location;//
         const directionsService = new google.maps.DirectionsService();
 
         directionsService.route(
@@ -145,6 +149,7 @@ function Map() {
             );
     originMarker = (
         <Marker
+          //defaultLabel="HOME"
           defaultIcon={homeIcon}
           position={{
             lat: origin.lat,
@@ -162,6 +167,7 @@ function Map() {
             );
     currentPos=(
         <Marker
+          //defaultLabel="My Location"
           defaultIcon={iconMarker}
           position={{
             lat: latitude,
@@ -173,41 +179,45 @@ function Map() {
         />
     );
         return (
+
+
             <div id="google-map">
             <GoogleMap
                 defaultZoom={10}
                 defaultCenter={{ lat: 33.4255, lng: -111.9400 }}
                 defaultOptions={{ styles: mapStyles }}
+
             >
+
             <MapControl position={google.maps.ControlPosition.TOP_RIGHT}>
             <div className="container-date-picker map-events">
-                <FormGroup className="form-date-picker">
-                    <TextField variant="outlined"
-                           required
-                           type="date"
-                           id="date"
-                           name="date"
-                           value={date}
-                           InputLabelProps={{ shrink: true }}
-                           className="input-date-picker"
-                           onChange = { e =>  setDate(e.target.value) }/></
-                           FormGroup>
-                           <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
-                                setEvents(result.data);
-                                console.log(result);
+                        <FormGroup className="form-date-picker">
+                            <TextField variant="outlined"
+                                   required
+                                   type="date"
+                                   id="date"
+                                   name="date"
+                                   value={date}
+                                   InputLabelProps={{ shrink: true }}
+                                   className="input-date-picker"
+                                   onChange = { e =>  setDate(e.target.value) }/></
+                                   FormGroup>
+                                   <button className="btn-date-picker" onClick={e=>{eventService.getEvents(date).then(function (result) {
+                                        setEvents(result.data);
+                                        console.log(result);
 
-                                }).catch(function (error){
-                                        if (error.response){
-                                            if(error.response.status===404){
+                                        }).catch(function (error){
+                                                if (error.response){
+                                                    if(error.response.status===404){
 
-                                                setEvents([]);
-                                                NotificationManager.info("You have no events on selected date to display.")
+                                                        setEvents([]);
+                                                        NotificationManager.info("You have no events on selected date to display.")
 
-                                            }
-                                        }
-                                })
-                                }}>Submit
-                            </button>
+                                                    }
+                                                }
+                                        })
+                                        }}>Submit
+                                    </button>
              </div>
 
             </MapControl>
@@ -221,11 +231,24 @@ function Map() {
 
                  directions={directions}
                  options={{
+                 /*
+                    polylineOptions: {
+                    storkeColor: "#2249a3",
+                    strokeOpacity: 0.4,
+                    strokeWeight: 4
+                    },
+                    preserveViewport: true,
+                    */
                     suppressMarkers: true,
+
+
                   }}
+
                  />
                 )
+
             }
+
             {
             events.map((park,i) => (
                 <Marker
@@ -238,6 +261,7 @@ function Map() {
                     onClick={() => {
                         setSelectedPark(park);
                     }}
+
                 />
             )
             )}
@@ -266,9 +290,15 @@ function Map() {
             </div>
 
             );
+
+
+
+
 }
 
 const MapWrapped = withScriptjs(withGoogleMap(Map));
+
+
 
 export default function MAP() {
   if(localStorage.getItem('token')==null){
@@ -277,6 +307,7 @@ export default function MAP() {
   else
   {
         return (
+
         <div className="map">
           <MapWrapped
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
@@ -287,7 +318,10 @@ export default function MAP() {
             mapElement={<div style={{ height: `100%`}} />}
           />
         </div>
+
         );
+
+
   }
 }
 

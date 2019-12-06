@@ -181,10 +181,13 @@ class ListEvent extends Component{
                      </div>
 
                 )
+
             }
+
         }   
     }
 }
+
 
 class Popup extends React.Component {
   render() {

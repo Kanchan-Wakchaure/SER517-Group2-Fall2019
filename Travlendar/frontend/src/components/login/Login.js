@@ -15,7 +15,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LoginErrors } from './LoginErrors';
 import LoginService from '../../Services/LoginService';
 import { NotificationManager } from 'react-notifications';
-import { FormText } from 'reactstrap';
+import {
+  FormText
+} from 'reactstrap';
 
 /*
     Author: Vijaya Mounika Gadde
@@ -104,8 +106,11 @@ class Login extends React.Component{
             <div>
                 {
                     this.props.loading ?
+
                     <CircularProgress color="secondary" style={{align: 'center'}}/>
+                    
                     :
+
                     <Container component="main" maxWidth="xs" className="test">
                     <CssBaseline />
                     <div className="paper">
@@ -175,7 +180,9 @@ class Login extends React.Component{
                         </form>
                     </div>
                 </Container>
+
                 }
+
             </div>
         );
     }

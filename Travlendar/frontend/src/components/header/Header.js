@@ -97,11 +97,11 @@ class Header extends React.Component{
                       open={Boolean(this.state.anchorEl)}
                       onClose={this.handleClose}
                     >
-                    <MenuItem color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>
-                      Send Text Alert
+                    <MenuItem>
+                      <Button color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>Send Text Alert</Button>
                     </MenuItem>
-                    <MenuItem color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>
-                      Send Email Alert
+                    <MenuItem>
+                      <Button color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>Send Email Alert</Button>
                     </MenuItem>
                     </Menu>
                     <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
@@ -120,11 +120,11 @@ class Header extends React.Component{
                       open={Boolean(this.state.isLoggedIn)}
                       onClose={this.handleLogoutClose}
                     >
-                    <MenuItem color="inherit" href="Profile" style={{textTransform: "none", fontSize: '16px'}}>View Profile
+                    <MenuItem>
+                      <Button color="inherit" href="Profile" style={{textTransform: "none", fontSize: '16px'}}>View Profile</Button>
                     </MenuItem>
-                    <MenuItem color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout
-                    <MenuItem color="inherit" href="/Homepage" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>
-                      Logout
+                    <MenuItem>
+                      <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
                     </MenuItem>
                     </Menu>
                     </div>)

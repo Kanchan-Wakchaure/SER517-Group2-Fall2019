@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/* Define team member details */
 const tiers = [
   {
     title: 'Kanchan Wakchaure',
@@ -113,9 +112,11 @@ export default function About() {
           Who are we?
         </Typography>
       </Container>
+      {/* End hero unit */}
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map(tier => (
+            // Enterprise card is full width at sm breakpoint
             <Grid item key={tier.title} xs={12} md={4}>
               <Card>
                 <CardHeader
@@ -127,9 +128,9 @@ export default function About() {
                 <CardContent>
                   <div className={classes.cardPricing}>
                       <img src={tier.img} alt="not found" style={{
-                                                         width: '300px',
-                                                         height: '200px',
-                                                      }} />
+     width: '300px',
+     height: '200px',
+  }} />
                   </div>
                 </CardContent>
                 <CardActions>
