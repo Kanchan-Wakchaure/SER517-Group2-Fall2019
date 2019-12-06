@@ -9,7 +9,7 @@ from datetime import datetime, date
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-import requests, json
+import requests
 import os
 from .alerts import send_email, send_text
 from django.apps import apps
@@ -51,9 +51,9 @@ def EventList(request):
                 total_prev_delta=float(total_prev.total_seconds())
                 diff_delta=abs(float(curr_time_delta.total_seconds())) - abs(total_prev_delta)
 
-                if diff_delta>0:
-                    if diff_delta< min_diff:
-                        min_diff=diff_delta
+                if diff_delta > 0:
+                    if diff_delta < min_diff:
+                        min_diff = diff_delta
                         prev_event = item
                         p = 1
                 else:
@@ -85,7 +85,7 @@ def EventList(request):
                 travel_time = reachable(prev_event.lat, prev_event.long,serializer.validated_data.get("lat"), serializer.validated_data.get("long"))
 
                 if travel_time == -1:
-                    return Response('API',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response('API', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                 if travel_time == -2 or travel_time == -3 or travel_time == -4:
                     return Response('unreachable', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -94,7 +94,7 @@ def EventList(request):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
                 if abs(float((prev_event_time + prev_event.duration).total_seconds())+travel_time) >= abs(float(curr_time_delta.total_seconds())):
-                    return Response('prev',status=status.HTTP_412_PRECONDITION_FAILED)
+                    return Response('prev', status=status.HTTP_412_PRECONDITION_FAILED)
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -123,10 +123,10 @@ def EventList(request):
                 if abs(float((prev_event_time + prev_event.duration).total_seconds())) >= abs(float(curr_time_delta.total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
-                if abs(float((curr_time_delta + curr_duration).total_seconds())) >= abs(float((next_event_time).total_seconds())):
+                if abs(float((curr_time_delta + curr_duration).total_seconds())) >= abs(float(next_event_time.total_seconds())):
                     return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
-                if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time_wrt_next) >= abs(float((next_event_time).total_seconds())):
+                if abs(float((curr_time_delta + curr_duration).total_seconds())+travel_time_wrt_next) >= abs(float(next_event_time.total_seconds())):
                     next = 1
 
                 if abs(float((prev_event_time + prev_event.duration).total_seconds()) + travel_time_wrt_prev) >= abs(float(curr_time_delta.total_seconds())):
@@ -200,7 +200,7 @@ def reachable(A_lat, A_long, B_lat, B_long):
     r = requests.get(url)
     x = r.json()
     if x['status'] == 'OK':
-        if x['rows'][0]['elements'][0]['status']=='ZERO_RESULTS':
+        if x['rows'][0]['elements'][0]['status'] == 'ZERO_RESULTS':
             return -2
         if x['rows'][0]['elements'][0]['status'] == 'NOT_FOUND':
             return -3
@@ -218,7 +218,7 @@ def home_address(request):
     modela = apps.get_model('users', 'CustomUser')
     b = modela.objects.get(email=request.user)
     address = getattr(b, 'address')
-    home_add_lat_long=[]
+    home_add_lat_long = []
     api_response = requests.get(
         'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, get_api_key()))
     api_response_dict = api_response.json()
@@ -240,6 +240,7 @@ def home_address(request):
 @api_view(['GET'])
 def userhome_address(request):
     return Response(get_user_home(request.user), status=status.HTTP_200_OK)
+
 
 def get_user_home(req):
     modela = apps.get_model('users', 'CustomUser')
