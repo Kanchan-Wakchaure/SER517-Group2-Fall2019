@@ -29,7 +29,6 @@ class App extends Component{
     this.props.onTryAutoSignup();
   }
 
-
   render(){
       return (
       <div>
@@ -59,7 +58,6 @@ class App extends Component{
         </div>
       );
   }
-
 }
 
 const mapStateToProps = state => {

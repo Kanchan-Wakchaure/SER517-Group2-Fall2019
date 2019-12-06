@@ -13,6 +13,7 @@ import Geocode from "react-geocode";
 import EventsService from '../../Services/EventsService';
 import '../createEvent/CreateEvent.css'
 import { NotificationManager } from 'react-notifications';
+import mapStyles from "../map/mapStyles/retromapStyles";
 
 /*
     Author: Kanchan Wakchaure
@@ -37,10 +38,13 @@ const Map = compose(
             <GoogleMap
                 defaultZoom={14}
                 defaultCenter={{ lat: 33.424564, lng: -111.928001 }}
-                onClick={props.onMapClick}>
-                {props.isMarkerShown && <Marker position={props.markerPosition} 
-                                                onClick={props.onMarkerClick} 
+                onClick={props.onMapClick}
+                defaultOptions={{ styles: mapStyles }}>
+                {props.isMarkerShown && <Marker position={props.markerPosition}
+                                                onClick={props.onMarkerClick}
+
                                                 {...props}
+                                                options={{label:"+", fontWeight:"bold"}}
                                         />
                 }
             </GoogleMap>

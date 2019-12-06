@@ -12,9 +12,7 @@ import './Signup.css';
 import SignupService from '../../Services/SignupService';
 import { NotificationManager } from 'react-notifications';
 import { SignupErrors } from './SignupErrors';
-import {
-  FormText
-} from 'reactstrap';
+import { FormText } from 'reactstrap';
 
 /*
     Author: Kanchan Wakchaure, Vijaya Mounika Gadde
@@ -269,7 +267,6 @@ class Signup extends React.Component{
                     </div>
                 </Container>
         }
-
     </div>
         );
     }

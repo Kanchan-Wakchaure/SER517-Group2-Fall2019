@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractUser
+
 
 class Event(models.Model):
     title = models.CharField(max_length=300)
@@ -17,9 +17,8 @@ class Event(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    long=models.DecimalField(max_digits=9, decimal_places=6, default=0)
-    lat=models.DecimalField(max_digits=9, decimal_places=6, default=0)
-
+    long = models.DecimalField(max_digits=9, decimal_places=6, default=0)
+    lat = models.DecimalField(max_digits=9, decimal_places=6, default=0)
     notifyUsers = models.CharField(max_length=300, default="")
 
 

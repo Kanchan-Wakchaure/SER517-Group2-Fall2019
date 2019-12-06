@@ -7,15 +7,17 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import CustomUser
 
+
 class CustomUserTests(TestCase):
     # Testing model
     def createUser(self):
         user = CustomUser.objects.create_user(username='normal@user.com', password='Foo12345', email='normal@user.com',
-                first_name='Test',
-                last_name= 'Test',
-                phone_number= 123456,
-                address='5999 S Backus Mall, Mesa, AZ 85212')
+                                              first_name='Test',
+                                              last_name= 'Test',
+                                              phone_number= 123456,
+                                              address='5999 S Backus Mall, Mesa, AZ 85212')
         return user
+
     def testCreateUser(self):
         w = self.createUser()
         self.assertTrue(isinstance(w, CustomUser))
@@ -45,15 +47,15 @@ class CustomUserTests(TestCase):
                 }
         response = self.client.post(url, data1, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
- 
-        
 
 
 
 
 
-    
-    
+
+
+
+
 
 
 
