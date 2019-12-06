@@ -45,6 +45,14 @@ class CustomUserTests(TestCase):
                 }
         response = self.client.post(url, data1, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+ 
+        
+
+
+
+
+
+    
     
 
 
