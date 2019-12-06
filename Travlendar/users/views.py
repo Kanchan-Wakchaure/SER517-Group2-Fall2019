@@ -11,10 +11,25 @@ from django.contrib.auth import login as auth_login
 from .forms import CustomUserCreationForm
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import authentication_classes
 
+# api for getting user details
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def userDetails(request, *args, **kwargs):
 
+    if request.method == 'GET':
+
+        ser = UserSerializer(request.user)
+        return Response(ser.data, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+# api for signing up
 @api_view(['GET','POST'])
 def signUp(request):
     if request.method == 'POST':
@@ -27,6 +42,7 @@ def signUp(request):
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
+# api for logging in
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
