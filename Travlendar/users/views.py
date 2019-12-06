@@ -26,6 +26,7 @@ def signUp(request):
             return Response(form.errors,status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':

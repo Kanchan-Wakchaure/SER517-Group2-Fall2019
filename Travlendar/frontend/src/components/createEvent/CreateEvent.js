@@ -40,8 +40,6 @@ const Map = compose(
                 defaultCenter={{ lat: 33.424564, lng: -111.928001 }}
                 onClick={props.onMapClick}
                 defaultOptions={{ styles: mapStyles }}>
-
-
                 {props.isMarkerShown && <Marker position={props.markerPosition}
                                                 onClick={props.onMarkerClick}
 

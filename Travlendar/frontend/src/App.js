@@ -16,8 +16,6 @@ import Email from './components/email/Email';
 import Text from './components/text/Text';
 import About from './components/about/About';
 import MapPreview from './components/map/MapPreview';
-
-
 import { NotificationContainer } from 'react-notifications';
 
 import 'react-notifications/lib/notifications.css';
@@ -27,7 +25,6 @@ class App extends Component{
   componentDidMount() {
     this.props.onTryAutoSignup();
   }
-
 
   render(){
       return (
@@ -57,7 +54,6 @@ class App extends Component{
         </div>
       );
   }
-
 }
 
 const mapStateToProps = state => {

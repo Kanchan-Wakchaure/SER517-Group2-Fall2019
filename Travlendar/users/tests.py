@@ -6,14 +6,16 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+
 class CustomUserTests(TestCase):
     # Testing model
     def createUser(self):
         user = CustomUser.objects.create_user(username='normal@user.com', password='foo', email='normal@user.com',
-                first_name='Test',
-                last_name= 'Test',
-                phone_number= 123456)
+                                              first_name='Test',
+                                              last_name='Test',
+                                              phone_number=123456)
         return user
+
     def testCreateUser(self):
         w = self.createUser()
         self.assertTrue(isinstance(w, CustomUser))

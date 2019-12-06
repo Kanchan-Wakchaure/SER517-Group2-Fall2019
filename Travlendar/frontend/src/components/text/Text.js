@@ -6,21 +6,15 @@ import { NotificationManager } from 'react-notifications';
 
 const alertService=new Alert();
 
-
-
 class Text extends Component{
 
     constructor(props) {
         super(props);
         this.state  = {
             events: []
-            //nextPageURL:  ''
         };
-        //this.nextPage  =  this.nextPage.bind(this);
-        //this.handleDelete  =  this.handleDelete.bind(this);
     }
     componentDidMount() {
-    //
         var  self  =  this;
         alertService.getText().then(function (result) {
             console.log(result);
@@ -29,7 +23,6 @@ class Text extends Component{
           NotificationManager.error("Unable to send text notifications at the moment.", "Error");
         });
     }
-
 
     render(){
             NotificationManager.success('A text message is sent to you phone number') ;
