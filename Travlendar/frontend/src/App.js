@@ -11,11 +11,14 @@ import ListEvent from './components/eventsList/ListEvent';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/auth';
 import Map from './components/map/MapView';
-import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE } from './Routes.js';
+import { HOMEPAGE, SIGNUP, LOGIN, CREATE_EVENT, EVENTS_LIST, EVENTS_MAP, EMAIL, TEXT, ABOUT, PREVIEW_ROUTE, PROFILE} from './Routes.js';
 import Email from './components/email/Email';
 import Text from './components/text/Text';
 import About from './components/about/About';
 import MapPreview from './components/map/MapPreview';
+import Profile from './components/profile/Profile';
+
+
 import { NotificationContainer } from 'react-notifications';
 
 import 'react-notifications/lib/notifications.css';
@@ -46,6 +49,7 @@ class App extends Component{
                       <Route path={TEXT} component={Text}/>
                       <Route path={ABOUT} component={About}/>
                       <Route path={PREVIEW_ROUTE} component={MapPreview}/>
+                      <Route path={PROFILE} component={Profile}/>
                     </Switch>
                 </div>
             </BrowserRouter>

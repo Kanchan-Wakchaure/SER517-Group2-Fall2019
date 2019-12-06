@@ -120,6 +120,9 @@ class Header extends React.Component{
                       open={Boolean(this.state.isLoggedIn)}
                       onClose={this.handleLogoutClose}
                     >
+                    <MenuItem color="inherit" href="Profile" style={{textTransform: "none", fontSize: '16px'}}>View Profile
+                    </MenuItem>
+                    <MenuItem color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout
                     <MenuItem color="inherit" href="/Homepage" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>
                       Logout
                     </MenuItem>
