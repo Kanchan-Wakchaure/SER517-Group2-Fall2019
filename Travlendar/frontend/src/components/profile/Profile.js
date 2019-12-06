@@ -17,22 +17,22 @@ class Profile extends React.Component{
     address: '',
     email: ''
   }
+
+  userDetailsService.getUserDetails().then(result => {
+    this.setState({
+      firstname: result.first_name,
+      lastname: result.last_name,
+      phone: result.phone_number,
+      address: result.address,
+      email: result.email
+    })
+   }).catch(()=> {});
 }
     render(){
         if(localStorage.getItem('token')==null){
             return <Homepage/>
         }
-        else{
-          userDetailsService.getUserDetails().then(result => {
-            this.setState({
-              firstname: result.first_name,
-              lastname: result.last_name,
-              phone: result.phone_number,
-              address: result.address,
-              email: result.email
-            })
-           }).catch(()=> {});
-           
+        else{           
           return(
                 <Container>
                 <form style={{backgroundColor: 'white', marginTop: '30px', marginBottom: '0px'}}>
