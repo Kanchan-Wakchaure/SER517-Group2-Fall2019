@@ -79,7 +79,7 @@ class Profile extends React.Component{
                                value={this.state.address}
                                style={{paddingLeft: '5px',paddingRight:'5px', height:'45px'}}
                     /><br/>
-                  </FormGroup><br/>
+                  </FormGroup><br/><br/>
                   <FormGroup>
                     <TextField variant="outlined"
                                required
