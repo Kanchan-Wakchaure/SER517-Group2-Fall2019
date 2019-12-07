@@ -270,7 +270,7 @@ export default class CreateEvent extends React.Component {
                     <TextField autoFocus
                                margin="dense"
                                id="duration"
-                               label="Duration"
+                               label="Duration (minutes)"
                                type="duration"
                                InputLabelProps={{ shrink: true }}
                                fullWidth 
