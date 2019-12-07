@@ -29,12 +29,12 @@ def send_email(receiver, subject, content, email_list, dt_time):
 
     date_time_obj = datetime.datetime.strptime(dt_time, '%Y-%m-%d %H:%M:%S')
     date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 1)
-    time_stamp = int(date_time_obj.strftime("%s"))
+    time_stamp = int(date_time_obj.strftime("%S"))
 
     print(dt_time)
     
     current_dt = datetime.datetime.strptime(DATE + " " + TIME, '%Y-%m-%d %H:%M:%S')
-    current_timestamp = int(current_dt.strftime("%s"))
+    current_timestamp = int(current_dt.strftime("%S"))
 
     print(current_dt)
 

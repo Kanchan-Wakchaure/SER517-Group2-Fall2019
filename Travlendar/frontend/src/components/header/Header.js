@@ -97,9 +97,9 @@ class Header extends React.Component{
                       open={Boolean(this.state.anchorEl)}
                       onClose={this.handleClose}
                     >
-                    <MenuItem color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>Send Text Alert
+                    <MenuItem color="inherit"  style={{textTransform: "none", fontSize: '16px'}}><Button href="/textalert">Send Text Alert</Button>
                     </MenuItem>
-                    <MenuItem color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>Send Email Alert
+                    <MenuItem color="inherit"  style={{textTransform: "none", fontSize: '16px'}}><Button href="/emailalert">Send Email Alert</Button>
                     </MenuItem>
                     </Menu>
                     <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>

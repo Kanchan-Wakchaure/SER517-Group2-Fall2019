@@ -340,7 +340,7 @@ def Email(request):
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def Text(request):
-    PHN = '+14808592874'
+    PHN = '+14804019988'
     if request.method == 'GET':
 
         today = DATE
