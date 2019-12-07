@@ -11,9 +11,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Homepage from '../home/Homepage';
 import Geocode from "react-geocode";
 import EventsService from '../../Services/EventsService';
-import '../createEvent/CreateEvent.css';
+import '../createEvent/CreateEvent.css'
 import { NotificationManager } from 'react-notifications';
-
+import mapStyles from "../map/mapStyles/retromapStyles";
 /*
     Author: Kanchan Wakchaure
     Date: 11-05-2019
@@ -34,13 +34,18 @@ const Map = compose(
              withScriptjs,
              withGoogleMap
             )(props => 
-            <GoogleMap
+                        <GoogleMap
                 defaultZoom={14}
                 defaultCenter={{ lat: 33.424564, lng: -111.928001 }}
-                onClick={props.onMapClick}>
-                {props.isMarkerShown && <Marker position={props.markerPosition} 
-                                                onClick={props.onMarkerClick} 
+                onClick={props.onMapClick}
+                defaultOptions={{ styles: mapStyles }}>
+
+
+                {props.isMarkerShown && <Marker position={props.markerPosition}
+                                                onClick={props.onMarkerClick}
+
                                                 {...props}
+                                                options={{label:"+", fontWeight:"bold"}}
                                         />
                 }
             </GoogleMap>
@@ -265,7 +270,7 @@ export default class CreateEvent extends React.Component {
                     <TextField autoFocus
                                margin="dense"
                                id="duration"
-                               label="Duration"
+                               label="Duration (minutes)"
                                type="duration"
                                InputLabelProps={{ shrink: true }}
                                fullWidth 

@@ -36,13 +36,7 @@ Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to see Django Server runni
 
 For testing run below commands from the same path:
 
-coverage run manage.py test users -v 2
-
-coverage run manage.py test travlendar_app -v 2
-
-Then run below command(This command will create a folder which contains the report):
-
-coverage html
+python3 manage.py test
 
 
 To test the feature:
@@ -56,15 +50,9 @@ Go to the directory Travlendar/frontend:
 
 ```npm install```
 
-```npm i --save react-redux```
+```npm install --save reactstrap react react-dom```
 
-```npm i --save redux redux-thunk```
-
-```npm install --save react-notifications```
-
-```npm install --save react-geocode```
-
-```npm install --save react-google-autocomplete```
+```npm i --save react-redux redux redux-thunk react-notifications react-geocode react-google-autocomplete```
 
 ```npm start```
 

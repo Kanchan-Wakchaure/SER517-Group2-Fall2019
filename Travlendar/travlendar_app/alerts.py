@@ -30,28 +30,16 @@ def send_email(receiver, subject, content, email_list, dt_time):
     date_time_obj = datetime.datetime.strptime(dt_time, '%Y-%m-%d %H:%M:%S')
     date_time_obj = date_time_obj - datetime.timedelta(hours = 0 , minutes = 1)
     time_stamp = int(date_time_obj.strftime("%s"))
-
-    print(dt_time)
     
     current_dt = datetime.datetime.strptime(DATE + " " + TIME, '%Y-%m-%d %H:%M:%S')
-    current_timestamp = int(current_dt.strftime("%s"))
 
-    print(current_dt)
+    if not email_list:
 
-    print(receiver)
-    print(email_list)
-
-    if email_list == []:
-
-        
-        print("in email_list")
         message = Mail(
             from_email=SENDER,
             to_emails=receiver,
             subject=subject,
             html_content=content)
-
-
         message.send_at = SendAt(time_stamp, p=0)
         print(message)
         print("activated")
@@ -62,50 +50,34 @@ def send_email(receiver, subject, content, email_list, dt_time):
             print(" in time_stamp")
 
             response = sg.send(message)
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
 
         except Exception as e:
             
             print(e)
     else:
-
-
-        
         email_list.append(receiver)
-
         for rcv in email_list:
-
-
-            message = Mail(
-            from_email=SENDER,
-            to_emails=rcv,
-            subject=subject,
-            html_content=content)
+            message = Mail(from_email=SENDER,
+                           to_emails=rcv,
+                           subject=subject,
+                           html_content=content)
 
             message.send_at = SendAt(time_stamp, p=0)
-            
-            print(message)
         
             try:
 
                 #if time_stamp > current_timestamp:
 
                 response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
 
             except Exception as e:
                 
                 print(e)
 
+
 def send_text(phn, content):
 
     client = Client(ACC_SID, AUTH)
-
-    print(phn)
 
     phn = phn[0]
 

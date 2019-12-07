@@ -22,7 +22,8 @@ class Header extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          anchorEl: null
+          anchorEl: null,
+          isLoggedIn: null,
         };
       }
 
@@ -38,6 +39,20 @@ class Header extends React.Component{
           anchorEl: null,
         })
       };
+
+      handleLogoutClick = (event) => {
+        this.setState({
+          isLoggedIn: event.currentTarget,
+        })
+      };
+
+
+      handleLogoutClose = () => {
+        this.setState({
+          isLoggedIn: null,
+        })
+      };
+
    render() {
       return (
         <div className="root">
@@ -83,14 +98,36 @@ class Header extends React.Component{
                       onClose={this.handleClose}
                     >
                     <MenuItem>
-                      <Button color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>Send Text Alert</Button>
-                    </MenuItem>
+                    <Button color="inherit" href="/textalert" style={{textTransform: "none", fontSize: '16px'}}>Send Text Alert
+                    </Button></MenuItem>
                     <MenuItem>
-                      <Button color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>Send Email Alert</Button>
-                    </MenuItem>
+                     <Button color="inherit" href="/emailalert" style={{textTransform: "none", fontSize: '16px'}}>Send Email Alert
+                    </Button></MenuItem>
                     </Menu>
                     <Button color="inherit" href="/about" style={{textTransform: "none", fontSize: '16px'}}>About Us</Button>
-                    <Button color="inherit" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout</Button>
+                    <Button color="inherit" 
+                            style={{textTransform: "none", fontSize: '16px'}}
+                            className="menu_button" 
+                            aria-controls="simple-menu" 
+                            aria-haspopup="true" 
+                            onClick={this.handleLogoutClick}>
+                    Hi {localStorage.getItem('name')}
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={this.state.isLoggedIn}
+                      keepMounted
+                      open={Boolean(this.state.isLoggedIn)}
+                      onClose={this.handleLogoutClose}
+                    >
+                    <MenuItem>
+                      <Button color="inherit" href="Profile" style={{textTransform: "none", fontSize: '16px'}}>View Profile</Button>
+                    </MenuItem>
+                    <MenuItem>
+                     <Button color="inherit" href="/Homepage" onClick={this.props.logout} style={{textTransform: "none", fontSize: '16px'}}>Logout
+                        </Button>
+                    </MenuItem>
+                    </Menu>
                     </div>)
                     :
                     (

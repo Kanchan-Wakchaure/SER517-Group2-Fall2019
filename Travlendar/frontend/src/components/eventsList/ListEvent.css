@@ -19,19 +19,23 @@
 .event_list ul li div {
     float: left;
 }
-.event_list div:nth-of-type(1)  {width: 36%; padding-right:20px;}
+.event_list div:nth-of-type(1)  {width: 25%; padding-right:20px;}
 .event_list div:nth-of-type(2)  {width: 10%; padding-right:20px;}
 .event_list div:nth-of-type(3)  {width: 10%; padding-right:20px;}
-.event_list div:nth-of-type(4)  {width: 30%; padding-right:20px;}
-.event_list div:nth-of-type(5)  {width: 6%; text-align: right; margin-top: -15px;}
+.event_list div:nth-of-type(4)  {width: 20%; padding-right:30px;}
+.event_list div:nth-of-type(5)  {width: 15%; padding-right:10px;}
+.event_list div:nth-of-type(6)  {width: 6%; text-align: right; margin-top: -15px;}
 
 .no_event{
 text-align:center;
 }
+.attendees {
+    margin: 0;
 
+}
 .delete-event button:hover   {background-color: #999;}
 .delete-event button {
-    padding: 0; margin:0;
+    padding: 0; margin: 0;
     border: none;
     cursor: pointer;
     height: 40px;
@@ -73,14 +77,3 @@ text-align:center;
 .container-date-picker .form-date-picker                {float:left; margin-right: 5px;}
 .container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
 .container-date-picker .btn-date-picker {padding: 11px 10px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
-
-/*
-
-.container-date-picker                                  {margin: 0 120px; padding:10px 20px 20px 20px; background-color: #3f51b5; width: 420px;}
-.container-date-picker .label-date-picker               {font-size: 20px; color: #fff;  width: 100px; margin: 10px 0;}
-.container-date-picker input                            {background-color: #fff; width: 234px;  }
-.container-date-picker .MuiOutlinedInput-notchedOutline {border: none;}
-.container-date-picker .form-date-picker                {float:left; margin-right: 20px;}
-.container-date-picker .form-date-picker .input-date-picker {border: solid 1px #333;}
-.container-date-picker .btn-date-picker {padding: 20px 45px; background-color: #ccc; cursor:pointer; margin: 0; border: solid 1px #333;}
-*/
